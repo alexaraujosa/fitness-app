@@ -3,15 +3,14 @@ package users;
 import TrainingPlan.TrainingPlan;
 import activities.Activity;
 import activities.ActivityController;
+import utils.IDManager;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
 public class User {
-    //Duvidas com esta variavel
-    private static int id;
+    private int id;
     private String name;
     private String username;
     private Date birthdate;
@@ -24,7 +23,8 @@ public class User {
     private ActivityController activityController;
     private List<TrainingPlan> trainingSchedule;
 
-    public User(){
+    public User(int id){
+        this.id = id;
         this.name = "N/a";
         this.username = "N/a";
         this.birthdate = new GregorianCalendar(1900, Calendar.JANUARY, 1).getTime();
@@ -41,7 +41,7 @@ public class User {
     /**
      *  Construtor Parametrizado do User com todas as variaveis
      */
-    public User(//int id,
+    public User(int id,
                 String name,
                 String username,
                 Date birthdate,
@@ -50,9 +50,8 @@ public class User {
                 boolean sex,
                 double height,
                 double weight,
-                int heartFreq,
-                ActivityController activityController,
-                List<TrainingPlan> trainingSchedule){
+                int heartFreq){
+        this.id = id;
         this.name = name;
         this.username = username;
         this.birthdate = birthdate;
@@ -62,8 +61,8 @@ public class User {
         this.height = height;
         this.weight = weight;
         this.heartFreq = heartFreq;
-        this.activityController = activityController;
-        this.trainingSchedule = trainingSchedule;
+        this.activityController = new ActivityController();
+        this.trainingSchedule = new ArrayList<TrainingPlan>();;
     }
 
     public User(User u){
@@ -80,10 +79,8 @@ public class User {
         this.trainingSchedule = u.getTrainingSchedule();
     }
 
-    //TODO: Verificar como vamos fazer o id
-    //Não terá setter
     public int getId() {
-        return User.id;
+        return this.id;
     }
 
     public String getName(){
@@ -178,15 +175,19 @@ public class User {
 
     public void addActivity(Activity act){
         //TODO: Adiciona uma ativiade ao activityController
+        //this.activityController.add(act);
     }
 
     public void removeActivity(int id){
         //TODO: Remove a atividade, ver se fazemos isto com id ou com nome
+        //this.activityController.remove(id);
     }
 
     public void addTrainingPlan(TrainingPlan tp){
         //TODO: esta função tera que verificar as regras do plano de treino
         this.trainingSchedule.add(tp);
+        // Uma plano de treino não pode ter mais de uma atividade hard por dia, nem pode ter ativadade hard em dias consecutivos
+        // nunca pode ter mais de 3 atividades por dia
     }
 
     public void removeTrainingPlan(TrainingPlan tp){
