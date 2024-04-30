@@ -2,6 +2,7 @@ package utils;
 
 import java.io.Serializable;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -13,6 +14,24 @@ public class IDManager implements Serializable {
     public IDManager() {
         this.usedUserIDs = new HashSet<>();
         this.usedActivityIDs = new HashSet<>();
+    }
+
+    public IDManager(Set<Integer> usedUserIDs, Set<Integer> usedActivityIDs){
+        this.usedUserIDs = usedUserIDs;
+        this.usedActivityIDs = usedActivityIDs;
+    }
+
+    public IDManager(IDManager manager){
+        this.usedUserIDs = manager.getUsedUserIDs();
+        this.usedActivityIDs = manager.getUsedActivityIDs();
+    }
+
+    public Set<Integer> getUsedUserIDs() {
+        return new HashSet<>(this.usedUserIDs);
+    }
+
+    public Set<Integer> getUsedActivityIDs() {
+        return new HashSet<>(this.usedActivityIDs);
     }
 
     public int generateUniqueUserID() {
@@ -38,4 +57,24 @@ public class IDManager implements Serializable {
         return random.nextInt(Integer.MAX_VALUE); // Generate a random int ID
     }
 
+    @Override
+    public String toString() {
+        return "IDManager{" + '\n' +
+                "\tusedUserIDs=" + usedUserIDs.toString() + '\n' +
+                "\tusedActivityIDs=" + usedActivityIDs.toString() + '\n' +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        IDManager idManager = (IDManager) o;
+        return this.getUsedActivityIDs().equals(idManager.getUsedActivityIDs()) &&
+                this.getUsedActivityIDs().equals(idManager.getUsedActivityIDs());
+    }
+
+    public IDManager clone(){
+        return new IDManager(this);
+    }
 }
