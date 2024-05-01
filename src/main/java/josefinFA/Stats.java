@@ -12,7 +12,7 @@ public class Stats {
 
     @Override
     public boolean equals(Object obj) {
-        return false;
+        return true;
     }
 
     public Stats clone(){

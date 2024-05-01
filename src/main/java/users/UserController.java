@@ -1,7 +1,6 @@
 package users;
 
 import java.util.Date;
-import java.util.Objects;
 
 public class UserController {
     private Users users;
@@ -27,12 +26,16 @@ public class UserController {
     }
 
     public boolean isUsernameAvailable(String username) {
-        return users.isUserNameAvailable(username);
+        return this.users.isUserNameAvailable(username);
+    }
+
+    public boolean userWithIdExits(int id) {
+        return this.users.containsUser(id);
     }
 
     public void addUser(int id, String name, String username, Date birthdate, String address, String email, boolean sex, double height, double weight, int heartFreq) {
         User newUser = new User(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
-        users.addUser(newUser.clone());
+        this.users.addUser(newUser.clone());
     }
 
     @Override
@@ -45,5 +48,9 @@ public class UserController {
 
     public UserController clone(){
         return new UserController(this);
+    }
+
+    public void removeUser(int id) {
+        this.users.removeUser(id);
     }
 }

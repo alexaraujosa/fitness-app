@@ -2,7 +2,6 @@ package utils;
 
 import java.io.Serializable;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Random;
 import java.util.Set;
 
@@ -54,6 +53,10 @@ public class IDManager implements Serializable {
         return newID;
     }
 
+    public void removeUserIdEntry(int id) {
+        this.usedUserIDs.remove(id);
+    }
+
     private int generateRandomID() {
         Random random = new Random();
         return random.nextInt(Integer.MAX_VALUE); // Generate a random int ID
@@ -79,4 +82,5 @@ public class IDManager implements Serializable {
     public IDManager clone(){
         return new IDManager(this);
     }
+
 }

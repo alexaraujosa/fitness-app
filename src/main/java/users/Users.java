@@ -33,6 +33,10 @@ public class Users {
         return usernames.stream().noneMatch(u -> u.equals(username));
     }
 
+    public boolean containsUser(int id){
+        return usersById.containsKey(id);
+    }
+
     public void addUser(User newUser) {
         usernames.add(newUser.getUsername());
         usersById.put(newUser.getId(), newUser);
@@ -49,5 +53,11 @@ public class Users {
 
     public Users clone(){
         return new Users(this);
+    }
+
+    public void removeUser(int id) {
+        User user = usersById.get(id);
+        usernames.remove(user.getUsername());
+        usersById.remove(id);
     }
 }

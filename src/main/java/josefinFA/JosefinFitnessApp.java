@@ -1,11 +1,9 @@
 package josefinFA;
 
-import users.User;
 import users.UserController;
 import utils.IDManager;
 
 import java.util.Date;
-import java.util.Objects;
 
 public class JosefinFitnessApp {
     private UserController userController;
@@ -69,6 +67,24 @@ public class JosefinFitnessApp {
             return "User added successfully!";
         } else {
             return "That username is not available!";
+        }
+    }
+
+    public boolean removeUser(int id){
+        //verificar se user existe
+        //se sim
+        if(this.userController.userWithIdExits(id)){
+            //remover user
+            userController.removeUser(id);
+
+            //remover idEntry
+            idManager.removeUserIdEntry(id);
+            return true;
+        } else {
+            //se não
+            //avisar que user não existe
+            System.out.println("O user com esse id não existe");;
+            return false;
         }
     }
 

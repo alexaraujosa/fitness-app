@@ -34,9 +34,7 @@ class JosefinFitnessAppTest {
     //BUG: Algo de errado não está certo
     @Test
     void testEquals() {
-        JosefinFitnessApp clonedApp = new JosefinFitnessApp(app);
-
-        Assertions.assertTrue(clonedApp.equals(app));
+        assertEquals(app, app.clone());
     }
 
     @Test

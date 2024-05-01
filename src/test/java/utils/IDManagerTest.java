@@ -30,6 +30,20 @@ class IDManagerTest {
     void generateUniqueActivityID() {
     }
 
+
+    @Test
+    void removeUserIdEntry() {
+        for (int i = 0; i < 100; i++) {
+            idManager.generateUniqueUserID();
+            idManager.generateUniqueActivityID();
+        }
+
+        idManager.removeUserIdEntry(50);
+        assertFalse(idManager.getUsedUserIDs().contains(50));
+    }
+
+
+
     @Test
     void testEquals() {
     }

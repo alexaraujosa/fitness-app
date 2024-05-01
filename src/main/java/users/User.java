@@ -66,6 +66,7 @@ public class User {
     }
 
     public User(User u){
+        this.id = u.getId();
         this.name = u.getName();
         this.username = u.getUsername();
         this.birthdate = u.getBirthdate();
@@ -233,17 +234,18 @@ public class User {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return sex == user.sex &&
+        return this.id == user.id &&
+                this.name.equals(user.name) &&
+                this.username.equals(user.username) &&
+                this.birthdate.equals(user.birthdate) &&
+                this.address.equals(user.address) &&
+                this.email.equals(user.email) &&
+                this.sex == user.sex &&
                 Double.compare(height, user.height) == 0 &&
                 Double.compare(weight, user.weight) == 0 &&
                 heartFreq == user.heartFreq &&
-                Objects.equals(name, user.name) &&
-                Objects.equals(username, user.username) &&
-                Objects.equals(birthdate, user.birthdate) &&
-                Objects.equals(address, user.address)
-                && Objects.equals(email, user.email)
-                && Objects.equals(activityController, user.activityController)
-                && Objects.equals(trainingSchedule, user.trainingSchedule);
+                activityController.equals(user.activityController) &&
+                trainingSchedule.equals(user.trainingSchedule);
     }
 
     @Override
