@@ -223,6 +223,8 @@ public abstract class User {
 
     public abstract double calculateCaloriesBurnMultiplier();
 
+    public abstract User clone();
+
     @Override
     public String toString() {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
