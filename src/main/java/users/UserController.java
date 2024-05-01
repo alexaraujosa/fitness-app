@@ -10,7 +10,7 @@ public class UserController {
     }
 
     public UserController(Users users){
-        this.users = users;
+        this.users = users.clone();
     }
 
     public UserController(UserController controller){
@@ -33,9 +33,35 @@ public class UserController {
         return this.users.containsUser(id);
     }
 
-    public void addUser(int id, String name, String username, Date birthdate, String address, String email, boolean sex, double height, double weight, int heartFreq) {
-        User newUser = new User(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
-        this.users.addUser(newUser.clone());
+    public void addUser(
+            int id,
+            String name,
+            String username,
+            Date birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq,
+            int typeOfUser
+    ){
+        switch (typeOfUser){
+            case 1:
+                CasualUser casualUser = new CasualUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
+                this.users.addUser(casualUser.clone());
+                break;
+            case 2:
+                AmateurUser amateurUser = new AmateurUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
+                this.users.addUser(amateurUser.clone());
+                break;
+            case 3:
+                ProfessionalUser professionalUser = new ProfessionalUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
+                this.users.addUser(professionalUser.clone());
+                break;
+            default:
+                System.out.println("Invalid user type");
+        }
     }
 
     @Override

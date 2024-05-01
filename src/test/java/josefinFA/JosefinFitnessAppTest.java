@@ -23,12 +23,16 @@ class JosefinFitnessAppTest {
         int heartFreq = 70;
 
         // Test when username is available
-        String result1 = app.addUser(name, username, birthdate, address, email, sex, height, weight, heartFreq);
+        String result1 = app.addUser(name, username, birthdate, address, email, sex, height, weight, heartFreq,1);
         assertEquals("User added successfully!", result1);
 
         // Test when username is not available
-        String result2 = app.addUser("Joaquim", username, birthdate, address, email, sex, height, weight, heartFreq);
+        String result2 = app.addUser("Joaquim", username, birthdate, address, email, sex, height, weight, heartFreq,2);
         assertEquals("That username is not available!", result2);
+
+        // Test when username is not available
+        String result3 = app.addUser("Joaquim", "joca", birthdate, address, email, sex, height, weight, heartFreq,2);
+        assertEquals("User added successfully!", result3);
     }
 
     //BUG: Algo de errado não está certo

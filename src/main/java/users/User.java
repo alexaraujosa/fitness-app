@@ -3,14 +3,15 @@ package users;
 import TrainingPlan.TrainingPlan;
 import activities.Activity;
 import activities.ActivityController;
-import utils.IDManager;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
 import java.util.*;
-import java.util.stream.Collectors;
 
-public class User {
-    private int id;
+public abstract class User {
+    private final int id;
     private String name;
     private String username;
     private Date birthdate;
@@ -20,20 +21,22 @@ public class User {
     private double height;
     private double weight;
     private int heartFreq;
-    private ActivityController activityController;
-    private List<TrainingPlan> trainingSchedule;
+    private double caloriesBurnMultiplier;
+    private final ActivityController activityController;
+    private final List<TrainingPlan> trainingSchedule;
 
     public User(int id){
         this.id = id;
         this.name = "N/a";
         this.username = "N/a";
-        this.birthdate = new GregorianCalendar(1900, Calendar.JANUARY, 1).getTime();
+        this.birthdate = new GregorianCalendar(1995, Calendar.JANUARY, 1).getTime();
         this.address = "N/a";
         this.email = "N/a";
         this.sex = false;
         this.height = 0;
         this.weight = 0;
         this.heartFreq = 0;
+        this.caloriesBurnMultiplier = this.calculateCaloriesBurnMultiplier();
         this.activityController = new ActivityController();
         this.trainingSchedule = new ArrayList<TrainingPlan>();
     }
@@ -41,16 +44,18 @@ public class User {
     /**
      *  Construtor Parametrizado do User com todas as variaveis
      */
-    public User(int id,
-                String name,
-                String username,
-                Date birthdate,
-                String address,
-                String email,
-                boolean sex,
-                double height,
-                double weight,
-                int heartFreq){
+    public User(
+            int id,
+            String name,
+            String username,
+            Date birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ){
         this.id = id;
         this.name = name;
         this.username = username;
@@ -61,8 +66,9 @@ public class User {
         this.height = height;
         this.weight = weight;
         this.heartFreq = heartFreq;
+        this.caloriesBurnMultiplier = this.calculateCaloriesBurnMultiplier();
         this.activityController = new ActivityController();
-        this.trainingSchedule = new ArrayList<TrainingPlan>();;
+        this.trainingSchedule = new ArrayList<TrainingPlan>();
     }
 
     public User(User u){
@@ -72,10 +78,11 @@ public class User {
         this.birthdate = u.getBirthdate();
         this.address = u.getAddress();
         this.email = u.getEmail();
-        this.sex = u.isSex();
+        this.sex = u.getSex();
         this.height = u.getHeight();
         this.weight = u.getWeight();
         this.heartFreq = u.getHeartFreq();
+        this.caloriesBurnMultiplier = this.calculateCaloriesBurnMultiplier();
         this.activityController = u.getActivityController();
         this.trainingSchedule = u.getTrainingSchedule();
     }
@@ -124,7 +131,7 @@ public class User {
         this.email = email;
     }
 
-    public boolean isSex() {
+    public boolean getSex() {
         return this.sex;
     }
 
@@ -160,18 +167,8 @@ public class User {
         return new ActivityController(this.activityController);
     }
 
-    //TODO: Verificar se este setter faz efetivamente falta
-    public void setActivityController(ActivityController activityController) {
-        this.activityController = activityController;
-    }
-
     public List<TrainingPlan> getTrainingSchedule() {
         return new ArrayList<>(this.trainingSchedule);
-    }
-
-    //TODO: Verificar se este setter faz efetivamente falta
-    public void setTrainingSchedule(List<TrainingPlan> trainingSchedule) {
-        this.trainingSchedule = trainingSchedule;
     }
 
     public void addActivity(Activity act){
@@ -192,7 +189,6 @@ public class User {
     }
 
     public void removeTrainingPlan(TrainingPlan tp){
-        this.trainingSchedule = this.trainingSchedule.stream().filter(t -> t.getId() != tp.getId()).collect(Collectors.toList());
         //TODO: teriamos tb de remover as atividades desse tp
     }
 
@@ -207,6 +203,25 @@ public class User {
         //só pode ser encaixado no presente ou futuro
         //se tivermos um plano de treino que se repita todas as sextas, temos de alterar as sextas daqui para a frente, não as anteriores
     }
+
+    protected double calculateBMR(){
+        LocalDate today = LocalDate.now();
+        LocalDate birthday = this.getBirthdate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+        int age = Period.between(birthday, today).getYears();
+
+        //NOTES: USING Mifflin-St.Jeor Equation
+        //basal metabolic rate;
+        double bmr = 0;
+
+        if (this.getSex()) { // Assuming true for male, false for female
+            bmr = (10 * this.getWeight()) + (6.25 * this.getHeight()) - (5 * age) + 5;
+        } else {
+            bmr = (10 * this.getWeight()) + (6.25 * this.getHeight()) - (5 * age) - 161;
+        }
+        return bmr;
+    }
+
+    public abstract double calculateCaloriesBurnMultiplier();
 
     @Override
     public String toString() {
@@ -223,10 +238,6 @@ public class User {
                 "\tweight: " + weight + ",\n" +
                 "\theartFreq: " + heartFreq + "\n" +
                 "}";
-    }
-
-    public User clone(){
-        return new User(this);
     }
 
     @Override

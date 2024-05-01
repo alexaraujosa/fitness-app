@@ -52,18 +52,21 @@ public class JosefinFitnessApp {
         this.stats = stats;
     }
 
-    public String addUser(String name,
-                          String username,
-                          Date birthdate,
-                          String address,
-                          String email,
-                          boolean sex,
-                          double height,
-                          double weight,
-                          int heartFreq){
+    public String addUser(
+            String name,
+            String username,
+            Date birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq,
+            int typeOfUser
+    ){
         if(userController.isUsernameAvailable(username)){
             int id = idManager.generateUniqueUserID();
-            userController.addUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
+            userController.addUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq, typeOfUser);
             return "User added successfully!";
         } else {
             return "That username is not available!";

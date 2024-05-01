@@ -12,6 +12,19 @@ class UsersTest {
 
     @Test
     void isUserNameAvailable() {
+        String name = "John Doe";
+        String username = "johndoe";
+        Date birthdate = new Date();
+        String address = "123 Main St";
+        String email = "johndoe@example.com";
+        boolean sex = true;
+        double height = 180.0;
+        double weight = 75.0;
+        int heartFreq = 70;
+
+        User u1 = new CasualUser(1,name, username, birthdate, address, email, sex, height, weight, heartFreq);
+        users.addUser(u1);
+        Assertions.assertTrue(users.isUserNameAvailable(name));
     }
 
     @Test
@@ -55,9 +68,9 @@ class UsersTest {
         double weight = 75.0;
         int heartFreq = 70;
 
-        User u1 = new User(1,name, username, birthdate, address, email, sex, height, weight, heartFreq);
-        User u2 = new User(2,"Paulo", "paulo123", birthdate, address, email, sex, height, weight, heartFreq);
-        User u3 = new User(3,"jp", "jp123", birthdate, address, email, sex, height, weight, heartFreq);
+        User u1 = new CasualUser(1,name, username, birthdate, address, email, sex, height, weight, heartFreq);
+        User u2 = new CasualUser(2,"Paulo", "paulo123", birthdate, address, email, sex, height, weight, heartFreq);
+        User u3 = new CasualUser(3,"jp", "jp123", birthdate, address, email, sex, height, weight, heartFreq);
         users.addUser(u1);
         users.addUser(u2);
         users.addUser(u3);

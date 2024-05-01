@@ -5,8 +5,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {
-    User user = new User(1);
-    User user2 = new User(2);
+    CasualUser user = new CasualUser(1);
+    CasualUser user2 = new CasualUser(2);
 
     @Test
     void testToString() {
