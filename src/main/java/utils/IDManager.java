@@ -35,19 +35,21 @@ public class IDManager implements Serializable {
     }
 
     public int generateUniqueUserID() {
-        int newID;
-        do {
-            newID = generateRandomID();
-        } while (usedUserIDs.contains(newID));
+        if(usedUserIDs.isEmpty()) {
+            usedUserIDs.add(1);
+            return 1;
+        }
+        int newID = this.usedUserIDs.size()+1;
         usedUserIDs.add(newID);
         return newID;
     }
 
     public int generateUniqueActivityID() {
-        int newID;
-        do {
-            newID = generateRandomID();
-        } while (usedActivityIDs.contains(newID));
+        if(usedActivityIDs.isEmpty()) {
+            usedActivityIDs.add(1);
+            return 1;
+        }
+        int newID = this.usedActivityIDs.size()+1;
         usedActivityIDs.add(newID);
         return newID;
     }

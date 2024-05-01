@@ -1,5 +1,6 @@
 package josefinFA;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -28,5 +29,17 @@ class JosefinFitnessAppTest {
         // Test when username is not available
         String result2 = app.addUser("Joaquim", username, birthdate, address, email, sex, height, weight, heartFreq);
         assertEquals("That username is not available!", result2);
+    }
+
+    //BUG: Algo de errado não está certo
+    @Test
+    void testEquals() {
+        JosefinFitnessApp clonedApp = new JosefinFitnessApp(app);
+
+        Assertions.assertTrue(clonedApp.equals(app));
+    }
+
+    @Test
+    void testClone() {
     }
 }
