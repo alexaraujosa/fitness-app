@@ -2,15 +2,15 @@ package activities;
 
 import users.User;
 
+import java.time.LocalDate;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.GregorianCalendar;
 
 public abstract class Activity {
     private final int id;
     private String name;
-    private Date begin;
-    private Date end;
+    private LocalDate begin;
+    private LocalDate end;
     private final User user;
     private int burnedCalories;
 
@@ -20,8 +20,8 @@ public abstract class Activity {
         ) {
         this.id = id;
         this.name = "N/a";
-        this.begin = new GregorianCalendar(1900, Calendar.JANUARY, 1).getTime();
-        this.end = new GregorianCalendar(1900, Calendar.JANUARY, 1).getTime();
+        this.begin = LocalDate.now();
+        this.end = LocalDate.now();
         this.user = user.clone();
         this.burnedCalories = 0;
     }
@@ -29,8 +29,8 @@ public abstract class Activity {
     public Activity(
             int id,
             String name,
-            Date begin,
-            Date end,
+            LocalDate begin,
+            LocalDate end,
             User user,
             int burnedCalories
         ) {
@@ -55,14 +55,14 @@ public abstract class Activity {
 
     public int getId() { return this.id; }
     public String getName() { return this.name; }
-    public Date getBegin() { return this.begin; }
-    public Date getEnd() { return this.end; }
+    public LocalDate getBegin() { return this.begin; }
+    public LocalDate getEnd() { return this.end; }
     public User getUser() { return this.user.clone(); }
     public int getBurnedCalories() { return this.burnedCalories; }
 
     public void setName(String name) { this.name = name; }
-    public void setBegin(Date begin) { this.begin = begin; }
-    public void setEnd(Date end) { this.end = end; }
+    public void setBegin(LocalDate begin) { this.begin = begin; }
+    public void setEnd(LocalDate end) { this.end = end; }
     public void setBurnedCalories(int calories) { this.burnedCalories = calories; }
 
     public abstract int calculateCalories(User user);
