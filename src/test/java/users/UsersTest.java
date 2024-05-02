@@ -1,5 +1,6 @@
 package users;
 
+import exceptions.UsernameAlreadyExistsException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ class UsersTest {
     Users users = new Users();
 
     @Test
-    void isUserNameAvailable() {
+    void isUserNameAvailable() throws UsernameAlreadyExistsException {
         String name = "John Doe";
         String username = "johndoe";
         Date birthdate = new Date();
@@ -24,7 +25,7 @@ class UsersTest {
 
         User u1 = new CasualUser(1,name, username, birthdate, address, email, sex, height, weight, heartFreq);
         users.addUser(u1);
-        Assertions.assertTrue(users.isUserNameAvailable(name));
+        Assertions.assertTrue(users.isUserNameAvailable(username));
     }
 
     @Test

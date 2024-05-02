@@ -1,5 +1,6 @@
 package josefinFA;
 
+import exceptions.UsernameAlreadyExistsException;
 import users.UserController;
 import utils.IDManager;
 
@@ -52,7 +53,7 @@ public class JosefinFitnessApp {
         this.stats = stats;
     }
 
-    public String addUser(
+    public void addCasualUser(
             String name,
             String username,
             Date birthdate,
@@ -61,15 +62,14 @@ public class JosefinFitnessApp {
             boolean sex,
             double height,
             double weight,
-            int heartFreq,
-            int typeOfUser
-    ){
-        if(userController.isUsernameAvailable(username)){
+            int heartFreq
+    ) throws UsernameAlreadyExistsException {
+        try {
+            userController.isUsernameAvailable(username);
             int id = idManager.generateUniqueUserID();
-            userController.addUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq, typeOfUser);
-            return "User added successfully!";
-        } else {
-            return "That username is not available!";
+            userController.addCasualUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
+        } catch (UsernameAlreadyExistsException e) {
+            System.err.println("Erro ao adicionar usuário: " + e.getMessage());
         }
     }
 

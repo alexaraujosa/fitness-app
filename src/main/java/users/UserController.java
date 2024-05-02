@@ -1,5 +1,7 @@
 package users;
 
+import exceptions.UsernameAlreadyExistsException;
+
 import java.util.Date;
 
 public class UserController {
@@ -25,15 +27,15 @@ public class UserController {
         this.users = users;
     }
 
-    public boolean isUsernameAvailable(String username) {
-        return this.users.isUserNameAvailable(username);
+    public void isUsernameAvailable(String username) throws UsernameAlreadyExistsException {
+        this.users.isUserNameAvailable(username);
     }
 
     public boolean userWithIdExits(int id) {
         return this.users.containsUser(id);
     }
 
-    public void addUser(
+    public void addCasualUser(
             int id,
             String name,
             String username,
@@ -43,26 +45,45 @@ public class UserController {
             boolean sex,
             double height,
             double weight,
-            int heartFreq,
-            int typeOfUser
-    ){
-        switch (typeOfUser){
-            case 1:
-                CasualUser casualUser = new CasualUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
-                this.users.addUser(casualUser.clone());
-                break;
-            case 2:
-                AmateurUser amateurUser = new AmateurUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
-                this.users.addUser(amateurUser.clone());
-                break;
-            case 3:
-                ProfessionalUser professionalUser = new ProfessionalUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
-                this.users.addUser(professionalUser.clone());
-                break;
-            default:
-                System.out.println("Invalid user type");
-        }
+            int heartFreq
+    ) {
+        CasualUser casualUser = new CasualUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
+        this.users.addUser(casualUser);
     }
+
+    public void addAmateurUser(
+            int id,
+            String name,
+            String username,
+            Date birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ) {
+        AmateurUser amateurUser = new AmateurUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
+        this.users.addUser(amateurUser);
+    }
+
+    public void addProfessionalUser(
+            int id,
+            String name,
+            String username,
+            Date birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ) {
+        ProfessionalUser professionalUser = new ProfessionalUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
+        this.users.addUser(professionalUser);
+
+    }
+
 
     @Override
     public boolean equals(Object o) {

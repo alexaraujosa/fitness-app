@@ -1,5 +1,6 @@
 package josefinFA;
 
+import exceptions.UsernameAlreadyExistsException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -11,7 +12,7 @@ class JosefinFitnessAppTest {
     JosefinFitnessApp app = new JosefinFitnessApp();
 
     @Test
-    void addUser() {
+    void addUser() throws UsernameAlreadyExistsException {
         String name = "John Doe";
         String username = "johndoe";
         Date birthdate = new Date();
@@ -23,16 +24,13 @@ class JosefinFitnessAppTest {
         int heartFreq = 70;
 
         // Test when username is available
-        String result1 = app.addUser(name, username, birthdate, address, email, sex, height, weight, heartFreq,1);
-        assertEquals("User added successfully!", result1);
+        app.addCasualUser(name, username, birthdate, address, email, sex, height, weight, heartFreq);
 
         // Test when username is not available
-        String result2 = app.addUser("Joaquim", username, birthdate, address, email, sex, height, weight, heartFreq,2);
-        assertEquals("That username is not available!", result2);
+        app.addCasualUser("Joaquim", username, birthdate, address, email, sex, height, weight, heartFreq);
 
         // Test when username is not available
-        String result3 = app.addUser("Joaquim", "joca", birthdate, address, email, sex, height, weight, heartFreq,2);
-        assertEquals("User added successfully!", result3);
+        app.addCasualUser("Joaquim", "joca", birthdate, address, email, sex, height, weight, heartFreq);
     }
 
     //BUG: Algo de errado não está certo

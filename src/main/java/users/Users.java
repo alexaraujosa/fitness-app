@@ -1,5 +1,7 @@
 package users;
 
+import exceptions.UsernameAlreadyExistsException;
+
 import java.util.*;
 
 public class Users {
@@ -29,13 +31,18 @@ public class Users {
         return new HashMap<>(this.usersById);
     }
 
-    public boolean isUserNameAvailable(String username){
-        return usernames.stream().noneMatch(u -> u.equals(username));
+    public boolean isUserNameAvailable(String username) throws UsernameAlreadyExistsException {
+        if(usernames.stream().noneMatch(u -> u.equals(username))){
+            return true;
+        } else {
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists!");
+        }
     }
 
     public boolean containsUser(int id){
         return usersById.containsKey(id);
     }
+
 
     public void addUser(User newUser) {
         usernames.add(newUser.getUsername());
