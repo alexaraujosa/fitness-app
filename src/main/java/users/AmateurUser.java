@@ -14,7 +14,7 @@ public class AmateurUser extends User{
             int id,
             String name,
             String username,
-            Date birthdate,
+            LocalDate birthdate,
             String address,
             String email,
             boolean sex,

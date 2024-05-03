@@ -14,14 +14,13 @@ public abstract class User {
     private final int id;
     private String name;
     private String username;
-    private Date birthdate;
+    private LocalDate birthdate;
     private String address;
     private String email;
     private boolean sex;
     private double height;
     private double weight;
     private int heartFreq;
-    private double caloriesBurnMultiplier;
     private final ActivityController activityController;
     private final List<TrainingPlan> trainingSchedule;
 
@@ -29,14 +28,13 @@ public abstract class User {
         this.id = id;
         this.name = "N/a";
         this.username = "N/a";
-        this.birthdate = new GregorianCalendar(1995, Calendar.JANUARY, 1).getTime();
+        this.birthdate = LocalDate.now();
         this.address = "N/a";
         this.email = "N/a";
         this.sex = false;
         this.height = 0;
         this.weight = 0;
         this.heartFreq = 0;
-        this.caloriesBurnMultiplier = this.calculateCaloriesBurnMultiplier();
         this.activityController = new ActivityController();
         this.trainingSchedule = new ArrayList<TrainingPlan>();
     }
@@ -48,7 +46,7 @@ public abstract class User {
             int id,
             String name,
             String username,
-            Date birthdate,
+            LocalDate birthdate,
             String address,
             String email,
             boolean sex,
@@ -66,7 +64,6 @@ public abstract class User {
         this.height = height;
         this.weight = weight;
         this.heartFreq = heartFreq;
-        this.caloriesBurnMultiplier = this.calculateCaloriesBurnMultiplier();
         this.activityController = new ActivityController();
         this.trainingSchedule = new ArrayList<TrainingPlan>();
     }
@@ -82,7 +79,6 @@ public abstract class User {
         this.height = u.getHeight();
         this.weight = u.getWeight();
         this.heartFreq = u.getHeartFreq();
-        this.caloriesBurnMultiplier = this.calculateCaloriesBurnMultiplier();
         this.activityController = u.getActivityController();
         this.trainingSchedule = u.getTrainingSchedule();
     }
@@ -107,11 +103,11 @@ public abstract class User {
         this.username = username;
     }
 
-    public Date getBirthdate() {
+    public LocalDate getBirthdate() {
         return this.birthdate;
     }
 
-    public void setBirthdate(Date birthdate) {
+    public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
@@ -172,7 +168,7 @@ public abstract class User {
     }
 
     public void addActivity(Activity act){
-        //TODO: Adiciona uma ativiade ao activityController
+        this.activityController.addActivity(act);
         //this.activityController.add(act);
     }
 
@@ -206,8 +202,7 @@ public abstract class User {
 
     protected double calculateBMR(){
         LocalDate today = LocalDate.now();
-        LocalDate birthday = this.getBirthdate().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        int age = Period.between(birthday, today).getYears();
+        int age = Period.between(this.getBirthdate(), today).getYears();
 
         //NOTES: USING Mifflin-St.Jeor Equation
         //basal metabolic rate;

@@ -4,6 +4,8 @@ import exceptions.UsernameAlreadyExistsException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
+import java.time.Month;
 import java.util.Date;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +17,7 @@ class JosefinFitnessAppTest {
     void addUser() throws UsernameAlreadyExistsException {
         String name = "John Doe";
         String username = "johndoe";
-        Date birthdate = new Date();
+        LocalDate birthdate = LocalDate.of(1950, Month.JANUARY, 15);
         String address = "123 Main St";
         String email = "johndoe@example.com";
         boolean sex = true;

@@ -4,7 +4,7 @@ import exceptions.UsernameAlreadyExistsException;
 import users.UserController;
 import utils.IDManager;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class JosefinFitnessApp {
     private UserController userController;
@@ -56,36 +56,66 @@ public class JosefinFitnessApp {
     public void addCasualUser(
             String name,
             String username,
-            Date birthdate,
+            LocalDate birthdate,
             String address,
             String email,
             boolean sex,
             double height,
             double weight,
             int heartFreq
-    ) throws UsernameAlreadyExistsException {
-        try {
-            userController.isUsernameAvailable(username);
+    ) {
+        if(userController.isUsernameAvailable(username)){
             int id = idManager.generateUniqueUserID();
             userController.addCasualUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
-        } catch (UsernameAlreadyExistsException e) {
-            System.err.println("Erro ao adicionar usuário: " + e.getMessage());
+        } else {
+            System.err.println("Username " + username + " already exists");
+        }
+    }
+
+    public void addAmateurUser(
+            String name,
+            String username,
+            LocalDate birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ) {
+        if(userController.isUsernameAvailable(username)){
+            int id = idManager.generateUniqueUserID();
+            userController.addAmateurUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
+        } else {
+            System.err.println("Username " + username + " already exists");
+        }
+    }
+
+    public void addProfessionalUser(
+            String name,
+            String username,
+            LocalDate birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ) {
+        if(userController.isUsernameAvailable(username)){
+            int id = idManager.generateUniqueUserID();
+            userController.addProfessionalUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
+        } else {
+            System.err.println("Username " + username + " already exists");
         }
     }
 
     public boolean removeUser(int id){
-        //verificar se user existe
-        //se sim
         if(this.userController.userWithIdExits(id)){
-            //remover user
             userController.removeUser(id);
-
-            //remover idEntry
             idManager.removeUserIdEntry(id);
             return true;
         } else {
-            //se não
-            //avisar que user não existe
             System.out.println("O user com esse id não existe");;
             return false;
         }

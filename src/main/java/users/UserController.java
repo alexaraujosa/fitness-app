@@ -1,8 +1,9 @@
 package users;
 
+import exceptions.ErrorUpdatingUserException;
 import exceptions.UsernameAlreadyExistsException;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class UserController {
     private Users users;
@@ -27,8 +28,8 @@ public class UserController {
         this.users = users;
     }
 
-    public void isUsernameAvailable(String username) throws UsernameAlreadyExistsException {
-        this.users.isUserNameAvailable(username);
+    public boolean isUsernameAvailable(String username) {
+        return this.users.isUsernameAvailable(username);
     }
 
     public boolean userWithIdExits(int id) {
@@ -39,7 +40,7 @@ public class UserController {
             int id,
             String name,
             String username,
-            Date birthdate,
+            LocalDate birthdate,
             String address,
             String email,
             boolean sex,
@@ -55,7 +56,7 @@ public class UserController {
             int id,
             String name,
             String username,
-            Date birthdate,
+            LocalDate birthdate,
             String address,
             String email,
             boolean sex,
@@ -71,7 +72,7 @@ public class UserController {
             int id,
             String name,
             String username,
-            Date birthdate,
+            LocalDate birthdate,
             String address,
             String email,
             boolean sex,
@@ -84,6 +85,68 @@ public class UserController {
 
     }
 
+    public void updateUserName(int id, String name) throws ErrorUpdatingUserException {
+        this.users.updateUserName(id,name);
+        if(!this.users.getUserWithId(id).getName().equals(name)) {
+            throw new ErrorUpdatingUserException("Error updating user name!");
+        }
+    }
+
+    public void updateUserUsername(int id, String username) throws ErrorUpdatingUserException, UsernameAlreadyExistsException {
+        this.users.updateUserUsername(id,username);
+        if(!this.users.getUserWithId(id).getUsername().equals(username)) {
+            throw new ErrorUpdatingUserException("Error updating user username!");
+        }
+    }
+
+    public void updateUserUsername(String currentUsername, String newUsername) throws ErrorUpdatingUserException, UsernameAlreadyExistsException {
+        this.users.updateUserUsername(currentUsername,newUsername);
+        if(this.users.containsUser(currentUsername)) {
+            throw new ErrorUpdatingUserException("Error updating user username!");
+        }
+    }
+
+    public void updateUserBirthdate(int id, LocalDate birthdate) throws ErrorUpdatingUserException {
+        this.users.updateUserBirthdate(id,birthdate);
+        if(this.users.getUserWithId(id).getBirthdate().equals(birthdate)) {
+            throw new ErrorUpdatingUserException("Error updating user birthdate!");
+        }
+    }
+
+    public void updateUserAddress(int id, String address) throws ErrorUpdatingUserException {
+        this.users.updateUserAddress(id,address);
+        if(this.users.getUserWithId(id).getAddress().equals(address)) {
+            throw new ErrorUpdatingUserException("Error updating user address!");
+        }
+    }
+
+    public void updateUserEmail(int id, String email) throws ErrorUpdatingUserException {
+        this.users.updateUserEmail(id,email);
+        if(this.users.getUserWithId(id).getEmail().equals(email)) {
+            throw new ErrorUpdatingUserException("Error updating user email!");
+        }
+    }
+
+    public void updateUserHeight(int id, double height)throws ErrorUpdatingUserException {
+        this.users.updateUserHeight(id,height);
+        if(this.users.getUserWithId(id).getHeight() == height) {
+            throw new ErrorUpdatingUserException("Error updating user height!");
+        }
+    }
+
+    public void updateUserWeight(int id, double weight) throws ErrorUpdatingUserException{
+        this.users.updateUserWeight(id,weight);
+        if(this.users.getUserWithId(id).getWeight() == weight) {
+            throw new ErrorUpdatingUserException("Error updating user weight!");
+        }
+    }
+
+    public void updateUserHeartFrequency(int id, int heartFrequency) throws ErrorUpdatingUserException {
+        this.users.updateUserHeartFrequency(id,heartFrequency);
+        if(this.users.getUserWithId(id).getHeartFreq() == heartFrequency) {
+            throw new ErrorUpdatingUserException("Error updating user heartFreq!");
+        }
+    }
 
     @Override
     public boolean equals(Object o) {
