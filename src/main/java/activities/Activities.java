@@ -59,4 +59,11 @@ public class Activities {
 
     public Activities clone() { return new Activities(this); }
 
+    public boolean equals(Object o) {
+        if(o == this) return true;
+        if(!(o instanceof Activities)) return false;
+        Activities activities = (Activities)o;
+        return this.activities.equals(activities.activities);
+    }
+
 }
