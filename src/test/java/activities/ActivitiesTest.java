@@ -21,8 +21,10 @@ class ActivitiesTest {
 
     @Test
     public void testConstructor() {
-        Activities activities = new Activities();
-        assertNotNull(activities);
+        Activities activities1 = new Activities();
+        assertNotNull(activities1);
+        Activities activities2 = new Activities(activities1);
+        assertNotNull(activities2);
     }
 
     @Test

@@ -11,6 +11,10 @@ public class Activities {
         this.activities = new HashMap<>();
     }
 
+    public Activities(Activities activities) {
+        this.activities = new HashMap<>(activities.getActivities());
+    }
+
     public Map<Integer,Activity> getActivities() { return new HashMap<>(this.activities); }
 
     public boolean exists(int id) {
@@ -53,5 +57,6 @@ public class Activities {
         // TODO: Else, error handler
     }
 
+    public Activities clone() { return new Activities(this); }
 
 }
