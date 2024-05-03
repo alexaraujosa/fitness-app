@@ -6,8 +6,8 @@ public class RepetitionWithWeightsAct extends Activity{
     private int nRepetitions;
     private int weight;
 
-    public RepetitionWithWeightsAct(int id, User user, int nRepetitions, int weight) {
-        super(id, user);
+    public RepetitionWithWeightsAct(int id, int idUser, int nRepetitions, int weight) {
+        super(id, idUser);
         this.nRepetitions = Math.max(nRepetitions, 0);
         this.weight = Math.max(weight, 0);
     }

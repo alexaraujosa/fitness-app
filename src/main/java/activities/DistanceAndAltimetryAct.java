@@ -7,8 +7,8 @@ public class DistanceAndAltimetryAct extends Activity{
     private int altimetry;
 
 
-    public DistanceAndAltimetryAct(int id, User user, int distance, int altimetry) {
-        super(id, user);
+    public DistanceAndAltimetryAct(int id, int idUser, int distance, int altimetry) {
+        super(id, idUser);
         this.distance = Math.max(distance, 0);
         this.altimetry = Math.max(altimetry, 0);
     }

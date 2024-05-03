@@ -3,27 +3,27 @@ package activities;
 import users.User;
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public abstract class Activity {
     private final int id;
     private String name;
     private LocalDate begin;
     private LocalDate end;
-    private final User user;
+    private final int idUser;
     private int burnedCalories;
+    private int heartRate;
 
     public Activity(
             int id,
-            User user
+            int idUser
         ) {
         this.id = id;
         this.name = "N/a";
         this.begin = LocalDate.now();
         this.end = LocalDate.now();
-        this.user = user.clone();
+        this.idUser = idUser;
         this.burnedCalories = 0;
+        this.heartRate = 0;
     }
 
     public Activity(
@@ -31,15 +31,17 @@ public abstract class Activity {
             String name,
             LocalDate begin,
             LocalDate end,
-            User user,
-            int burnedCalories
+            int idUser,
+            int burnedCalories,
+            int heartRate
         ) {
         this.id = id;
         this.name = name;
         this.begin = begin;
         this.end = end;
-        this.user = user.clone();
+        this.idUser = idUser;
         this.burnedCalories = burnedCalories;
+        this.heartRate = heartRate;
     }
 
     public Activity(
@@ -49,21 +51,24 @@ public abstract class Activity {
         this.name = activity.getName();
         this.begin = activity.getBegin();
         this.end = activity.getEnd();
-        this.user = activity.getUser();
+        this.idUser = activity.getIdUser();
         this.burnedCalories = activity.getBurnedCalories();
+        this.heartRate = activity.getHeartRate();
     }
 
     public int getId() { return this.id; }
     public String getName() { return this.name; }
     public LocalDate getBegin() { return this.begin; }
     public LocalDate getEnd() { return this.end; }
-    public User getUser() { return this.user.clone(); }
+    public int getIdUser() { return this.idUser; }
     public int getBurnedCalories() { return this.burnedCalories; }
+    public int getHeartRate() { return this.heartRate; }
 
     public void setName(String name) { this.name = name; }
     public void setBegin(LocalDate begin) { this.begin = begin; }
     public void setEnd(LocalDate end) { this.end = end; }
     public void setBurnedCalories(int calories) { this.burnedCalories = calories; }
+    public void setHeartRate(int heartRate) { this.heartRate = heartRate; }
 
     public abstract int calculateCalories(User user);
 
@@ -74,7 +79,8 @@ public abstract class Activity {
                 " | BEGIN: " + this.begin.toString() +
                 " | END: " + this.end.toString() +
                 " | BURNED CALORIES: " + this.burnedCalories +
-                " | USER: " + this.user.toString() +
+                " | ID_USER: " + this.idUser +
+                " | HEART_RATE: " + this.heartRate +
                 " }-\n";
     }
 
@@ -90,8 +96,9 @@ public abstract class Activity {
                 this.name.equals(activity.name) &&
                 this.begin == activity.begin &&
                 this.end == activity.end &&
-                this.user.equals(activity.user) &&
-                this.burnedCalories == activity.burnedCalories;
+                this.idUser == activity.idUser &&
+                this.burnedCalories == activity.burnedCalories &&
+                this.heartRate == activity.heartRate;
     }
 
 }

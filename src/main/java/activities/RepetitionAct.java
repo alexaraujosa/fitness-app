@@ -5,8 +5,8 @@ import users.User;
 public class RepetitionAct extends Activity{
     private int nRepetitions;
 
-    public RepetitionAct(int id, User user, int nRepetitions) {
-        super(id, user);
+    public RepetitionAct(int id, int idUser, int nRepetitions) {
+        super(id, idUser);
         this.nRepetitions = Math.max(nRepetitions, 0);
     }
 

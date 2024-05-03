@@ -5,8 +5,8 @@ import users.User;
 public class DistanceAct extends Activity{
     private int distance;
 
-    public DistanceAct(int id, User user, int distance) {
-        super(id, user);
+    public DistanceAct(int id, int idUser, int distance) {
+        super(id, idUser);
         this.distance = Math.max(distance, 0);
     }
 
