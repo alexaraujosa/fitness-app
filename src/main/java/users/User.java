@@ -10,6 +10,11 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.*;
 
+/**
+ * The User class represents a User, containing information as it's name, username, birthdate
+ * address, email and more. This class implements methods to set and get this values as well
+ * as methods to calculate calorie expenditure and to add activities and trainingPlans.
+ */
 public abstract class User {
     private final int id;
     private String name;
@@ -24,6 +29,13 @@ public abstract class User {
     private final ActivityController activityController;
     private final List<TrainingPlan> trainingSchedule;
 
+    //region constructors
+    /**
+     * Constructs an empty user with the specified ID.
+     * Note: The caller is responsible for ensuring the uniqueness of the ID.
+     *
+     * @param id Unique number used to identify the User
+     */
     public User(int id){
         this.id = id;
         this.name = "N/a";
@@ -40,7 +52,18 @@ public abstract class User {
     }
 
     /**
-     *  Construtor Parametrizado do User com todas as variaveis
+     * Constructs a user with the specified information.
+     *
+     * @param id Unique number used to identify the User.
+     * @param name The name of the user.
+     * @param username The username of the user.
+     * @param birthdate The birthdate of the user.
+     * @param address The address of the user.
+     * @param email The email address of the user.
+     * @param sex The gender of the user (true for male, false for female).
+     * @param height The height of the user (in meters).
+     * @param weight The weight of the user (in kilograms).
+     * @param heartFreq The heart frequency of the user.
      */
     public User(
             int id,
@@ -68,6 +91,11 @@ public abstract class User {
         this.trainingSchedule = new ArrayList<TrainingPlan>();
     }
 
+    /**
+     * Constructs a new user object by copying the information from another user.
+     *
+     * @param u The user object from which to copy the information.
+     */
     public User(User u){
         this.id = u.getId();
         this.name = u.getName();
@@ -82,99 +110,207 @@ public abstract class User {
         this.activityController = u.getActivityController();
         this.trainingSchedule = u.getTrainingSchedule();
     }
+    //endregion
 
+    //region getters&setters
+    /**
+     * Retrieves the unique ID of the user.
+     *
+     * @return The unique ID of the user.
+     */
     public int getId() {
         return this.id;
     }
 
+    /**
+     * Retrieves the name of the user.
+     *
+     * @return The name of the user.
+     */
     public String getName(){
         return this.name;
     }
 
+    /**
+     * Sets the name of the user.
+     *
+     * @param name The new name of the user.
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Retrieves the username of the user.
+     *
+     * @return The username of the user.
+     */
     public String getUsername() {
         return this.username;
     }
 
+    /**
+     * Sets the username of the user.
+     *
+     * @param username The new username of the user.
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Retrieves the birthdate of the user.
+     *
+     * @return The birthdate of the user.
+     */
     public LocalDate getBirthdate() {
         return this.birthdate;
     }
 
+    /**
+     * Sets the birthdate of the user.
+     *
+     * @param birthdate The new birthdate of the user.
+     */
     public void setBirthdate(LocalDate birthdate) {
         this.birthdate = birthdate;
     }
 
+    /**
+     * Retrieves the address of the user.
+     *
+     * @return The address of the user.
+     */
     public String getAddress() {
         return this.address;
     }
 
+    /**
+     * Sets the address of the user.
+     *
+     * @param address The new address of the user.
+     */
     public void setAddress(String address) {
         this.address = address;
     }
 
+    /**
+     * Retrieves the email of the user.
+     *
+     * @return The email of the user.
+     */
     public String getEmail() {
         return this.email;
     }
 
+    /**
+     * Sets the email of the user.
+     *
+     * @param email The new email of the user.
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     * Retrieves the sex of the user.
+     *
+     * @return The sex of the user (true for male, false for female).
+     */
     public boolean getSex() {
         return this.sex;
     }
 
+    /**
+     * Sets the sex of the user.
+     *
+     * @param sex The new sex of the user (true for male, false for female).
+     */
     public void setSex(boolean sex) {
         this.sex = sex;
     }
 
+    /**
+     * Retrieves the height of the user.
+     *
+     * @return The height of the user (in meters).
+     */
     public double getHeight() {
         return this.height;
     }
 
+    /**
+     * Sets the height of the user.
+     *
+     * @param height The new height of the user (in meters).
+     */
     public void setHeight(double height) {
         this.height = height;
     }
 
+    /**
+     * Retrieves the weight of the user.
+     *
+     * @return The weight of the user (in kilograms).
+     */
     public double getWeight() {
         return this.weight;
     }
 
+    /**
+     * Sets the weight of the user.
+     *
+     * @param weight The new weight of the user (in kilograms).
+     */
     public void setWeight(double weight) {
         this.weight = weight;
     }
 
+    /**
+     * Retrieves the heart frequency of the user.
+     *
+     * @return The heart frequency of the user.
+     */
     public int getHeartFreq() {
         return this.heartFreq;
     }
 
+    /**
+     * Sets the heart frequency of the user.
+     *
+     * @param heartFreq The new heart frequency of the user.
+     */
     public void setHeartFreq(int heartFreq) {
         this.heartFreq = heartFreq;
     }
 
+    /**
+     * Retrieves a copy of the activity controller of the user.
+     *
+     * @return A copy of the activity controller of the user.
+     */
     public ActivityController getActivityController() {
         return new ActivityController(this.activityController);
     }
 
+    /**
+     * Retrieves a copy of the training schedule of the user.
+     *
+     * @return A copy of the training schedule of the user.
+     */
     public List<TrainingPlan> getTrainingSchedule() {
         return new ArrayList<>(this.trainingSchedule);
     }
+    //endregion
 
     public void addActivity(Activity act){
-        this.activityController.addActivity(act);
-        //this.activityController.add(act);
+        //NOTE: verificar se atividade já existe(idmanager)
+        //NOTE: Verificar se a atividade sobrepõe outra atividade?
+        this.activityController.add(act);
     }
 
     public void removeActivity(int id){
-        //TODO: Remove a atividade, ver se fazemos isto com id ou com nome
-        //this.activityController.remove(id);
+        this.activityController.remove(id);
     }
 
     public void addTrainingPlan(TrainingPlan tp){
@@ -188,8 +324,9 @@ public abstract class User {
         //TODO: teriamos tb de remover as atividades desse tp
     }
 
-    public void updateActivity(Activity oldAct, Activity newAct){
+    public void updateActivity(Activity activity){
         //TODO: substitui a antiga ativade com a nova
+        this.activityController.update(activity);
         //Ativadades completas não fazem sentido ser atualizadas
         //Se for uma atividade de um plano de treino ou não se deixa atualizar aqui ou fazer as verificações necessarias
     }

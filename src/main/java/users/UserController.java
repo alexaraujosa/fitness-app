@@ -36,6 +36,10 @@ public class UserController {
         return this.users.containsUser(id);
     }
 
+    public int getUsernameID(String username) {
+        return this.users.getUserWithUsername(username).getId();
+    }
+
     public void addCasualUser(
             int id,
             String name,
@@ -148,6 +152,54 @@ public class UserController {
         }
     }
 
+    //region AddingActivities
+    public void addRowing(){
+
+    }
+
+    public void addSkating(){
+
+    }
+
+    public void addTrackRunning(){
+
+    }
+
+    public void addMountainBiking(){
+
+    }
+
+    public void addRoadCycling(){
+
+    }
+
+    public void addTrailRunning(){
+
+    }
+
+    public void addAbdominalExercises(){
+
+    }
+
+    public void addPushUps(){
+
+    }
+
+    public void addStretching(){
+
+    }
+
+    public void addLegExtension(){
+
+    }
+
+    public void addWeightLifting(){
+
+    }
+    //endregion
+
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -162,5 +214,14 @@ public class UserController {
 
     public void removeUser(int id) {
         this.users.removeUser(id);
+    }
+
+    public boolean userWithUsernameExists(String username) {
+        return this.users.containsUser(username);
+    }
+
+    public void updateUser(User user) {
+        this.users.removeUser(user.getId());
+        this.users.addUser(user);
     }
 }

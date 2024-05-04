@@ -1,7 +1,19 @@
 package TrainingPlan;
 
+import activities.Activity;
+
+import java.time.LocalDate;
+import java.util.List;
+
+/**
+ * NOTE: Isto vai dar dor de cabeça lmao
+ */
 public class TrainingPlan {
     private int id;
+    private List<Activity> activities;
+    private LocalDate doDate;
+    private boolean repeat;
+    private int calories;
 
     public int getId() {
         return this.id;
