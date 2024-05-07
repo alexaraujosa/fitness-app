@@ -353,7 +353,7 @@ public abstract class User {
         return bmr;
     }
 
-    public abstract double calculateCaloriesBurnMultiplier();
+    public abstract int calculateBurnedCalories(int activityId);
 
     public abstract User clone();
 

@@ -46,7 +46,7 @@ public class Users {
 
     /**
      * Returns a copy of the usernames list.
-     * @return List of usernames
+     * @return Map of usernames
      */
     public Map<String, User> getUsersByUsername() {
         return new HashMap<>(this.usersByUsername);

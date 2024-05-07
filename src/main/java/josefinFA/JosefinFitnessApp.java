@@ -1,18 +1,23 @@
 package josefinFA;
 
+import activities.Activity;
+import activities.DistanceAct;
+import activities.DistanceAndAltimetryAct;
 import exceptions.ErrorUpdatingUserException;
-import exceptions.UserDoesNotExistsException;
 import exceptions.UsernameAlreadyExistsException;
-import users.CasualUser;
 import users.User;
 import users.UserController;
 import utils.IDManager;
 
-import java.io.IOException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class JosefinFitnessApp {
     private int userID;
+    private LocalDate systemDate;
     private UserController userController;
     private IDManager idManager;
     private Stats stats;
@@ -20,13 +25,15 @@ public class JosefinFitnessApp {
     //region constructors
     public JosefinFitnessApp(){
         this.userID = -1;
+        this.systemDate = LocalDate.now();
         this.userController = new UserController();
         this.idManager = new IDManager();
         this.stats = new Stats();
     }
 
-    public JosefinFitnessApp(int userID, UserController userController, IDManager idManager, Stats stats) {
+    public JosefinFitnessApp(int userID, LocalDate date, UserController userController, IDManager idManager, Stats stats) {
         this.userID = userID;
+        this.systemDate = date;
         this.userController = userController.clone();
         this.idManager = idManager.clone();
         this.stats = stats.clone();
@@ -34,6 +41,7 @@ public class JosefinFitnessApp {
 
     public JosefinFitnessApp(JosefinFitnessApp app){
         this.userID = app.getUserID();
+        this.systemDate = app.getSystemDate();
         this.userController = app.getUserController();
         this.idManager = app.getIdManager();
         this.stats = app.getStats();
@@ -47,6 +55,14 @@ public class JosefinFitnessApp {
 
     public void setUserID(int userID) {
         this.userID = userID;
+    }
+
+    public LocalDate getSystemDate() {
+        return this.systemDate;
+    }
+
+    public void setSystemDate(LocalDate systemDate) {
+        this.systemDate = systemDate;
     }
 
     public UserController getUserController() {
@@ -155,55 +171,60 @@ public class JosefinFitnessApp {
         }
     }
 
-    //NOTE: Ver melhor como vai ser a criação de atividades
-    public void addRowingToLoggedUser(int id, String name, LocalDate begin, LocalDate end, int heartRate){
+    public void addRowingToLoggedUser(String name, LocalDate begin, LocalDate end, int heartRate){
+        int activityID = this.idManager.generateUniqueActivityID();
         this.userController.addRowing();
     }
 
     public void addSkatingToLoggedUser(){
-
+        int activityID = this.idManager.generateUniqueActivityID();
     }
 
     public void addTrackRunningToLoggedUser(){
-
+        int activityID = this.idManager.generateUniqueActivityID();
     }
 
     public void addMountainBikingToLoggedUser(){
-
+        int activityID = this.idManager.generateUniqueActivityID();
     }
 
     public void addRoadCyclingToLoggedUser(){
-
+        int activityID = this.idManager.generateUniqueActivityID();
     }
 
     public void addTrailRunningToLoggedUser(){
-
+        int activityID = this.idManager.generateUniqueActivityID();
     }
 
     public void addAbdominalExercisesToLoggedUser(){
-
+        int activityID = this.idManager.generateUniqueActivityID();
     }
 
     public void addPushUpsToLoggedUser(){
-
+        int activityID = this.idManager.generateUniqueActivityID();
     }
 
     public void addStretchingToLoggedUser(){
-
+        int activityID = this.idManager.generateUniqueActivityID();
     }
 
     public void addLegExtensionToLoggedUser(){
-
+        int activityID = this.idManager.generateUniqueActivityID();
     }
 
     public void addWeightLiftingToLoggedUser(){
-
+        int activityID = this.idManager.generateUniqueActivityID();
     }
 
     //TODO: Adicionar planos de treino
+
+    public void deleteAccount(){
+        this.userController.removeUser(this.userID);
+        this.userID = -1;
+    }
     //TODO: Delete Account
 
-    //NOTE: Esta função seria necessária caso não guarda-se o UserID mas sim o user... nesse caso
+    //NOTE: Esta função seria necessária caso não se guarde o UserID mas sim o user... nesse caso
     //      seria para atualizar o user completo... não me parece que faça falta though.
     public void saveChanges() {
     }
@@ -279,7 +300,116 @@ public class JosefinFitnessApp {
     }
     //endregion
 
-    //TODO: Add stats functions
+
+    //region stats
+    public void loadStats(){
+
+    }
+
+    /*This function returns the userId of the user with most calories burned*/
+    public int UserWithMostCaloriesBurned(LocalDate from){
+        int burnedCalories = -1;
+        int finalUserID = -1;
+
+        List<User> users = this.userController.getUsers().getUserList();
+        for(User user : users){
+            int newBurnedCalories = 0;
+            for(Activity act : user.getActivityController().getActivities().getActivities().values()){
+                if(act.getBegin().isAfter(from) && act.getEnd().isBefore(this.systemDate)){
+                    newBurnedCalories += user.calculateBurnedCalories(act.getId());
+                }
+            }
+            if(newBurnedCalories > burnedCalories){
+                burnedCalories = newBurnedCalories;
+                finalUserID = user.getId();
+            }
+        }
+        return finalUserID;
+    }
+
+    public int UserWithMostActivitiesCompleted(LocalDate from){
+        int nActivities = -1;
+        int finalUserID = -1;
+        List<User> users = this.userController.getUsers().getUserList();
+        for(User user : users){
+            int newNActivities = 0;
+            for(Activity act : user.getActivityController().getActivities().getActivities().values()){
+                if(act.getBegin().isAfter(from) && act.getEnd().isAfter(this.systemDate)){
+                    newNActivities++;
+                }
+            }
+            if(newNActivities > nActivities){
+                nActivities = newNActivities;
+                finalUserID = user.getId();
+            }
+        }
+        return finalUserID;
+    }
+
+
+    public String mostCommunActivity() {
+        Map<String, Integer> nActivitiesByType = new HashMap<>();
+        List<User> users = this.userController.getUsers().getUserList();
+
+        for (User user : users) {
+            for (Activity act : user.getActivityController().getActivities().getActivities().values()) {
+                String activityType = act.getClass().getSimpleName();
+                nActivitiesByType.put(activityType, nActivitiesByType.getOrDefault(activityType, 0) + 1);
+            }
+        }
+
+        String mostCommonActivityType = "";
+        int maxCount = 0;
+        for (Map.Entry<String, Integer> entry : nActivitiesByType.entrySet()) {
+            if (entry.getValue() > maxCount) {
+                maxCount = entry.getValue();
+                mostCommonActivityType = entry.getKey();
+            }
+        }
+
+        return mostCommonActivityType;
+    }
+
+    public int distanceDoneByUser(int userID, LocalDate from){
+        int distance = 0;
+        User user = this.userController.getUsers().getUserWithId(userID);
+        for(Activity act : user.getActivityController().getActivities().getActivities().values()){
+            if(act.getBegin().isAfter(from) &&
+                    act.getEnd().isAfter(this.systemDate) &&
+                    act.getClass().getSuperclass().getSimpleName().equals("DistanceAct")){
+                DistanceAct myAct = (DistanceAct) act;
+                distance += myAct.getDistance();
+            } else if(act.getBegin().isAfter(from) &&
+                    act.getEnd().isAfter(this.systemDate) &&
+                    act.getClass().getSuperclass().getSimpleName().equals("DistanceAndAltimetryAct")) {
+                DistanceAndAltimetryAct myAct = (DistanceAndAltimetryAct) act;
+                distance += myAct.getDistance();
+            }
+        }
+        return distance;
+    }
+
+    public int altimetryDoneByUser(int userID, LocalDate from){
+        int altimetry = 0;
+        User user = this.userController.getUsers().getUserWithId(userID);
+        for(Activity act : user.getActivityController().getActivities().getActivities().values()){
+            if(act.getBegin().isAfter(from) &&
+                    act.getEnd().isAfter(this.systemDate) &&
+                    act.getClass().getSuperclass().getSimpleName().equals("DistanceAndAltimetryAct")){
+                DistanceAndAltimetryAct myAct = (DistanceAndAltimetryAct) act;
+                altimetry += myAct.getAltimetry();
+            }
+        }
+        return altimetry;
+    }
+
+    public List<Activity> getUsersActivities(int userID){
+        return this.userController.getUsers().getUserWithId(userID).getActivityController().getActivities().getActivities().values().stream().toList();
+    }
+
+
+
+    //endregion
 
     @Override
     public boolean equals(Object o) {

@@ -30,12 +30,12 @@ public class AmateurUser extends User{
     }
 
     @Override
-    public double calculateCaloriesBurnMultiplier() {
+    public int calculateBurnedCalories(int activityID) {
         double multiplier = 0;
         double bmr = this.calculateBMR();
         multiplier = (bmr * this.getHeartFreq())/65; // Assuming heartFreq is in beats per minute
 
-        return multiplier;
+        return (int) (multiplier * this.getActivityController().get(activityID).getBurnedCalories());
     }
 
     public AmateurUser clone(){

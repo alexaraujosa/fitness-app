@@ -3,11 +3,9 @@ package josefinFA;
 public class Stats {
 
     public Stats(){
-
     }
 
     public Stats(Stats st){
-
     }
 
     @Override
