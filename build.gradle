@@ -14,6 +14,40 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter'
 }
 
+jar {
+    manifest {
+        attributes(
+                'Main-Class': 'cli.CLI'
+        )
+    }
+}
+
+// Define a task to compile and run/debug the application
+tasks.register('runApplication', JavaExec) {
+    // Set main class
+    mainClass = 'cli.CLI'
+
+    // Set classpath
+    classpath = sourceSets.main.runtimeClasspath
+
+    // Set command-line arguments if needed
+    // args = ['arg1', 'arg2']
+}
+
+// Define a task to build the application
+tasks.register('buildApplication', JavaCompile) {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+    targetCompatibility = JavaVersion.VERSION_1_8
+
+    // Set source directory
+    source = sourceSets.main.java
+
+    // Set classpath
+    classpath = sourceSets.main.compileClasspath
+}
+
+
+
 test {
     useJUnitPlatform()
 }
