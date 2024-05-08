@@ -1,6 +1,5 @@
 package activities;
 
-import users.User;
 
 import java.time.LocalDate;
 
@@ -13,6 +12,7 @@ public abstract class Activity {
     private int burnedCalories;
     private int heartRate;
 
+    //region Constructors
     public Activity(
             int id,
             int idUser
@@ -55,7 +55,9 @@ public abstract class Activity {
         this.burnedCalories = activity.getBurnedCalories();
         this.heartRate = activity.getHeartRate();
     }
+    //endregion
 
+    //region Getters And Setters
     public int getId() { return this.id; }
     public String getName() { return this.name; }
     public LocalDate getBegin() { return this.begin; }
@@ -69,8 +71,9 @@ public abstract class Activity {
     public void setEnd(LocalDate end) { this.end = end; }
     public void setBurnedCalories(int calories) { this.burnedCalories = calories; }
     public void setHeartRate(int heartRate) { this.heartRate = heartRate; }
+    //endregion
 
-    public abstract int calculateCalories(User user);
+    public abstract void calculateCalories();
 
     @Override
     public String toString() {
@@ -84,7 +87,6 @@ public abstract class Activity {
                 " }-\n";
     }
 
-    @Override
     public abstract Activity clone();
 
     @Override

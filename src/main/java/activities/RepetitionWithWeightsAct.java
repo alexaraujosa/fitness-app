@@ -1,15 +1,13 @@
 package activities;
 
-import users.User;
-
-public class RepetitionWithWeightsAct extends Activity{
+public abstract class RepetitionWithWeightsAct extends Activity{
     private int nRepetitions;
     private int weight;
 
     public RepetitionWithWeightsAct(int id, int idUser, int nRepetitions, int weight) {
         super(id, idUser);
-        this.nRepetitions = Math.max(nRepetitions, 0);
-        this.weight = Math.max(weight, 0);
+        this.nRepetitions = nRepetitions;
+        this.weight = weight;
     }
 
     public RepetitionWithWeightsAct(RepetitionWithWeightsAct activity) {
@@ -21,12 +19,9 @@ public class RepetitionWithWeightsAct extends Activity{
     public int getNRepetitions() { return this.nRepetitions; }
     public int getWeight() { return this.weight; }
 
-    public void setNRepetitions(int nRepetitions) { this.nRepetitions = Math.max(nRepetitions, 0); }
-    public void setWeight(int weight) { this.weight = Math.max(weight, 0); }
+    public void setNRepetitions(int nRepetitions) { this.nRepetitions = nRepetitions; }
+    public void setWeight(int weight) { this.weight = weight; }
 
-    public int calculateCalories(User user) {
-        return 1; // TODO
-    }
+    public abstract void calculateCalories();
 
-    public RepetitionWithWeightsAct clone() { return new RepetitionWithWeightsAct(this); }
 }

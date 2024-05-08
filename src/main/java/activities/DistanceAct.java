@@ -1,13 +1,11 @@
 package activities;
 
-import users.User;
-
-public class DistanceAct extends Activity{
+public abstract class DistanceAct extends Activity{
     private int distance;
 
     public DistanceAct(int id, int idUser, int distance) {
         super(id, idUser);
-        this.distance = Math.max(distance, 0);
+        this.distance = distance;
     }
 
     public DistanceAct(DistanceAct activity) {
@@ -17,11 +15,8 @@ public class DistanceAct extends Activity{
 
     public int getDistance() { return this.distance; }
 
-    public void setDistance(int distance) { this.distance = Math.max(distance, 0); }
+    public void setDistance(int distance) { this.distance = distance; }
 
-    public int calculateCalories(User user) {
-        return 0; // TODO
-    }
+    public abstract void calculateCalories();
 
-    public DistanceAct clone() { return new DistanceAct(this); }
 }

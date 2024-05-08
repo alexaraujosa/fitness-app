@@ -4,4 +4,48 @@ import activities.Hard;
 import activities.RepetitionAct;
 
 public class PushUps extends RepetitionAct implements Hard {
+    public boolean diamondIntercalated;
+
+    //region Constructors
+    public PushUps(int id, int idUser, int nRepetitions, boolean diamondIntercalated) {
+        super(id, idUser, nRepetitions);
+        this.diamondIntercalated = diamondIntercalated;
+    }
+
+    public PushUps(PushUps pushUps) {
+        super(pushUps);
+        this.diamondIntercalated = pushUps.getDiamondIntercalated();
+    }
+    //endregion
+
+    //region Getters And Setters
+    public boolean getDiamondIntercalated() { return this.diamondIntercalated; }
+
+    public void setDiamondIntercalated(boolean diamondIntercalated) { this.diamondIntercalated = diamondIntercalated; }
+    //endregion
+
+    public void calculateCalories() {
+        double diamondImpact = (this.diamondIntercalated) ? 1.3 : 1;
+        double caloriesMultiplierPerRepetition = 0.2;
+
+        int calories = (int) (caloriesMultiplierPerRepetition*this.getNRepetitions()*diamondImpact); // 0.2*20*1.3 = 5.2
+        this.setBurnedCalories(calories);
+    }
+
+    @Override
+    public String toString() {
+        return  "PushUps -{ ID: " + this.getId() +
+                " | NAME: " + this.getName() +
+                " | BEGIN: " + this.getBegin().toString() +
+                " | END: " + this.getEnd().toString() +
+                " | BURNED CALORIES: " + this.getBurnedCalories() +
+                " | ID_USER: " + this.getIdUser() +
+                " | HEART_RATE: " + this.getHeartRate() +
+                " | REPETITIONS: " + this.getNRepetitions() +
+                " | DIAMOND INTERCALATED: " + this.getDiamondIntercalated() +
+                " }-\n";
+    }
+
+    public PushUps clone() { return new PushUps(this); }
+
 }

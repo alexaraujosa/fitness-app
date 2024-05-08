@@ -1,13 +1,11 @@
 package activities;
 
-import users.User;
-
-public class RepetitionAct extends Activity{
+public abstract class RepetitionAct extends Activity{
     private int nRepetitions;
 
     public RepetitionAct(int id, int idUser, int nRepetitions) {
         super(id, idUser);
-        this.nRepetitions = Math.max(nRepetitions, 0);
+        this.nRepetitions = nRepetitions;
     }
 
     public RepetitionAct(RepetitionAct activity) {
@@ -17,11 +15,8 @@ public class RepetitionAct extends Activity{
 
     public int getNRepetitions() { return this.nRepetitions; }
 
-    public void setNRepetitions(int nRepetitions) { this.nRepetitions = Math.max(nRepetitions, 0); }
+    public void setNRepetitions(int nRepetitions) { this.nRepetitions = nRepetitions; }
 
-    public int calculateCalories(User user) {
-        return 1; // TODO
-    }
+    public abstract void calculateCalories();
 
-    public RepetitionAct clone() { return new RepetitionAct(this); }
 }
