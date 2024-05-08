@@ -2,16 +2,42 @@ package activities.distanceAltimetry;
 
 import activities.DistanceAndAltimetryAct;
 
+import java.time.LocalDate;
+
 public class RoadRunning extends DistanceAndAltimetryAct {
     private boolean windAgainst;
 
     //region Constructors
-    public RoadRunning(int id, int idUser, int distance, int altimetry, boolean windAgainst) {
+    public RoadRunning(
+            int id,
+            int idUser,
+            int distance,
+            int altimetry,
+            boolean windAgainst
+    ) {
         super(id, idUser, distance, altimetry);
         this.windAgainst = windAgainst;
     }
 
-    public RoadRunning(RoadRunning roadRunning) {
+    public RoadRunning(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean windAgainst
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry);
+        this.windAgainst = windAgainst;
+    }
+
+    public RoadRunning(
+            RoadRunning roadRunning
+    ) {
         super(roadRunning);
         this.windAgainst = roadRunning.getWindAgainst();
     }

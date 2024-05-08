@@ -3,16 +3,40 @@ package activities.repetitions;
 import activities.Hard;
 import activities.RepetitionAct;
 
+import java.time.LocalDate;
+
 public class PushUps extends RepetitionAct implements Hard {
     public boolean diamondIntercalated;
 
     //region Constructors
-    public PushUps(int id, int idUser, int nRepetitions, boolean diamondIntercalated) {
+    public PushUps(
+            int id,
+            int idUser,
+            int nRepetitions,
+            boolean diamondIntercalated
+    ) {
         super(id, idUser, nRepetitions);
         this.diamondIntercalated = diamondIntercalated;
     }
 
-    public PushUps(PushUps pushUps) {
+    public PushUps(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int nRepetitions,
+            boolean diamondIntercalated
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions);
+        this.diamondIntercalated = diamondIntercalated;
+    }
+
+    public PushUps(
+            PushUps pushUps
+    ) {
         super(pushUps);
         this.diamondIntercalated = pushUps.getDiamondIntercalated();
     }

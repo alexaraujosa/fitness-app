@@ -2,18 +2,45 @@ package activities.distance;
 
 import activities.DistanceAct;
 
+import java.time.LocalDate;
+
 public class Skating extends DistanceAct {
     private double skateWeight;
     private boolean freestyle;
 
     //region Constructors
-    public Skating(int id, int idUser, int distance, double skateWeight, boolean freestyle) {
+    public Skating(
+            int id,
+            int idUser,
+            int distance,
+            double skateWeight,
+            boolean freestyle
+    ) {
         super(id, idUser, distance);
         this.skateWeight = skateWeight;
         this.freestyle = freestyle;
     }
 
-    public Skating(Skating skating) {
+    public Skating(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            double skateWeight,
+            boolean freestyle
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate, distance);
+        this.skateWeight = skateWeight;
+        this.freestyle = freestyle;
+    }
+
+    public Skating(
+            Skating skating
+    ) {
         super(skating);
         this.skateWeight = skating.getSkateWeight();
         this.freestyle = skating.getFreestyle();

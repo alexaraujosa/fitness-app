@@ -3,16 +3,42 @@ package activities.distanceAltimetry;
 import activities.DistanceAndAltimetryAct;
 import activities.Hard;
 
+import java.time.LocalDate;
+
 public class MountainBiking extends DistanceAndAltimetryAct implements Hard {
     private boolean bigTires;
 
     //region Constructors
-    public MountainBiking(int id, int idUser, int distance, int altimetry, boolean bigTires) {
+    public MountainBiking(
+            int id,
+            int idUser,
+            int distance,
+            int altimetry,
+            boolean bigTires
+    ) {
         super(id, idUser, distance, altimetry);
         this.bigTires = bigTires;
     }
 
-    public MountainBiking(MountainBiking mountainBiking) {
+    public MountainBiking(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean bigTires
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry);
+        this.bigTires = bigTires;
+    }
+
+    public MountainBiking(
+            MountainBiking mountainBiking
+    ) {
         super(mountainBiking);
         this.bigTires = mountainBiking.getBigTires();
     }

@@ -2,16 +2,40 @@ package activities.repetitions;
 
 import activities.RepetitionAct;
 
+import java.time.LocalDate;
+
 public class Stretching extends RepetitionAct {
     private boolean helped;
 
     //region Constructors
-    public Stretching(int id, int idUser, int nRepetitions, boolean helped) {
+    public Stretching(
+            int id,
+            int idUser,
+            int nRepetitions,
+            boolean helped
+    ) {
         super(id, idUser, nRepetitions);
         this.helped = helped;
     }
 
-    public Stretching(Stretching stretching) {
+    public Stretching(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int nRepetitions,
+            boolean helped
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions);
+        this.helped = helped;
+    }
+
+    public Stretching(
+            Stretching stretching
+    ) {
         super(stretching);
         this.helped = stretching.getHelped();
     }

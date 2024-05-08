@@ -1,17 +1,41 @@
 package activities;
 
+import java.time.LocalDate;
+
 public abstract class DistanceAct extends Activity{
     private int distance;
 
-    public DistanceAct(int id, int idUser, int distance) {
+    //region Constructors
+    public DistanceAct(
+            int id,
+            int idUser,
+            int distance
+    ) {
         super(id, idUser);
         this.distance = distance;
     }
 
-    public DistanceAct(DistanceAct activity) {
+    public DistanceAct(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate);
+        this.distance = distance;
+    }
+
+    public DistanceAct(
+            DistanceAct activity
+    ) {
         super(activity);
         this.distance = activity.getDistance();
     }
+    //endregion
 
     public int getDistance() { return this.distance; }
 

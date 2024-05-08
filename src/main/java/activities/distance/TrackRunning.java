@@ -2,16 +2,40 @@ package activities.distance;
 
 import activities.DistanceAct;
 
+import java.time.LocalDate;
+
 public class TrackRunning extends DistanceAct {
     private boolean hurdleJump;
 
     //region Constructors
-    public TrackRunning(int id, int idUser, int distance, boolean hurdleJump) {
+    public TrackRunning(
+            int id,
+            int idUser,
+            int distance,
+            boolean hurdleJump
+    ) {
         super(id, idUser, distance);
         this.hurdleJump = hurdleJump;
     }
 
-    public TrackRunning(TrackRunning trackRunning) {
+    public TrackRunning(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            boolean hurdleJump
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate, distance);
+        this.hurdleJump = hurdleJump;
+    }
+
+    public TrackRunning(
+            TrackRunning trackRunning
+    ) {
         super(trackRunning);
         this.hurdleJump = trackRunning.getHurdleJump();
     }

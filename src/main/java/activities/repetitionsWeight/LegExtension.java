@@ -2,16 +2,42 @@ package activities.repetitionsWeight;
 
 import activities.RepetitionWithWeightsAct;
 
+import java.time.LocalDate;
+
 public class LegExtension extends RepetitionWithWeightsAct {
     private int chairAngle;
 
     //region Constructors
-    public LegExtension(int id, int idUser, int nRepetitions, int weight, int chairAngle) {
+    public LegExtension(
+            int id,
+            int idUser,
+            int nRepetitions,
+            int weight,
+            int chairAngle
+    ) {
         super(id, idUser, nRepetitions, weight);
         this.chairAngle = chairAngle;
     }
 
-    public LegExtension(LegExtension legExtension) {
+    public LegExtension(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int nRepetitions,
+            int weight,
+            int chairAngle
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, weight);
+        this.chairAngle = chairAngle;
+    }
+
+    public LegExtension(
+            LegExtension legExtension
+    ) {
         super(legExtension);
         this.chairAngle = legExtension.getChairAngle();
     }

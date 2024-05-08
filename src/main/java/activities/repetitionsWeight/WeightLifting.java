@@ -3,16 +3,42 @@ package activities.repetitionsWeight;
 import activities.Hard;
 import activities.RepetitionWithWeightsAct;
 
+import java.time.LocalDate;
+
 public class WeightLifting extends RepetitionWithWeightsAct implements Hard {
     private boolean helped;
 
     //region Constructors
-    public WeightLifting(int id, int idUser, int nRepetitions, int weight, boolean helped) {
+    public WeightLifting(
+            int id,
+            int idUser,
+            int nRepetitions,
+            int weight,
+            boolean helped
+    ) {
         super(id, idUser, nRepetitions, weight);
         this.helped = helped;
     }
 
-    public WeightLifting(WeightLifting weightLifting) {
+    public WeightLifting(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int nRepetitions,
+            int weight,
+            boolean helped
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, weight);
+        this.helped = helped;
+    }
+
+    public WeightLifting(
+            WeightLifting weightLifting
+    ) {
         super(weightLifting);
         this.helped = weightLifting.getHelped();
     }

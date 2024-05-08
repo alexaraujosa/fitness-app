@@ -3,18 +3,45 @@ package activities.distance;
 import activities.DistanceAct;
 import activities.Hard;
 
+import java.time.LocalDate;
+
 public class Rowing extends DistanceAct implements Hard {
     private int personsOnBoard;
     private boolean rowAgainstTide;
 
     //region Constructors
-    public Rowing(int id, int idUser, int distance, int personsOnBoard, boolean rowAgainstTide) {
+    public Rowing(
+            int id,
+            int idUser,
+            int distance,
+            int personsOnBoard,
+            boolean rowAgainstTide
+    ) {
         super(id, idUser, distance);
         this.personsOnBoard = personsOnBoard;
         this.rowAgainstTide = rowAgainstTide;
     }
 
-    public Rowing(Rowing rowing) {
+    public Rowing(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            int personsOnBoard,
+            boolean rowAgainstTide
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate, distance);
+        this.personsOnBoard = personsOnBoard;
+        this.rowAgainstTide = rowAgainstTide;
+    }
+
+    public Rowing(
+            Rowing rowing
+    ) {
         super(rowing);
         this.personsOnBoard = rowing.getPersonsOnBoard();
         this.rowAgainstTide = rowing.getRowAgainstTide();

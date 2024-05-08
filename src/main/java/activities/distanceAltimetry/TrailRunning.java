@@ -3,16 +3,42 @@ package activities.distanceAltimetry;
 import activities.DistanceAndAltimetryAct;
 import activities.Hard;
 
+import java.time.LocalDate;
+
 public class TrailRunning extends DistanceAndAltimetryAct implements Hard {
     private boolean wetFloor;
 
     //region Constructors
-    public TrailRunning(int id, int idUser, int distance, int altimetry, boolean wetFloor) {
+    public TrailRunning(
+            int id,
+            int idUser,
+            int distance,
+            int altimetry,
+            boolean wetFloor
+    ) {
         super(id, idUser, distance, altimetry);
         this.wetFloor = wetFloor;
     }
 
-    public TrailRunning(TrailRunning trailRunning) {
+    public TrailRunning(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean wetFloor
+    ) {
+        super(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry);
+        this.wetFloor = wetFloor;
+    }
+
+    public TrailRunning(
+            TrailRunning trailRunning
+    ) {
         super(trailRunning);
         this.wetFloor = trailRunning.getWetFloor();
     }
