@@ -1,5 +1,17 @@
 package users;
 
+import activities.distance.Rowing;
+import activities.distance.Skating;
+import activities.distance.TrackRunning;
+import activities.distanceAltimetry.MountainBiking;
+import activities.distanceAltimetry.RoadCycling;
+import activities.distanceAltimetry.RoadRunning;
+import activities.distanceAltimetry.TrailRunning;
+import activities.repetitions.AbdominalExercises;
+import activities.repetitions.PushUps;
+import activities.repetitions.Stretching;
+import activities.repetitionsWeight.LegExtension;
+import activities.repetitionsWeight.WeightLifting;
 import exceptions.ErrorRemovingUserException;
 import exceptions.ErrorUpdatingUserException;
 import exceptions.UsernameAlreadyExistsException;
@@ -155,48 +167,192 @@ public class UserController {
     }
 
     //region AddingActivities
-    public void addRowing(){
-
+    public void addRowing(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            int personsOnBoard,
+            boolean rowAgainstTide
+    ) {
+        Rowing activity = new Rowing(id, name, begin, end, idUser, burnedCalories, heartRate, distance, personsOnBoard, rowAgainstTide);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
 
-    public void addSkating(){
-
+    public void addSkating(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            double skateWeight,
+            boolean freestyle
+    ) {
+        Skating activity = new Skating(id, name, begin, end, idUser, burnedCalories, heartRate, distance, skateWeight, freestyle);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
 
-    public void addTrackRunning(){
-
+    public void addTrackRunning(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            boolean hurdleJump
+    ) {
+        TrackRunning activity = new TrackRunning(id, name, begin, end, idUser, burnedCalories, heartRate, distance, hurdleJump);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
 
-    public void addMountainBiking(){
-
+    public void addMountainBiking(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean bigTires
+    ) {
+        MountainBiking activity = new MountainBiking(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry, bigTires);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
 
-    public void addRoadCycling(){
-
+    public void addRoadCycling(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean windAgainst
+    ) {
+        RoadCycling activity = new RoadCycling(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry, windAgainst);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
 
-    public void addTrailRunning(){
-
+    public void addRoadRunning(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean windAgainst
+    ) {
+        RoadRunning activity = new RoadRunning(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry, windAgainst);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
 
-    public void addAbdominalExercises(){
-
+    public void addTrailRunning(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean wetFloor
+    ) {
+        TrailRunning activity = new TrailRunning(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry, wetFloor);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
 
-    public void addPushUps(){
-
+    public void addAbdominalExercises(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int nRepetitions,
+            boolean helped
+    ) {
+        AbdominalExercises activity = new AbdominalExercises(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, helped);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
 
-    public void addStretching(){
-
+    public void addPushUps(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int nRepetitions,
+            boolean diamondIntercalated
+    ) {
+        PushUps activity = new PushUps(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, diamondIntercalated);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
 
-    public void addLegExtension(){
-
+    public void addStretching(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int nRepetitions,
+            boolean helped
+    ) {
+        Stretching activity = new Stretching(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, helped);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
 
-    public void addWeightLifting(){
+    public void addLegExtension(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int nRepetitions,
+            int weight,
+            int chairAngle
+    ) {
+        LegExtension activity = new LegExtension(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, weight, chairAngle);
+        this.users.getUserWithId(idUser).addActivity(activity);
+    }
 
+    public void addWeightLifting(
+            int id,
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int idUser,
+            int burnedCalories,
+            int heartRate,
+            int nRepetitions,
+            int weight,
+            boolean helped
+    ) {
+        WeightLifting activity = new WeightLifting(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, weight, helped);
+        this.users.getUserWithId(idUser).addActivity(activity);
     }
     //endregion
 
