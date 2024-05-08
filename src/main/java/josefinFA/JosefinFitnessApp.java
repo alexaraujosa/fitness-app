@@ -3,6 +3,7 @@ package josefinFA;
 import activities.Activity;
 import activities.DistanceAct;
 import activities.DistanceAndAltimetryAct;
+import activities.distanceAltimetry.RoadCycling;
 import exceptions.*;
 import users.User;
 import users.UserController;
@@ -140,49 +141,204 @@ public class JosefinFitnessApp {
         this.userController.updateUserHeartFrequency(this.userID, hearFreq);
     }
 
-    public void addRowingToLoggedUser(String name, LocalDate begin, LocalDate end, int heartRate){
+    public void addRowingToLoggedUser (
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int distance,
+            int personsOnBoard,
+            boolean rowAgainstTide
+    ) throws InvalidValueException {
+        if(distance <= 0 || personsOnBoard <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addRowing();
+        this.userController.addRowing(activityID, name, begin, end, this.userID, 0, heartRate, distance, personsOnBoard, rowAgainstTide);
     }
 
-    public void addSkatingToLoggedUser(){
+    public void addSkatingToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int distance,
+            double skateWeight,
+            boolean freestyle
+    ) throws InvalidValueException {
+        if(distance <= 0 || skateWeight <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addSkating(activityID, name, begin, end, this.userID, 0, heartRate, distance, skateWeight, freestyle);
     }
 
-    public void addTrackRunningToLoggedUser(){
+    public void addTrackRunningToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int distance,
+            boolean hurdleJump
+    ) throws InvalidValueException {
+        if(distance <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addTrackRunning(activityID, name, begin, end, this.userID, 0, heartRate, distance, hurdleJump);
     }
 
-    public void addMountainBikingToLoggedUser(){
+    public void addMountainBikingToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean bigTires
+    ) throws InvalidValueException {
+        if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addMountainBiking(activityID, name, begin, end, this.userID, 0, heartRate, distance, altimetry, bigTires);
     }
 
-    public void addRoadCyclingToLoggedUser(){
+    public void addRoadCyclingToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean windAgainst
+    ) throws InvalidValueException {
+        if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addRoadCycling(activityID, name, begin, end, this.userID, 0, heartRate, distance, altimetry, windAgainst);
     }
 
-    public void addTrailRunningToLoggedUser(){
+    public void addRoadRunningToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean windAgainst
+    ) throws InvalidValueException {
+        if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addRoadRunning(activityID, name, begin, end, this.userID, 0, heartRate, distance, altimetry, windAgainst);
     }
 
-    public void addAbdominalExercisesToLoggedUser(){
+    public void addTrailRunningToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean wetFloor
+    ) throws InvalidValueException {
+        if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addTrailRunning(activityID, name, begin, end, this.userID, 0, heartRate, distance, altimetry, wetFloor);
     }
 
-    public void addPushUpsToLoggedUser(){
+    public void addAbdominalExercisesToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int nRepetitions,
+            boolean helped
+    ) throws InvalidValueException {
+        if(nRepetitions <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addAbdominalExercises(activityID, name, begin, end, this.userID, 0, heartRate, nRepetitions, helped);
     }
 
-    public void addStretchingToLoggedUser(){
+    public void addPushUpsToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int nRepetitions,
+            boolean diamondIntercalated
+    ) throws InvalidValueException {
+        if(nRepetitions <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addPushUps(activityID, name, begin, end, this.userID, 0, heartRate, nRepetitions, diamondIntercalated);
     }
 
-    public void addLegExtensionToLoggedUser(){
+    public void addStretchingToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int nRepetitions,
+            boolean helped
+    ) throws InvalidValueException {
+        if(nRepetitions <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addStretching(activityID, name, begin, end, this.userID, 0, heartRate, nRepetitions, helped);
     }
 
-    public void addWeightLiftingToLoggedUser(){
+    public void addLegExtensionToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int nRepetitions,
+            int weight,
+            int chairAngle
+    ) throws InvalidValueException {
+        if(nRepetitions <= 0 || weight <= 0 || heartRate <= 0 || chairAngle <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
         int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addLegExtension(activityID, name, begin, end, this.userID, 0, heartRate, nRepetitions, weight, chairAngle);
+    }
+
+    public void addWeightLiftingToLoggedUser(
+            String name,
+            LocalDate begin,
+            LocalDate end,
+            int heartRate,
+            int nRepetitions,
+            int weight,
+            boolean helped
+    ) throws InvalidValueException {
+        if(nRepetitions <= 0 || weight <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addWeightLifting(activityID, name, begin, end, this.userID, 0, heartRate, nRepetitions, weight, helped);
     }
 
     //TODO: Adicionar planos de treino
