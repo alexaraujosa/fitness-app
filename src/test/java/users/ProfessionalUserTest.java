@@ -15,7 +15,7 @@ class ProfessionalUserTest {
     double weight = 97.0;
     int heartFreq = 70;
 
-    ProfessionalUser user = new ProfessionalUser(1, name, username, birthdate, address, email, sex, height, weight, heartFreq);
+//    ProfessionalUser user = new ProfessionalUser(1, name, username, birthdate, address, email, sex, height, weight, heartFreq);
 
     @Test
     void CalculateCaloriesBurnMultiplier() {
