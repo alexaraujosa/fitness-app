@@ -359,12 +359,11 @@ public abstract class User {
 
     @Override
     public String toString() {
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
         return "User {\n" +
                 "\tid: " + id + ",\n" +
                 "\tname: " + name + ",\n" +
                 "\tusername: " + username + ",\n" +
-                "\tbirthdate: " + dateFormat.format(birthdate) + ",\n" +
+                "\tbirthdate: " + birthdate.toString() + ",\n" +
                 "\taddress: " + address + ",\n" +
                 "\temail: " + email + ",\n" +
                 "\tsex: " + (sex ? "Male" : "Female") + ",\n" +

@@ -41,4 +41,9 @@ public class CasualUser extends User{
     public CasualUser clone() {
         return new CasualUser(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }

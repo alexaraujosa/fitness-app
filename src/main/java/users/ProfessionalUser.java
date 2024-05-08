@@ -44,4 +44,9 @@ public class ProfessionalUser extends User{
     public ProfessionalUser clone() {
         return new ProfessionalUser(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }

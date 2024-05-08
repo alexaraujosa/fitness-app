@@ -1,5 +1,7 @@
 package activities;
 
+import java.util.Objects;
+
 public class ActivityController {
     private Activities activities;
 
@@ -50,4 +52,11 @@ public class ActivityController {
         return res;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ActivityController that = (ActivityController) o;
+        return Objects.equals(getActivities(), that.getActivities());
+    }
 }

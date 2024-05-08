@@ -1,5 +1,6 @@
 package users;
 
+import exceptions.ErrorRemovingUserException;
 import exceptions.UsernameAlreadyExistsException;
 
 import java.time.LocalDate;
@@ -11,19 +12,19 @@ import java.util.*;
  *  for users information, users existence and username availability.
  */
 public class Users {
-    private final List<User> userList;
+    private final List<User> usersList;
     private final Map<Integer,User> usersById;
     private final Map<String,User> usersByUsername;
 
     //region Constructors
     public Users(){
-        this.userList = new ArrayList<>();
+        this.usersList = new ArrayList<>();
         this.usersById = new HashMap<>();
         this.usersByUsername = new HashMap<>();
     }
 
     public Users(List<User> users){
-        this.userList = new ArrayList<>(users);
+        this.usersList = new ArrayList<>(users);
         this.usersById = this.generateUsersById();
         this.usersByUsername = this.generateUsersByUsername();
     }
@@ -33,15 +34,15 @@ public class Users {
      * @param users Users object to be cloned
      */
     public Users(Users users){
-        this.userList = new ArrayList<>(users.getUserList());
+        this.usersList = new ArrayList<>(users.getUsersList());
         this.usersById = this.generateUsersById();
         this.usersByUsername = this.generateUsersByUsername();
     }
     //endregion
 
     //region getters&Setters
-    public List<User> getUserList() {
-        return new ArrayList<>(this.userList);
+    public List<User> getUsersList() {
+        return new ArrayList<>(this.usersList);
     }
 
     /**
@@ -142,7 +143,7 @@ public class Users {
      */
     public void addUser(User user) {
         User newUser = user.clone();
-        this.userList.add(newUser);
+        this.usersList.add(newUser);
         this.usersByUsername.put(newUser.getUsername(), newUser);
         this.usersById.put(newUser.getId(), newUser);
     }
@@ -151,16 +152,20 @@ public class Users {
      * Removes a user from the collection by ID.
      * @param id ID of the user to remove
      */
-    public void removeUser(int id) {
+    public void removeUser(int id) throws ErrorRemovingUserException {
         User user = usersById.get(id);
-
         usersByUsername.remove(user.getUsername());
         usersById.remove(id);
+        usersList.remove(user);
+
+        if(this.usersList.contains(user)){
+            throw new ErrorRemovingUserException("The user was not removed correctly!");
+        }
     }
 
     private Map<Integer,User> generateUsersById(){
         Map<Integer,User> usersById = new HashMap<>();
-        for(User user : this.userList){
+        for(User user : this.usersList){
             usersById.put(user.getId(), user);
         }
         return usersById;
@@ -168,7 +173,7 @@ public class Users {
 
     private Map<String, User> generateUsersByUsername(){
         Map<String, User> usersByUsername = new HashMap<>();
-        for(User user : this.userList){
+        for(User user : this.usersList){
             usersByUsername.put(user.getUsername(), user);
         }
         return usersByUsername;

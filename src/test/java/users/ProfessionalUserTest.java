@@ -2,12 +2,13 @@ package users;
 
 import org.junit.jupiter.api.Test;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 class ProfessionalUserTest {
     String name = "John Doe";
     String username = "johndoe";
-    Date birthdate = new Date();
+    LocalDate birthdate = LocalDate.now();
     String address = "123 Main St";
     String email = "johndoe@example.com";
     boolean sex = true;

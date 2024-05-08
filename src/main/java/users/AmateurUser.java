@@ -41,4 +41,9 @@ public class AmateurUser extends User{
     public AmateurUser clone(){
         return new AmateurUser(this);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        return super.equals(o);
+    }
 }

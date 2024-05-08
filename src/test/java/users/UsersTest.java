@@ -1,5 +1,6 @@
 package users;
 
+import exceptions.ErrorRemovingUserException;
 import exceptions.UsernameAlreadyExistsException;
 import org.junit.jupiter.api.Test;
 
@@ -63,7 +64,7 @@ class UsersTest {
     }
 
     @Test
-    void removeUser() {
+    void removeUser() throws ErrorRemovingUserException {
         String name = "John Doe";
         String username = "johndoe";
         LocalDate birthdate = LocalDate.of(1990, 1, 1);

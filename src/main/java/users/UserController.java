@@ -1,5 +1,6 @@
 package users;
 
+import exceptions.ErrorRemovingUserException;
 import exceptions.ErrorUpdatingUserException;
 import exceptions.UsernameAlreadyExistsException;
 
@@ -112,42 +113,43 @@ public class UserController {
 
     public void updateUserBirthdate(int id, LocalDate birthdate) throws ErrorUpdatingUserException {
         this.users.updateUserBirthdate(id,birthdate);
-        if(this.users.getUserWithId(id).getBirthdate().equals(birthdate)) {
+
+        if(!this.users.getUserWithId(id).getBirthdate().isEqual(birthdate)) {
             throw new ErrorUpdatingUserException("Error updating user birthdate!");
         }
     }
 
     public void updateUserAddress(int id, String address) throws ErrorUpdatingUserException {
         this.users.updateUserAddress(id,address);
-        if(this.users.getUserWithId(id).getAddress().equals(address)) {
+        if(!this.users.getUserWithId(id).getAddress().equals(address)) {
             throw new ErrorUpdatingUserException("Error updating user address!");
         }
     }
 
     public void updateUserEmail(int id, String email) throws ErrorUpdatingUserException {
         this.users.updateUserEmail(id,email);
-        if(this.users.getUserWithId(id).getEmail().equals(email)) {
+        if(!this.users.getUserWithId(id).getEmail().equals(email)) {
             throw new ErrorUpdatingUserException("Error updating user email!");
         }
     }
 
     public void updateUserHeight(int id, double height)throws ErrorUpdatingUserException {
         this.users.updateUserHeight(id,height);
-        if(this.users.getUserWithId(id).getHeight() == height) {
+        if(this.users.getUserWithId(id).getHeight() != height) {
             throw new ErrorUpdatingUserException("Error updating user height!");
         }
     }
 
     public void updateUserWeight(int id, double weight) throws ErrorUpdatingUserException{
         this.users.updateUserWeight(id,weight);
-        if(this.users.getUserWithId(id).getWeight() == weight) {
+        if(this.users.getUserWithId(id).getWeight() != weight) {
             throw new ErrorUpdatingUserException("Error updating user weight!");
         }
     }
 
     public void updateUserHeartFrequency(int id, int heartFrequency) throws ErrorUpdatingUserException {
         this.users.updateUserHeartFrequency(id,heartFrequency);
-        if(this.users.getUserWithId(id).getHeartFreq() == heartFrequency) {
+        if(this.users.getUserWithId(id).getHeartFreq() != heartFrequency) {
             throw new ErrorUpdatingUserException("Error updating user heartFreq!");
         }
     }
@@ -212,7 +214,7 @@ public class UserController {
         return new UserController(this);
     }
 
-    public void removeUser(int id) {
+    public void removeUser(int id) throws ErrorRemovingUserException {
         this.users.removeUser(id);
     }
 
@@ -220,8 +222,9 @@ public class UserController {
         return this.users.containsUser(username);
     }
 
-    public void updateUser(User user) {
-        this.users.removeUser(user.getId());
-        this.users.addUser(user);
-    }
+//    public void updateUser(User user) {
+//        this.users.removeUser(user.getId());
+//        this.users.addUser(user);
+//    }
+
 }

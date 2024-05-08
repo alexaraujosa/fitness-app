@@ -3,14 +3,12 @@ package josefinFA;
 import activities.Activity;
 import activities.DistanceAct;
 import activities.DistanceAndAltimetryAct;
-import exceptions.ErrorUpdatingUserException;
-import exceptions.UsernameAlreadyExistsException;
+import exceptions.*;
 import users.User;
 import users.UserController;
 import utils.IDManager;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -49,7 +47,7 @@ public class JosefinFitnessApp {
     //endregion
 
     //region getters&Setters
-    private int getUserID() {
+    public int getUserID() {
         return this.userID;
     }
 
@@ -91,11 +89,14 @@ public class JosefinFitnessApp {
     //endregion
 
     //region LoggedUserFunctions
-    public void login(String username) {
+    public void login(String username) throws ErrorLoggingInException {
         if(this.userController.userWithUsernameExists(username)) {
             this.userID = this.userController.getUsernameID(username);
+            if(this.userID == -1) {
+                throw new ErrorLoggingInException("Error updating user ID");
+            }
         } else {
-            System.err.println("User " + username + " does not exist");
+            throw new ErrorLoggingInException("User " + username + " does not exist");
         }
     }
 
@@ -108,67 +109,35 @@ public class JosefinFitnessApp {
     }
 
     public void updateLoggedUserName(String name) throws ErrorUpdatingUserException {
-        try{
-            this.userController.updateUserName(this.userID, name);
-        } catch (ErrorUpdatingUserException e) {
-            System.err.println(e.getMessage());
-        }
+        this.userController.updateUserName(this.userID, name);
     }
 
     public void updateLoggedUserUsername(String username) throws UsernameAlreadyExistsException, ErrorUpdatingUserException {
-        try{
-            this.userController.updateUserUsername(this.userID, username);
-        } catch (ErrorUpdatingUserException | UsernameAlreadyExistsException e) {
-            System.err.println(e.getMessage());
-        }
+        this.userController.updateUserUsername(this.userID, username);
     }
 
-    public void updateLoggedUserBirtdate(LocalDate birtdate) throws ErrorUpdatingUserException {
-        try {
-            this.userController.updateUserBirthdate(this.userID, birtdate);
-        } catch (ErrorUpdatingUserException e) {
-            System.err.println(e.getMessage());
-        }
+    public void updateLoggedUserBirthdate(LocalDate birthdate) throws ErrorUpdatingUserException {
+        this.userController.updateUserBirthdate(this.userID, birthdate);
     }
 
     public void updateLoggedUserAddress(String address) throws ErrorUpdatingUserException {
-        try {
-            this.userController.updateUserAddress(this.userID, address);
-        } catch (ErrorUpdatingUserException e) {
-            System.err.println(e.getMessage());
-        }
+        this.userController.updateUserAddress(this.userID, address);
     }
 
     public void updateLoggedUserEmail(String email) throws ErrorUpdatingUserException {
-        try {
-            this.userController.updateUserEmail(this.userID, email);
-        } catch (ErrorUpdatingUserException e) {
-            System.err.println(e.getMessage());
-        }
+        this.userController.updateUserEmail(this.userID, email);
     }
 
-    public void updateLoggedUserHeight(int height) throws ErrorUpdatingUserException {
-        try {
-            this.userController.updateUserHeight(this.userID, height);
-        } catch (ErrorUpdatingUserException e) {
-            System.err.println(e.getMessage());
-        }
+    public void updateLoggedUserHeight(double height) throws ErrorUpdatingUserException {
+        this.userController.updateUserHeight(this.userID, height);
     }
 
-    public void updateLoggedUserWeight(int weight) throws ErrorUpdatingUserException {
-        try {
-            this.userController.updateUserWeight(this.userID, weight);
-        } catch (ErrorUpdatingUserException e) {
-            System.err.println(e.getMessage());
-        }
+    public void updateLoggedUserWeight(double weight) throws ErrorUpdatingUserException {
+        this.userController.updateUserWeight(this.userID, weight);
     }
 
     public void updateLoggedUserHearFreq(int hearFreq) throws ErrorUpdatingUserException {
-        try {
-            this.userController.updateUserHeartFrequency(this.userID, hearFreq);
-        } catch (ErrorUpdatingUserException e) {
-            System.err.println(e.getMessage());
-        }
+        this.userController.updateUserHeartFrequency(this.userID, hearFreq);
     }
 
     public void addRowingToLoggedUser(String name, LocalDate begin, LocalDate end, int heartRate){
@@ -218,11 +187,10 @@ public class JosefinFitnessApp {
 
     //TODO: Adicionar planos de treino
 
-    public void deleteAccount(){
+    public void deleteAccount() throws ErrorRemovingUserException {
         this.userController.removeUser(this.userID);
-        this.userID = -1;
+        this.setUserID(-1);
     }
-    //TODO: Delete Account
 
     //NOTE: Esta função seria necessária caso não se guarde o UserID mas sim o user... nesse caso
     //      seria para atualizar o user completo... não me parece que faça falta though.
@@ -288,14 +256,12 @@ public class JosefinFitnessApp {
         }
     }
 
-    public boolean removeUser(int id){
+    public void removeUser(int id) throws ErrorRemovingUserException, UserDoesNotExistsException {
         if(this.userController.userWithIdExits(id)){
             userController.removeUser(id);
             idManager.removeUserIdEntry(id);
-            return true;
         } else {
-            System.out.println("O user com esse id não existe");;
-            return false;
+            throw new UserDoesNotExistsException("User with id:" + id + " does not exist");
         }
     }
     //endregion
@@ -311,7 +277,7 @@ public class JosefinFitnessApp {
         int burnedCalories = -1;
         int finalUserID = -1;
 
-        List<User> users = this.userController.getUsers().getUserList();
+        List<User> users = this.userController.getUsers().getUsersList();
         for(User user : users){
             int newBurnedCalories = 0;
             for(Activity act : user.getActivityController().getActivities().getActivities().values()){
@@ -330,7 +296,7 @@ public class JosefinFitnessApp {
     public int UserWithMostActivitiesCompleted(LocalDate from){
         int nActivities = -1;
         int finalUserID = -1;
-        List<User> users = this.userController.getUsers().getUserList();
+        List<User> users = this.userController.getUsers().getUsersList();
         for(User user : users){
             int newNActivities = 0;
             for(Activity act : user.getActivityController().getActivities().getActivities().values()){
@@ -349,7 +315,7 @@ public class JosefinFitnessApp {
 
     public String mostCommunActivity() {
         Map<String, Integer> nActivitiesByType = new HashMap<>();
-        List<User> users = this.userController.getUsers().getUserList();
+        List<User> users = this.userController.getUsers().getUsersList();
 
         for (User user : users) {
             for (Activity act : user.getActivityController().getActivities().getActivities().values()) {
