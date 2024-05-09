@@ -1,6 +1,7 @@
 package users;
 
 import exceptions.ErrorRemovingUserException;
+import exceptions.ErrorUpdatingUserException;
 import exceptions.UsernameAlreadyExistsException;
 
 import java.io.Serializable;
@@ -88,7 +89,14 @@ public class Users implements Serializable {
         return this.usersByUsername.containsKey(username);
     }
 
+    //public void up
+
     //region UpdateUserInfo
+    public void updateUser(User user) {
+        usersList.remove(user);
+        this.addUser(user);
+    }
+
     public void updateUserName(int id, String name){
         this.usersById.get(id).setName(name);
     }

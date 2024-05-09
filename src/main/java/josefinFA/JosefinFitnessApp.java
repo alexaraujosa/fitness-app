@@ -151,7 +151,7 @@ public class JosefinFitnessApp implements Serializable {
             int distance,
             int personsOnBoard,
             boolean rowAgainstTide
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(distance <= 0 || personsOnBoard <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -168,7 +168,7 @@ public class JosefinFitnessApp implements Serializable {
             int distance,
             double skateWeight,
             boolean freestyle
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(distance <= 0 || skateWeight <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -184,7 +184,7 @@ public class JosefinFitnessApp implements Serializable {
             int heartRate,
             int distance,
             boolean hurdleJump
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(distance <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -201,7 +201,7 @@ public class JosefinFitnessApp implements Serializable {
             int distance,
             int altimetry,
             boolean bigTires
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -218,7 +218,7 @@ public class JosefinFitnessApp implements Serializable {
             int distance,
             int altimetry,
             boolean windAgainst
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -235,7 +235,7 @@ public class JosefinFitnessApp implements Serializable {
             int distance,
             int altimetry,
             boolean windAgainst
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -252,7 +252,7 @@ public class JosefinFitnessApp implements Serializable {
             int distance,
             int altimetry,
             boolean wetFloor
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -268,7 +268,7 @@ public class JosefinFitnessApp implements Serializable {
             int heartRate,
             int nRepetitions,
             boolean helped
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(nRepetitions <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -284,7 +284,7 @@ public class JosefinFitnessApp implements Serializable {
             int heartRate,
             int nRepetitions,
             boolean diamondIntercalated
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(nRepetitions <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -300,7 +300,7 @@ public class JosefinFitnessApp implements Serializable {
             int heartRate,
             int nRepetitions,
             boolean helped
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(nRepetitions <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -317,7 +317,7 @@ public class JosefinFitnessApp implements Serializable {
             int nRepetitions,
             int weight,
             int chairAngle
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(nRepetitions <= 0 || weight <= 0 || heartRate <= 0 || chairAngle <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -334,7 +334,7 @@ public class JosefinFitnessApp implements Serializable {
             int nRepetitions,
             int weight,
             boolean helped
-    ) throws InvalidValueException {
+    ) throws InvalidValueException, ErrorAddingActivityException {
         if(nRepetitions <= 0 || weight <= 0 || heartRate <= 0) {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
@@ -479,6 +479,8 @@ public class JosefinFitnessApp implements Serializable {
             for (Activity act : user.getActivityController().getActivities().getActivities().values()) {
                 String activityType = act.getClass().getSimpleName();
                 nActivitiesByType.put(activityType, nActivitiesByType.getOrDefault(activityType, 0) + 1);
+                System.out.println(activityType);
+                System.out.println(user.getUsername() + "--" + nActivitiesByType.values());
             }
         }
 

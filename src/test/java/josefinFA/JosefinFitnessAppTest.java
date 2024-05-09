@@ -1,9 +1,17 @@
 package josefinFA;
 
-import exceptions.ErrorLoggingInException;
-import exceptions.ErrorRemovingUserException;
-import exceptions.ErrorUpdatingUserException;
-import exceptions.UsernameAlreadyExistsException;
+import activities.distance.Rowing;
+import activities.distance.Skating;
+import activities.distance.TrackRunning;
+import activities.distanceAltimetry.MountainBiking;
+import activities.distanceAltimetry.RoadCycling;
+import activities.distanceAltimetry.TrailRunning;
+import activities.repetitions.AbdominalExercises;
+import activities.repetitions.PushUps;
+import activities.repetitions.Stretching;
+import activities.repetitionsWeight.LegExtension;
+import activities.repetitionsWeight.WeightLifting;
+import exceptions.*;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import users.*;
@@ -57,7 +65,7 @@ class JosefinFitnessAppTest {
 
     @Test
     void setSystemDate() {
-        LocalDate systemDate = LocalDate.of(2020, Month.JANUARY, 1);
+        LocalDateTime systemDate = LocalDateTime.of(2020, Month.JANUARY, 1,10,10,1);
         app.setSystemDate(systemDate);
         assertEquals(app.getSystemDate(), systemDate);
     }
@@ -267,46 +275,226 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
+        Rowing act = new Rowing(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 2, false);
+
+        try {
+            app.addRowingToLoggedUser("Mundial 2018", begin, end, 75, 1623, 2, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
     void addSkatingToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        Skating act = new Skating(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 2, false);
+
+        try {
+            app.addSkatingToLoggedUser("Mundial 2018", begin, end, 75, 1623, 2, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
     void addTrackRunningToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        TrackRunning act = new TrackRunning(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, false);
+
+        try {
+            app.addTrackRunningToLoggedUser("Mundial 2018", begin, end, 75, 1623, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
     void addMountainBikingToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        MountainBiking act = new MountainBiking(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 952, false);
+
+        try {
+            app.addMountainBikingToLoggedUser("Mundial 2018", begin, end, 75, 1623, 952, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
     void addRoadCyclingToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        RoadCycling act = new RoadCycling(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 952, false);
+
+        try {
+            app.addRoadCyclingToLoggedUser("Mundial 2018", begin, end, 75, 1623, 952, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
     void addTrailRunningToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        TrailRunning act = new TrailRunning(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 952, false);
+
+        try {
+            app.addTrailRunningToLoggedUser("Mundial 2018", begin, end, 75, 1623, 952, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
     void addAbdominalExercisesToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        AbdominalExercises act = new AbdominalExercises(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, false);
+
+        try {
+            app.addAbdominalExercisesToLoggedUser("Mundial 2018", begin, end, 75, 1623, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
     void addPushUpsToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        PushUps act = new PushUps(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, false);
+
+        try {
+            app.addPushUpsToLoggedUser("Mundial 2018", begin, end, 75, 1623, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
     void addStretchingToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        Stretching act = new Stretching(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, false);
+
+        try {
+            app.addStretchingToLoggedUser("Mundial 2018", begin, end, 75, 1623, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
     void addLegExtensionToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        LegExtension act = new LegExtension(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 12, 40);
+
+        try {
+            app.addLegExtensionToLoggedUser("Mundial 2018", begin, end, 75, 1623, 12, 40);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
     void addWeightLiftingToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        WeightLifting act = new WeightLifting(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 12, false);
+
+        try {
+            app.addWeightLiftingToLoggedUser("Mundial 2018", begin, end, 75, 1623, 12, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
     }
 
     @Test
@@ -380,6 +568,8 @@ class JosefinFitnessAppTest {
 
     @Test
     void mostCommunActivity() {
+        this.loadState();
+        System.out.println(app.mostCommunActivity());
     }
 
     @Test
@@ -398,11 +588,25 @@ class JosefinFitnessAppTest {
     void saveState(){
         this.fillApp();
 
-        for(User u : app.getUserController().getUsers().getUsersList()){
-            System.out.println(u.toString());
-        }
 
         app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        try {
+            app.addRowingToLoggedUser("Mundial 2018", begin, end, 75, 1623, 2, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+        try {
+            app.addWeightLiftingToLoggedUser("Mundial 2018", begin, end, 75, 1623, 2, false);
+            app.addWeightLiftingToLoggedUser("Mundial 2018", begin, end, 75, 1623, 2, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        System.out.println(app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().toString());
 
         app.saveState("TesteFile");
     }
@@ -423,6 +627,8 @@ class JosefinFitnessAppTest {
         app.addProfessionalUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         assertEquals(app.getUserController().getUsers().getUserWithUsername(username).getId(), 31);
+
+        System.out.println(app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().toString());
     }
 
     @Test

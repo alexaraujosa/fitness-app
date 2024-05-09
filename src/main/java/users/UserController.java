@@ -12,6 +12,7 @@ import activities.repetitions.PushUps;
 import activities.repetitions.Stretching;
 import activities.repetitionsWeight.LegExtension;
 import activities.repetitionsWeight.WeightLifting;
+import exceptions.ErrorAddingActivityException;
 import exceptions.ErrorRemovingUserException;
 import exceptions.ErrorUpdatingUserException;
 import exceptions.UsernameAlreadyExistsException;
@@ -180,9 +181,15 @@ public class UserController implements Serializable {
             int distance,
             int personsOnBoard,
             boolean rowAgainstTide
-    ) {
+    ) throws ErrorAddingActivityException {
         Rowing activity = new Rowing(id, name, begin, end, idUser, burnedCalories, heartRate, distance, personsOnBoard, rowAgainstTide);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addSkating(
@@ -196,9 +203,15 @@ public class UserController implements Serializable {
             int distance,
             double skateWeight,
             boolean freestyle
-    ) {
+    ) throws ErrorAddingActivityException {
         Skating activity = new Skating(id, name, begin, end, idUser, burnedCalories, heartRate, distance, skateWeight, freestyle);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addTrackRunning(
@@ -211,9 +224,15 @@ public class UserController implements Serializable {
             int heartRate,
             int distance,
             boolean hurdleJump
-    ) {
+    ) throws ErrorAddingActivityException {
         TrackRunning activity = new TrackRunning(id, name, begin, end, idUser, burnedCalories, heartRate, distance, hurdleJump);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addMountainBiking(
@@ -227,9 +246,15 @@ public class UserController implements Serializable {
             int distance,
             int altimetry,
             boolean bigTires
-    ) {
+    ) throws ErrorAddingActivityException {
         MountainBiking activity = new MountainBiking(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry, bigTires);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addRoadCycling(
@@ -243,9 +268,15 @@ public class UserController implements Serializable {
             int distance,
             int altimetry,
             boolean windAgainst
-    ) {
+    ) throws ErrorAddingActivityException {
         RoadCycling activity = new RoadCycling(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry, windAgainst);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addRoadRunning(
@@ -259,9 +290,15 @@ public class UserController implements Serializable {
             int distance,
             int altimetry,
             boolean windAgainst
-    ) {
+    ) throws ErrorAddingActivityException {
         RoadRunning activity = new RoadRunning(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry, windAgainst);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addTrailRunning(
@@ -275,9 +312,15 @@ public class UserController implements Serializable {
             int distance,
             int altimetry,
             boolean wetFloor
-    ) {
+    ) throws ErrorAddingActivityException {
         TrailRunning activity = new TrailRunning(id, name, begin, end, idUser, burnedCalories, heartRate, distance, altimetry, wetFloor);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addAbdominalExercises(
@@ -290,9 +333,15 @@ public class UserController implements Serializable {
             int heartRate,
             int nRepetitions,
             boolean helped
-    ) {
+    ) throws ErrorAddingActivityException {
         AbdominalExercises activity = new AbdominalExercises(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, helped);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addPushUps(
@@ -305,9 +354,15 @@ public class UserController implements Serializable {
             int heartRate,
             int nRepetitions,
             boolean diamondIntercalated
-    ) {
+    ) throws ErrorAddingActivityException {
         PushUps activity = new PushUps(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, diamondIntercalated);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addStretching(
@@ -320,9 +375,15 @@ public class UserController implements Serializable {
             int heartRate,
             int nRepetitions,
             boolean helped
-    ) {
+    ) throws ErrorAddingActivityException {
         Stretching activity = new Stretching(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, helped);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addLegExtension(
@@ -336,9 +397,15 @@ public class UserController implements Serializable {
             int nRepetitions,
             int weight,
             int chairAngle
-    ) {
+    ) throws ErrorAddingActivityException {
         LegExtension activity = new LegExtension(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, weight, chairAngle);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
 
     public void addWeightLifting(
@@ -352,9 +419,15 @@ public class UserController implements Serializable {
             int nRepetitions,
             int weight,
             boolean helped
-    ) {
+    ) throws ErrorAddingActivityException {
         WeightLifting activity = new WeightLifting(id, name, begin, end, idUser, burnedCalories, heartRate, nRepetitions, weight, helped);
-        this.users.getUserWithId(idUser).addActivity(activity);
+        User u = this.users.getUserWithId(idUser);
+        u.addActivity(activity);
+        this.users.updateUser(u);
+
+        if(!this.users.getUserWithId(u.getId()).equals(u)){
+            throw new ErrorAddingActivityException("Error adding activity!");
+        };
     }
     //endregion
 
