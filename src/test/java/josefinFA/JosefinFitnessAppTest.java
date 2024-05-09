@@ -689,25 +689,29 @@ class JosefinFitnessAppTest {
     void userWithMostCaloriesBurned() {
         this.loadState();
 
+        app.loadStats();
         app.setSystemDate(LocalDateTime.now());
-        int value = app.userWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
-        assertEquals(value, 1);
+        User value = app.userWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+        assertEquals(value, app.getUserController().getUsers().getUserWithId(1));
     }
 
     @Test
     void userWithMostActivitiesCompleted() {
         this.loadState();
 
+        app.loadStats();
         app.setSystemDate(LocalDateTime.now());
-        int value = app.userWithMostActivitiesCompleted(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+        User value = app.userWithMostActivitiesCompleted(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
 
-        assertEquals(value, 1);
+        System.out.println(app.getStats().getAllTimeUserWithMostActivitiesCompleted());
+
+        assertEquals(value, app.getUserController().getUsers().getUserWithId(1));
     }
 
     @Test
-    void mostCommunActivity() {
+    void mostCommonActivity() {
         this.loadState();
-        assertEquals(app.mostCommunActivity(), "WeightLifting");
+        assertEquals(app.mostCommonActivity(), "WeightLifting");
     }
 
     @Test

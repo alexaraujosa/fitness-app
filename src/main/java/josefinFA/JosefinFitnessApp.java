@@ -1,8 +1,6 @@
 package josefinFA;
 
 import activities.Activity;
-import activities.DistanceAct;
-import activities.DistanceAndAltimetryAct;
 import exceptions.*;
 import users.User;
 import users.UserController;
@@ -11,9 +9,7 @@ import utils.IDManager;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class JosefinFitnessApp implements Serializable {
     private int userID;
@@ -479,110 +475,37 @@ public class JosefinFitnessApp implements Serializable {
     //endregion
 
     //region Stats
+    //Chamar sempre esta função quando entras na view das stats... ela atualiza as fixas e clona o estado da app para lá
     public void loadStats(){
-
+        this.stats.setUserController(this.userController.clone());
+        this.stats.setSystemDate(this.systemDate);
+        this.stats.updateAllTimeValues();
     }
 
-    /*This function returns the userId of the user with most calories burned*/
-    public int userWithMostCaloriesBurned(LocalDateTime from){
-        int burnedCalories = -1;
-        int finalUserID = -1;
-
-        List<User> users = this.userController.getUsers().getUsersList();
-        for(User user : users){
-            int newBurnedCalories = 0;
-            for(Activity act : user.getActivityController().getActivities().getActivities().values()){
-                if(act.getBegin().isAfter(from) && act.getEnd().isBefore(this.systemDate)){
-                    newBurnedCalories += user.calculateBurnedCalories(act.getId());
-                }
-            }
-            if(newBurnedCalories > burnedCalories){
-                burnedCalories = newBurnedCalories;
-                finalUserID = user.getId();
-            }
-        }
-        return finalUserID;
+    public User userWithMostCaloriesBurned(LocalDateTime from){
+        return this.stats.userWithMostCaloriesBurned(from);
     }
 
-    public int userWithMostActivitiesCompleted(LocalDateTime from){
-        int nActivities = -1;
-        int finalUserID = -1;
-        List<User> users = this.userController.getUsers().getUsersList();
-        for(User user : users){
-            int newNActivities = 0;
-            for(Activity act : user.getActivityController().getActivities().getActivities().values()){
-                if(act.getBegin().isAfter(from) && act.getEnd().isBefore(this.systemDate)){
-                    newNActivities++;
-                }
-            }
-            if(newNActivities > nActivities){
-                nActivities = newNActivities;
-                finalUserID = user.getId();
-            }
-        }
-        return finalUserID;
+    public User userWithMostActivitiesCompleted(LocalDateTime from){
+        return this.stats.userWithMostActivitiesCompleted(from);
     }
 
-
-    public String mostCommunActivity() {
-        Map<String, Integer> nActivitiesByType = new HashMap<>();
-        List<User> users = this.userController.getUsers().getUsersList();
-
-        for (User user : users) {
-            for (Activity act : user.getActivityController().getActivities().getActivities().values().stream().toList()) {
-                String activityType = act.getClass().getSimpleName();
-                nActivitiesByType.put(activityType, nActivitiesByType.getOrDefault(activityType, 0) + 1);
-            }
-        }
-
-        String mostCommonActivityType = "";
-        int maxCount = 0;
-        for (Map.Entry<String, Integer> entry : nActivitiesByType.entrySet()) {
-            if (entry.getValue() > maxCount) {
-                maxCount = entry.getValue();
-                mostCommonActivityType = entry.getKey();
-            }
-        }
-
-        return mostCommonActivityType;
+    public String mostCommonActivity() {
+        return this.stats.mostCommunActivity();
     }
 
     public int distanceDoneByUser(int userID, LocalDateTime from){
-        int distance = 0;
-        User user = this.userController.getUsers().getUserWithId(userID);
-        for(Activity act : user.getActivityController().getActivities().getActivities().values()){
-            if(act.getBegin().isAfter(from) &&
-                    act.getEnd().isBefore(this.systemDate) &&
-                    act.getClass().getSuperclass().getSimpleName().equals("DistanceAct")){
-                DistanceAct myAct = (DistanceAct) act;
-                distance += myAct.getDistance();
-            } else if(act.getBegin().isAfter(from) &&
-                    act.getEnd().isBefore(this.systemDate) &&
-                    act.getClass().getSuperclass().getSimpleName().equals("DistanceAndAltimetryAct")) {
-                DistanceAndAltimetryAct myAct = (DistanceAndAltimetryAct) act;
-                distance += myAct.getDistance();
-            }
-        }
-        return distance;
+        return this.stats.distanceDoneByUser(userID, from);
     }
 
     public int altimetryDoneByUser(int userID, LocalDateTime from){
-        int altimetry = 0;
-        User user = this.userController.getUsers().getUserWithId(userID);
-        for(Activity act : user.getActivityController().getActivities().getActivities().values()){
-            if(act.getBegin().isAfter(from) &&
-                    act.getEnd().isBefore(this.systemDate) &&
-                    act.getClass().getSuperclass().getSimpleName().equals("DistanceAndAltimetryAct")){
-                DistanceAndAltimetryAct myAct = (DistanceAndAltimetryAct) act;
-                altimetry += myAct.getAltimetry();
-            }
-        }
-        return altimetry;
+        return this.stats.altimetryDoneByUser(userID, from);
     }
 
     public List<Activity> getUsersActivities(int userID) {
         return this.userController.getUsers().getUserWithId(userID).getActivityController().getActivities().getActivities().values().stream().toList();
     }
+
     //endregion
 
     // region State Management
