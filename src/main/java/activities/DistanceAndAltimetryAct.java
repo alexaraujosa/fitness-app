@@ -45,11 +45,13 @@ public abstract class DistanceAndAltimetryAct extends Activity implements Serial
     }
     //endregion
 
+    //region Getters And Setters
     public int getDistance() { return this.distance; }
     public int getAltimetry() { return this.altimetry; }
 
     public void setDistance(int distance) { this.distance = distance; }
     public void setAltimetry(int altimetry) { this.altimetry = altimetry; }
+    //endregion
 
     public abstract void calculateCalories();
 

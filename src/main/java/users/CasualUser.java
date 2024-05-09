@@ -7,7 +7,11 @@ import java.time.ZoneId;
 import java.util.Date;
 
 public class CasualUser extends User implements Serializable {
-    public CasualUser(int id) {
+
+    //region Constructors
+    public CasualUser(
+            int id
+    ) {
         super(id);
     }
 
@@ -26,9 +30,12 @@ public class CasualUser extends User implements Serializable {
         super(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
     }
 
-    public CasualUser(User u) {
+    public CasualUser(
+            User u
+    ) {
         super(u);
     }
+    //endregion
 
     @Override
     public int calculateBurnedCalories(int activityID) {

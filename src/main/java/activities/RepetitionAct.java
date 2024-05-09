@@ -39,9 +39,11 @@ public abstract class RepetitionAct extends Activity implements Serializable {
     }
     //endregion
 
+    //region Getters And Setters
     public int getNRepetitions() { return this.nRepetitions; }
 
     public void setNRepetitions(int nRepetitions) { this.nRepetitions = nRepetitions; }
+    //endregion
 
     public abstract void calculateCalories();
 

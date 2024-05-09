@@ -2,7 +2,6 @@ package activities;
 
 
 import java.io.Serializable;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 public abstract class Activity implements Serializable {

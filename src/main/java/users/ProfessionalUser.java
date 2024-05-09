@@ -1,16 +1,14 @@
 package users;
 
-import activities.Activity;
-
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.time.Period;
-import java.time.ZoneId;
-import java.util.Date;
 
 public class ProfessionalUser extends User implements Serializable {
 
-    public ProfessionalUser(int id) {
+    //region Constructors
+    public ProfessionalUser(
+            int id
+    ) {
         super(id);
     }
 
@@ -29,9 +27,12 @@ public class ProfessionalUser extends User implements Serializable {
         super(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
     }
 
-    public ProfessionalUser(User u) {
+    public ProfessionalUser(
+            User u
+    ) {
         super(u);
     }
+    //endregion
 
     @Override
     public int calculateBurnedCalories(int activityID) {

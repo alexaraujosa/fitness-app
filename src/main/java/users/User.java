@@ -304,25 +304,11 @@ public abstract class User implements Serializable {
     }
     //endregion
 
+    //region Activity Methods
     public void addActivity(Activity act){
         //NOTE: Verificar se a atividade sobrepõe outra atividade?
         act.calculateCalories();
         this.activityController.add(act);
-    }
-
-    public void removeActivity(int id){
-        this.activityController.remove(id);
-    }
-
-    public void addTrainingPlan(TrainingPlan tp){
-        //TODO: esta função tera que verificar as regras do plano de treino
-        this.trainingSchedule.add(tp);
-        // Uma plano de treino não pode ter mais de uma atividade hard por dia, nem pode ter ativadade hard em dias consecutivos
-        // nunca pode ter mais de 3 atividades por dia
-    }
-
-    public void removeTrainingPlan(TrainingPlan tp){
-        //TODO: teriamos tb de remover as atividades desse tp
     }
 
     public void updateActivity(Activity activity){
@@ -332,11 +318,34 @@ public abstract class User implements Serializable {
         //Se for uma atividade de um plano de treino ou não se deixa atualizar aqui ou fazer as verificações necessarias
     }
 
+    public void removeActivity(int id){
+        this.activityController.remove(id);
+    }
+    //endregion
+
+    //region Training Plan Methods
+    public void addTrainingPlan(TrainingPlan tp){
+        //TODO: esta função tera que verificar as regras do plano de treino
+        this.trainingSchedule.add(tp);
+        // Uma plano de treino não pode ter mais de uma atividade hard por dia, nem pode ter ativadade hard em dias consecutivos
+        // nunca pode ter mais de 3 atividades por dia
+    }
+
     public void updateTrainingPlan(TrainingPlan oldTp, TrainingPlan newTp){
         //ver se o novo plano de treino pode encaixar onde é suposto
         //só pode ser encaixado no presente ou futuro
         //se tivermos um plano de treino que se repita todas as sextas, temos de alterar as sextas daqui para a frente, não as anteriores
     }
+
+    public void removeTrainingPlan(TrainingPlan tp){
+        int index = this.trainingSchedule.indexOf(tp);
+        TrainingPlan plan = this.trainingSchedule.get(index);
+        for(Activity a : plan.getActivities()) {
+            this.activityController.remove(a.getId());
+        }
+        this.trainingSchedule.remove(tp);
+    }
+    //endregion
 
     protected double calculateBMR(){
         LocalDate today = LocalDate.now();

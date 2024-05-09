@@ -6,13 +6,17 @@ import java.util.Objects;
 public class ActivityController implements Serializable {
     private Activities activities;
 
+    //region Constructors
     public ActivityController() {
         this.activities = new Activities();
     }
 
-    public ActivityController(ActivityController activityController) {
+    public ActivityController(
+            ActivityController activityController
+    ) {
         this.activities = new Activities(activityController.getActivities());
     }
+    //endregion
 
     public Activities getActivities() { return this.activities.clone(); }
 

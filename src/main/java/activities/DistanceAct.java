@@ -39,9 +39,11 @@ public abstract class DistanceAct extends Activity implements Serializable {
     }
     //endregion
 
+    //region Getters And Setters
     public int getDistance() { return this.distance; }
 
     public void setDistance(int distance) { this.distance = distance; }
+    //endregion
 
     public abstract void calculateCalories();
 

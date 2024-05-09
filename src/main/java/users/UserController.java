@@ -24,18 +24,25 @@ import java.time.LocalDateTime;
 public class UserController implements Serializable {
     private Users users;
 
-    public UserController(){
+    //region Constructors
+    public UserController() {
         this.users = new Users();
     }
 
-    public UserController(Users users){
+    public UserController(
+            Users users
+    ) {
         this.users = users.clone();
     }
 
-    public UserController(UserController controller){
+    public UserController(
+            UserController controller
+    ) {
         this.users = controller.getUsers();
     }
+    //endregion
 
+    //region Getters And Setters
     public Users getUsers() {
         return this.users.clone();
     }
@@ -43,6 +50,7 @@ public class UserController implements Serializable {
     public void setUsers(Users users) {
         this.users = users;
     }
+    //endregion
 
     public boolean isUsernameAvailable(String username) {
         return this.users.isUsernameAvailable(username);
@@ -56,6 +64,15 @@ public class UserController implements Serializable {
         return this.users.getUserWithUsername(username).getId();
     }
 
+    public void removeUser(int id) throws ErrorRemovingUserException {
+        this.users.removeUser(id);
+    }
+
+    public boolean userWithUsernameExists(String username) {
+        return this.users.containsUser(username);
+    }
+
+    //region Add Methods
     public void addCasualUser(
             int id,
             String name,
@@ -102,9 +119,10 @@ public class UserController implements Serializable {
     ) {
         ProfessionalUser professionalUser = new ProfessionalUser(id,name,username,birthdate,address,email,sex,height,weight,heartFreq);
         this.users.addUser(professionalUser);
-
     }
+    //endregion
 
+    //region Update Methods
     public void updateUserName(int id, String name) throws ErrorUpdatingUserException {
         this.users.updateUserName(id,name);
         if(!this.users.getUserWithId(id).getName().equals(name)) {
@@ -168,6 +186,7 @@ public class UserController implements Serializable {
             throw new ErrorUpdatingUserException("Error updating user heartFreq!");
         }
     }
+    //endregion
 
     //region AddingActivities
     public void addRowing(
@@ -431,8 +450,6 @@ public class UserController implements Serializable {
     }
     //endregion
 
-
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -443,14 +460,6 @@ public class UserController implements Serializable {
 
     public UserController clone(){
         return new UserController(this);
-    }
-
-    public void removeUser(int id) throws ErrorRemovingUserException {
-        this.users.removeUser(id);
-    }
-
-    public boolean userWithUsernameExists(String username) {
-        return this.users.containsUser(username);
     }
 
 //    public void updateUser(User user) {

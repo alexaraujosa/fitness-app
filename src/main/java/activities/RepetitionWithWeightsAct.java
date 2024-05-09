@@ -45,11 +45,13 @@ public abstract class RepetitionWithWeightsAct extends Activity implements Seria
     }
     //endregion
 
+    //region Getters And Setters
     public int getNRepetitions() { return this.nRepetitions; }
     public int getWeight() { return this.weight; }
 
     public void setNRepetitions(int nRepetitions) { this.nRepetitions = nRepetitions; }
     public void setWeight(int weight) { this.weight = weight; }
+    //endregion
 
     public abstract void calculateCalories();
 

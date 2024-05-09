@@ -22,7 +22,7 @@ public class JosefinFitnessApp implements Serializable {
     private IDManager idManager;
     private Stats stats;
 
-    //region constructors
+    //region Constructors
     public JosefinFitnessApp(){
         this.userID = -1;
         this.systemDate = LocalDateTime.now();
@@ -31,7 +31,13 @@ public class JosefinFitnessApp implements Serializable {
         this.stats = new Stats();
     }
 
-    public JosefinFitnessApp(int userID, LocalDateTime date, UserController userController, IDManager idManager, Stats stats) {
+    public JosefinFitnessApp(
+            int userID,
+            LocalDateTime date,
+            UserController userController,
+            IDManager idManager,
+            Stats stats
+    ) {
         this.userID = userID;
         this.systemDate = date;
         this.userController = userController.clone();
@@ -39,7 +45,9 @@ public class JosefinFitnessApp implements Serializable {
         this.stats = stats.clone();
     }
 
-    public JosefinFitnessApp(JosefinFitnessApp app){
+    public JosefinFitnessApp(
+            JosefinFitnessApp app
+    ){
         this.userID = app.getUserID();
         this.systemDate = app.getSystemDate();
         this.userController = app.getUserController();
@@ -48,7 +56,7 @@ public class JosefinFitnessApp implements Serializable {
     }
     //endregion
 
-    //region getters&Setters
+    //region Getters And Setters
     public int getUserID() {
         return this.userID;
     }
@@ -90,7 +98,7 @@ public class JosefinFitnessApp implements Serializable {
     }
     //endregion
 
-    //region LoggedUserFunctions
+    //region Logged User Methods
     public void login(String username) throws ErrorLoggingInException {
         if(this.userController.userWithUsernameExists(username)) {
             this.userID = this.userController.getUsernameID(username);
@@ -106,7 +114,11 @@ public class JosefinFitnessApp implements Serializable {
         this.userID = -1;
     }
 
-    //region User Information
+    public void deleteAccount() throws ErrorRemovingUserException {
+        this.userController.removeUser(this.userID);
+        this.setUserID(-1);
+    }
+
     public String getLoggedUserInfo(){
         return this.userController.getUsers().getUserWithId(this.userID).toString();
     }
@@ -144,7 +156,7 @@ public class JosefinFitnessApp implements Serializable {
     }
     //endregion
 
-    //region Add Activity
+    //region Activity Methods
     public void addRowingToUser(
             int id,
             String name,
@@ -394,22 +406,11 @@ public class JosefinFitnessApp implements Serializable {
     }
     //endregion
 
-    //region Training Plan
+    //region Training Plan Methods
     //TODO: Adicionar planos de treino
-    //endregion
+    //endregion Methods
 
-    public void deleteAccount() throws ErrorRemovingUserException {
-        this.userController.removeUser(this.userID);
-        this.setUserID(-1);
-    }
-
-    //NOTE: Esta função seria necessária caso não se guarde o UserID mas sim o user... nesse caso
-    //      seria para atualizar o user completo... não me parece que faça falta though.
-    public void saveChanges() {
-    }
-    //endregion
-
-    //region AdminFunctions
+    //region Administrator Methods
     public void addCasualUser(
             String name,
             String username,
@@ -477,7 +478,7 @@ public class JosefinFitnessApp implements Serializable {
     }
     //endregion
 
-    //region stats
+    //region Stats
     public void loadStats(){
 
     }

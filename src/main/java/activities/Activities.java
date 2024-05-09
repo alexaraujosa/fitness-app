@@ -7,14 +7,17 @@ import java.util.Map;
 public class Activities implements Serializable {
     private Map<Integer,Activity> activities;
 
-
+    //region Constructors
     public Activities() {
         this.activities = new HashMap<>();
     }
 
-    public Activities(Activities activities) {
+    public Activities(
+            Activities activities
+    ) {
         this.activities = new HashMap<>(activities.getActivities());
     }
+    //endregion
 
     public Map<Integer,Activity> getActivities() { return new HashMap<>(this.activities); }
 

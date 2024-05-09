@@ -42,7 +42,7 @@ public class Users implements Serializable {
     }
     //endregion
 
-    //region getters&Setters
+    //region Getters
     public List<User> getUsersList() {
         return new ArrayList<>(this.usersList);
     }
@@ -88,8 +88,6 @@ public class Users implements Serializable {
     public boolean containsUser(String username){
         return this.usersByUsername.containsKey(username);
     }
-
-    //public void up
 
     //region UpdateUserInfo
     public void updateUser(User user) {
