@@ -2,13 +2,14 @@ package TrainingPlan;
 
 import activities.Activity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.List;
 
 /**
  * NOTE: Isto vai dar dor de cabeça lmao
  */
-public class TrainingPlan {
+public class TrainingPlan implements Serializable {
     private int id;
     private List<Activity> activities;
     private LocalDate doDate;

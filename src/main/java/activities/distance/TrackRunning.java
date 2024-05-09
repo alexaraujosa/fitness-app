@@ -2,9 +2,10 @@ package activities.distance;
 
 import activities.DistanceAct;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class TrackRunning extends DistanceAct {
+public class TrackRunning extends DistanceAct implements Serializable {
     private boolean hurdleJump;
 
     //region Constructors

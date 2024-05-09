@@ -3,9 +3,10 @@ package activities.repetitions;
 import activities.Hard;
 import activities.RepetitionAct;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class PushUps extends RepetitionAct implements Hard {
+public class PushUps extends RepetitionAct implements Hard, Serializable {
     public boolean diamondIntercalated;
 
     //region Constructors

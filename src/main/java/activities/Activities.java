@@ -1,9 +1,10 @@
 package activities;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Activities {
+public class Activities implements Serializable {
     private Map<Integer,Activity> activities;
 
 

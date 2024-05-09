@@ -1,8 +1,9 @@
 package activities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class RepetitionAct extends Activity{
+public abstract class RepetitionAct extends Activity implements Serializable {
     private int nRepetitions;
 
     //region Constructors

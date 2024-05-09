@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import users.*;
 import utils.IDManager;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.Date;
@@ -383,6 +384,37 @@ class JosefinFitnessAppTest {
 
     @Test
     void getUsersActivities() {
+    }
+
+    @Test
+    void saveState(){
+        this.fillApp();
+
+        for(User u : app.getUserController().getUsers().getUsersList()){
+            System.out.println(u.toString());
+        }
+
+        app.login("Casual paulo12340");
+
+        app.saveState("TesteFile");
+    }
+
+    @Test
+    void loadState() {
+        assertEquals(app.getUserID(), -1);
+
+        app.loadState("TesteFile");
+
+        for(User u : app.getUserController().getUsers().getUsersList()){
+            System.out.println(u.toString());
+        }
+
+        assertEquals(app.getUserID(), 1);
+        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
+
+        app.addProfessionalUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+
+        assertEquals(app.getUserController().getUsers().getUserWithUsername(username).getId(), 31);
     }
 
     @Test

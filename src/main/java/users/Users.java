@@ -3,6 +3,7 @@ package users;
 import exceptions.ErrorRemovingUserException;
 import exceptions.UsernameAlreadyExistsException;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -11,7 +12,7 @@ import java.util.*;
  *  It provides methods to manage users such as adding, updating and removing as well as checking
  *  for users information, users existence and username availability.
  */
-public class Users {
+public class Users implements Serializable {
     private final List<User> usersList;
     private final Map<Integer,User> usersById;
     private final Map<String,User> usersByUsername;

@@ -16,9 +16,10 @@ import exceptions.ErrorRemovingUserException;
 import exceptions.ErrorUpdatingUserException;
 import exceptions.UsernameAlreadyExistsException;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class UserController {
+public class UserController implements Serializable {
     private Users users;
 
     public UserController(){

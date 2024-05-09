@@ -1,8 +1,9 @@
 package activities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class DistanceAndAltimetryAct extends Activity{
+public abstract class DistanceAndAltimetryAct extends Activity implements Serializable {
     private int distance;
     private int altimetry;
 

@@ -1,8 +1,9 @@
 package activities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class RepetitionWithWeightsAct extends Activity{
+public abstract class RepetitionWithWeightsAct extends Activity implements Serializable {
     private int nRepetitions;
     private int weight;
 

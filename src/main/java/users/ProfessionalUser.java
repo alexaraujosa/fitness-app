@@ -2,12 +2,13 @@ package users;
 
 import activities.Activity;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class ProfessionalUser extends User{
+public class ProfessionalUser extends User implements Serializable {
 
     public ProfessionalUser(int id) {
         super(id);

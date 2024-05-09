@@ -2,9 +2,10 @@ package activities.distance;
 
 import activities.DistanceAct;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Skating extends DistanceAct {
+public class Skating extends DistanceAct implements Serializable {
     private double skateWeight;
     private boolean freestyle;
 

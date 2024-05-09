@@ -3,9 +3,10 @@ package activities.distance;
 import activities.DistanceAct;
 import activities.Hard;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class Rowing extends DistanceAct implements Hard {
+public class Rowing extends DistanceAct implements Hard, Serializable {
     private int personsOnBoard;
     private boolean rowAgainstTide;
 

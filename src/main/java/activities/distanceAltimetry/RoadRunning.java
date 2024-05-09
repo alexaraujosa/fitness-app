@@ -2,9 +2,10 @@ package activities.distanceAltimetry;
 
 import activities.DistanceAndAltimetryAct;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class RoadRunning extends DistanceAndAltimetryAct {
+public class RoadRunning extends DistanceAndAltimetryAct implements Serializable {
     private boolean windAgainst;
 
     //region Constructors

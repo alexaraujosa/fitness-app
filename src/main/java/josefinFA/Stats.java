@@ -1,6 +1,8 @@
 package josefinFA;
 
-public class Stats {
+import java.io.Serializable;
+
+public class Stats implements Serializable {
 
     public Stats(){
     }

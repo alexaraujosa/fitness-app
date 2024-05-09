@@ -9,12 +9,13 @@ import users.User;
 import users.UserController;
 import utils.IDManager;
 
+import java.io.*;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class JosefinFitnessApp {
+public class JosefinFitnessApp implements Serializable {
     private int userID;
     private LocalDate systemDate;
     private UserController userController;
@@ -528,10 +529,35 @@ public class JosefinFitnessApp {
     public List<Activity> getUsersActivities(int userID){
         return this.userController.getUsers().getUserWithId(userID).getActivityController().getActivities().getActivities().values().stream().toList();
     }
-
-
-
     //endregion
+
+    public void saveState(String fileName){
+        try {
+            FileOutputStream fileOut = new FileOutputStream(fileName);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(this);
+            out.close();
+            fileOut.close();
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public void loadState(String fileName) {
+        try {
+            FileInputStream fileIn = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            JosefinFitnessApp app = (JosefinFitnessApp) in.readObject();
+            in.close();
+            fileIn.close();
+            this.userController = app.getUserController();
+            this.idManager = app.getIdManager();
+            this.systemDate = app.getSystemDate();
+            this.userID = app.getUserID();
+        } catch (IOException | ClassNotFoundException e) {
+            System.err.println(e.getMessage());
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

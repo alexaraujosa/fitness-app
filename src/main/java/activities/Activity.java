@@ -1,9 +1,10 @@
 package activities;
 
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class Activity {
+public abstract class Activity implements Serializable {
     private final int id;
     private String name;
     private LocalDate begin;

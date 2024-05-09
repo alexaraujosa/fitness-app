@@ -1,8 +1,9 @@
 package activities;
 
+import java.io.Serializable;
 import java.util.Objects;
 
-public class ActivityController {
+public class ActivityController implements Serializable {
     private Activities activities;
 
     public ActivityController() {

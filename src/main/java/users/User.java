@@ -4,6 +4,7 @@ import TrainingPlan.TrainingPlan;
 import activities.Activity;
 import activities.ActivityController;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -15,7 +16,7 @@ import java.util.*;
  * address, email and more. This class implements methods to set and get this values as well
  * as methods to calculate calorie expenditure and to add activities and trainingPlans.
  */
-public abstract class User {
+public abstract class User implements Serializable {
     private final int id;
     private String name;
     private String username;

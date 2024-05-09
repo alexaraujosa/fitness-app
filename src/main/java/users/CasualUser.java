@@ -1,11 +1,12 @@
 package users;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 
-public class CasualUser extends User{
+public class CasualUser extends User implements Serializable {
     public CasualUser(int id) {
         super(id);
     }

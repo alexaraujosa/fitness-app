@@ -3,9 +3,10 @@ package activities.distanceAltimetry;
 import activities.DistanceAndAltimetryAct;
 import activities.Hard;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class TrailRunning extends DistanceAndAltimetryAct implements Hard {
+public class TrailRunning extends DistanceAndAltimetryAct implements Hard, Serializable {
     private boolean wetFloor;
 
     //region Constructors

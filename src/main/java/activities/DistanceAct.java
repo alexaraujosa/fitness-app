@@ -1,8 +1,9 @@
 package activities;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public abstract class DistanceAct extends Activity{
+public abstract class DistanceAct extends Activity implements Serializable {
     private int distance;
 
     //region Constructors

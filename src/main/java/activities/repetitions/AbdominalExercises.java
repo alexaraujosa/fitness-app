@@ -2,9 +2,10 @@ package activities.repetitions;
 
 import activities.RepetitionAct;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class AbdominalExercises extends RepetitionAct {
+public class AbdominalExercises extends RepetitionAct implements Serializable {
     private boolean helped;
 
     //region Constructors

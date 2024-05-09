@@ -3,9 +3,10 @@ package activities.repetitionsWeight;
 import activities.Hard;
 import activities.RepetitionWithWeightsAct;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class WeightLifting extends RepetitionWithWeightsAct implements Hard {
+public class WeightLifting extends RepetitionWithWeightsAct implements Hard, Serializable {
     private boolean helped;
 
     //region Constructors

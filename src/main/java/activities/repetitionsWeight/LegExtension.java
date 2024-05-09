@@ -2,9 +2,10 @@ package activities.repetitionsWeight;
 
 import activities.RepetitionWithWeightsAct;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
-public class LegExtension extends RepetitionWithWeightsAct {
+public class LegExtension extends RepetitionWithWeightsAct implements Serializable {
     private int chairAngle;
 
     //region Constructors
