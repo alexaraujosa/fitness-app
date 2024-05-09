@@ -5,6 +5,7 @@ import activities.Hard;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class Rowing extends DistanceAct implements Hard, Serializable {
     private int personsOnBoard;
@@ -26,8 +27,8 @@ public class Rowing extends DistanceAct implements Hard, Serializable {
     public Rowing(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,

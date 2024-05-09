@@ -4,6 +4,7 @@ import activities.DistanceAndAltimetryAct;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class RoadRunning extends DistanceAndAltimetryAct implements Serializable {
     private boolean windAgainst;
@@ -23,8 +24,8 @@ public class RoadRunning extends DistanceAndAltimetryAct implements Serializable
     public RoadRunning(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,

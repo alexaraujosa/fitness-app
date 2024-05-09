@@ -5,6 +5,7 @@ import activities.RepetitionWithWeightsAct;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class WeightLifting extends RepetitionWithWeightsAct implements Hard, Serializable {
     private boolean helped;
@@ -24,8 +25,8 @@ public class WeightLifting extends RepetitionWithWeightsAct implements Hard, Ser
     public WeightLifting(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,

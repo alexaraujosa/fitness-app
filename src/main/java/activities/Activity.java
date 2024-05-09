@@ -3,12 +3,13 @@ package activities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public abstract class Activity implements Serializable {
     private final int id;
     private String name;
-    private LocalDate begin;
-    private LocalDate end;
+    private LocalDateTime begin;
+    private LocalDateTime end;
     private final int idUser;
     private int burnedCalories;
     private int heartRate;
@@ -20,8 +21,8 @@ public abstract class Activity implements Serializable {
         ) {
         this.id = id;
         this.name = "N/a";
-        this.begin = LocalDate.now();
-        this.end = LocalDate.now();
+        this.begin = LocalDateTime.now();
+        this.end = LocalDateTime.now();
         this.idUser = idUser;
         this.burnedCalories = 0;
         this.heartRate = 0;
@@ -30,8 +31,8 @@ public abstract class Activity implements Serializable {
     public Activity(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate
@@ -61,15 +62,15 @@ public abstract class Activity implements Serializable {
     //region Getters And Setters
     public int getId() { return this.id; }
     public String getName() { return this.name; }
-    public LocalDate getBegin() { return this.begin; }
-    public LocalDate getEnd() { return this.end; }
+    public LocalDateTime getBegin() { return this.begin; }
+    public LocalDateTime getEnd() { return this.end; }
     public int getIdUser() { return this.idUser; }
     public int getBurnedCalories() { return this.burnedCalories; }
     public int getHeartRate() { return this.heartRate; }
 
     public void setName(String name) { this.name = name; }
-    public void setBegin(LocalDate begin) { this.begin = begin; }
-    public void setEnd(LocalDate end) { this.end = end; }
+    public void setBegin(LocalDateTime begin) { this.begin = begin; }
+    public void setEnd(LocalDateTime end) { this.end = end; }
     public void setBurnedCalories(int calories) { this.burnedCalories = calories; }
     public void setHeartRate(int heartRate) { this.heartRate = heartRate; }
     //endregion

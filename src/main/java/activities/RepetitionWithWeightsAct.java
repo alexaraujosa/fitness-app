@@ -2,6 +2,7 @@ package activities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public abstract class RepetitionWithWeightsAct extends Activity implements Serializable {
     private int nRepetitions;
@@ -22,8 +23,8 @@ public abstract class RepetitionWithWeightsAct extends Activity implements Seria
     public RepetitionWithWeightsAct(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,

@@ -18,6 +18,7 @@ import exceptions.UsernameAlreadyExistsException;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class UserController implements Serializable {
     private Users users;
@@ -171,8 +172,8 @@ public class UserController implements Serializable {
     public void addRowing(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -187,8 +188,8 @@ public class UserController implements Serializable {
     public void addSkating(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -203,8 +204,8 @@ public class UserController implements Serializable {
     public void addTrackRunning(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -218,8 +219,8 @@ public class UserController implements Serializable {
     public void addMountainBiking(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -234,8 +235,8 @@ public class UserController implements Serializable {
     public void addRoadCycling(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -250,8 +251,8 @@ public class UserController implements Serializable {
     public void addRoadRunning(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -266,8 +267,8 @@ public class UserController implements Serializable {
     public void addTrailRunning(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -282,8 +283,8 @@ public class UserController implements Serializable {
     public void addAbdominalExercises(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -297,8 +298,8 @@ public class UserController implements Serializable {
     public void addPushUps(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -312,8 +313,8 @@ public class UserController implements Serializable {
     public void addStretching(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -327,8 +328,8 @@ public class UserController implements Serializable {
     public void addLegExtension(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
@@ -343,8 +344,8 @@ public class UserController implements Serializable {
     public void addWeightLifting(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,

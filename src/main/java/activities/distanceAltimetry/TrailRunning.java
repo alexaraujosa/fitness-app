@@ -5,6 +5,7 @@ import activities.Hard;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class TrailRunning extends DistanceAndAltimetryAct implements Hard, Serializable {
     private boolean wetFloor;
@@ -24,8 +25,8 @@ public class TrailRunning extends DistanceAndAltimetryAct implements Hard, Seria
     public TrailRunning(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,

@@ -11,13 +11,14 @@ import utils.IDManager;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class JosefinFitnessApp implements Serializable {
     private int userID;
-    private LocalDate systemDate;
+    private LocalDateTime systemDate;
     private UserController userController;
     private IDManager idManager;
     private Stats stats;
@@ -25,13 +26,13 @@ public class JosefinFitnessApp implements Serializable {
     //region constructors
     public JosefinFitnessApp(){
         this.userID = -1;
-        this.systemDate = LocalDate.now();
+        this.systemDate = LocalDateTime.now();
         this.userController = new UserController();
         this.idManager = new IDManager();
         this.stats = new Stats();
     }
 
-    public JosefinFitnessApp(int userID, LocalDate date, UserController userController, IDManager idManager, Stats stats) {
+    public JosefinFitnessApp(int userID, LocalDateTime date, UserController userController, IDManager idManager, Stats stats) {
         this.userID = userID;
         this.systemDate = date;
         this.userController = userController.clone();
@@ -57,11 +58,11 @@ public class JosefinFitnessApp implements Serializable {
         this.userID = userID;
     }
 
-    public LocalDate getSystemDate() {
+    public LocalDateTime getSystemDate() {
         return this.systemDate;
     }
 
-    public void setSystemDate(LocalDate systemDate) {
+    public void setSystemDate(LocalDateTime systemDate) {
         this.systemDate = systemDate;
     }
 
@@ -144,8 +145,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addRowingToLoggedUser (
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int distance,
             int personsOnBoard,
@@ -161,8 +162,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addSkatingToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int distance,
             double skateWeight,
@@ -178,8 +179,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addTrackRunningToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int distance,
             boolean hurdleJump
@@ -194,8 +195,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addMountainBikingToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int distance,
             int altimetry,
@@ -211,8 +212,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addRoadCyclingToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int distance,
             int altimetry,
@@ -228,8 +229,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addRoadRunningToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int distance,
             int altimetry,
@@ -245,8 +246,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addTrailRunningToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int distance,
             int altimetry,
@@ -262,8 +263,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addAbdominalExercisesToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int nRepetitions,
             boolean helped
@@ -278,8 +279,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addPushUpsToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int nRepetitions,
             boolean diamondIntercalated
@@ -294,8 +295,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addStretchingToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int nRepetitions,
             boolean helped
@@ -310,8 +311,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addLegExtensionToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int nRepetitions,
             int weight,
@@ -327,8 +328,8 @@ public class JosefinFitnessApp implements Serializable {
 
     public void addWeightLiftingToLoggedUser(
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int heartRate,
             int nRepetitions,
             int weight,
@@ -430,7 +431,7 @@ public class JosefinFitnessApp implements Serializable {
     }
 
     /*This function returns the userId of the user with most calories burned*/
-    public int UserWithMostCaloriesBurned(LocalDate from){
+    public int UserWithMostCaloriesBurned(LocalDateTime from){
         int burnedCalories = -1;
         int finalUserID = -1;
 
@@ -450,7 +451,7 @@ public class JosefinFitnessApp implements Serializable {
         return finalUserID;
     }
 
-    public int UserWithMostActivitiesCompleted(LocalDate from){
+    public int UserWithMostActivitiesCompleted(LocalDateTime from){
         int nActivities = -1;
         int finalUserID = -1;
         List<User> users = this.userController.getUsers().getUsersList();
@@ -493,7 +494,7 @@ public class JosefinFitnessApp implements Serializable {
         return mostCommonActivityType;
     }
 
-    public int distanceDoneByUser(int userID, LocalDate from){
+    public int distanceDoneByUser(int userID, LocalDateTime from){
         int distance = 0;
         User user = this.userController.getUsers().getUserWithId(userID);
         for(Activity act : user.getActivityController().getActivities().getActivities().values()){
@@ -512,7 +513,7 @@ public class JosefinFitnessApp implements Serializable {
         return distance;
     }
 
-    public int altimetryDoneByUser(int userID, LocalDate from){
+    public int altimetryDoneByUser(int userID, LocalDateTime from){
         int altimetry = 0;
         User user = this.userController.getUsers().getUserWithId(userID);
         for(Activity act : user.getActivityController().getActivities().getActivities().values()){

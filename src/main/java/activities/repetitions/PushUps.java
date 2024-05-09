@@ -5,6 +5,7 @@ import activities.RepetitionAct;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public class PushUps extends RepetitionAct implements Hard, Serializable {
     public boolean diamondIntercalated;
@@ -23,8 +24,8 @@ public class PushUps extends RepetitionAct implements Hard, Serializable {
     public PushUps(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,

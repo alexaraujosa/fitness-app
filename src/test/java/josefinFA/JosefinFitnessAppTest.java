@@ -11,6 +11,7 @@ import utils.IDManager;
 
 import java.io.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.Month;
 import java.util.Date;
 
@@ -259,6 +260,13 @@ class JosefinFitnessAppTest {
 
     @Test
     void addRowingToLoggedUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
     }
 
     @Test

@@ -2,6 +2,7 @@ package activities;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 public abstract class DistanceAndAltimetryAct extends Activity implements Serializable {
     private int distance;
@@ -22,8 +23,8 @@ public abstract class DistanceAndAltimetryAct extends Activity implements Serial
     public DistanceAndAltimetryAct(
             int id,
             String name,
-            LocalDate begin,
-            LocalDate end,
+            LocalDateTime begin,
+            LocalDateTime end,
             int idUser,
             int burnedCalories,
             int heartRate,
