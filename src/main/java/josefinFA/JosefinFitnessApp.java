@@ -3,7 +3,6 @@ package josefinFA;
 import activities.Activity;
 import activities.DistanceAct;
 import activities.DistanceAndAltimetryAct;
-import activities.distanceAltimetry.RoadCycling;
 import exceptions.*;
 import users.User;
 import users.UserController;
@@ -107,6 +106,7 @@ public class JosefinFitnessApp implements Serializable {
         this.userID = -1;
     }
 
+    //region User Information
     public String getLoggedUserInfo(){
         return this.userController.getUsers().getUserWithId(this.userID).toString();
     }
@@ -142,8 +142,11 @@ public class JosefinFitnessApp implements Serializable {
     public void updateLoggedUserHearFreq(int hearFreq) throws ErrorUpdatingUserException {
         this.userController.updateUserHeartFrequency(this.userID, hearFreq);
     }
+    //endregion
 
-    public void addRowingToLoggedUser (
+    //region Add Activity
+    public void addRowingToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -156,11 +159,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addRowing(activityID, name, begin, end, this.userID, 0, heartRate, distance, personsOnBoard, rowAgainstTide);
+        this.userController.addRowing(activityID, name, begin, end, _id, 0, heartRate, distance, personsOnBoard, rowAgainstTide);
     }
 
-    public void addSkatingToLoggedUser(
+    public void addSkatingToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -173,11 +180,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addSkating(activityID, name, begin, end, this.userID, 0, heartRate, distance, skateWeight, freestyle);
+        this.userController.addSkating(activityID, name, begin, end, _id, 0, heartRate, distance, skateWeight, freestyle);
     }
 
-    public void addTrackRunningToLoggedUser(
+    public void addTrackRunningToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -189,11 +200,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addTrackRunning(activityID, name, begin, end, this.userID, 0, heartRate, distance, hurdleJump);
+        this.userController.addTrackRunning(activityID, name, begin, end, _id, 0, heartRate, distance, hurdleJump);
     }
 
-    public void addMountainBikingToLoggedUser(
+    public void addMountainBikingToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -206,11 +221,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addMountainBiking(activityID, name, begin, end, this.userID, 0, heartRate, distance, altimetry, bigTires);
+        this.userController.addMountainBiking(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, bigTires);
     }
 
-    public void addRoadCyclingToLoggedUser(
+    public void addRoadCyclingToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -223,11 +242,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addRoadCycling(activityID, name, begin, end, this.userID, 0, heartRate, distance, altimetry, windAgainst);
+        this.userController.addRoadCycling(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, windAgainst);
     }
 
-    public void addRoadRunningToLoggedUser(
+    public void addRoadRunningToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -240,11 +263,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addRoadRunning(activityID, name, begin, end, this.userID, 0, heartRate, distance, altimetry, windAgainst);
+        this.userController.addRoadRunning(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, windAgainst);
     }
 
-    public void addTrailRunningToLoggedUser(
+    public void addTrailRunningToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -257,11 +284,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addTrailRunning(activityID, name, begin, end, this.userID, 0, heartRate, distance, altimetry, wetFloor);
+        this.userController.addTrailRunning(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, wetFloor);
     }
 
-    public void addAbdominalExercisesToLoggedUser(
+    public void addAbdominalExercisesToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -273,11 +304,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addAbdominalExercises(activityID, name, begin, end, this.userID, 0, heartRate, nRepetitions, helped);
+        this.userController.addAbdominalExercises(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, helped);
     }
 
-    public void addPushUpsToLoggedUser(
+    public void addPushUpsToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -289,11 +324,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addPushUps(activityID, name, begin, end, this.userID, 0, heartRate, nRepetitions, diamondIntercalated);
+        this.userController.addPushUps(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, diamondIntercalated);
     }
 
-    public void addStretchingToLoggedUser(
+    public void addStretchingToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -305,11 +344,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addStretching(activityID, name, begin, end, this.userID, 0, heartRate, nRepetitions, helped);
+        this.userController.addStretching(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, helped);
     }
 
-    public void addLegExtensionToLoggedUser(
+    public void addLegExtensionToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -322,11 +365,15 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
         int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addLegExtension(activityID, name, begin, end, this.userID, 0, heartRate, nRepetitions, weight, chairAngle);
+        this.userController.addLegExtension(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, weight, chairAngle);
     }
 
-    public void addWeightLiftingToLoggedUser(
+    public void addWeightLiftingToUser(
+            int id,
             String name,
             LocalDateTime begin,
             LocalDateTime end,
@@ -339,11 +386,17 @@ public class JosefinFitnessApp implements Serializable {
             throw new InvalidValueException("The system doesn't support non-positive values.");
         }
 
-        int activityID = this.idManager.generateUniqueActivityID();
-        this.userController.addWeightLifting(activityID, name, begin, end, this.userID, 0, heartRate, nRepetitions, weight, helped);
-    }
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
 
+        int activityID = this.idManager.generateUniqueActivityID();
+        this.userController.addWeightLifting(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, weight, helped);
+    }
+    //endregion
+
+    //region Training Plan
     //TODO: Adicionar planos de treino
+    //endregion
 
     public void deleteAccount() throws ErrorRemovingUserException {
         this.userController.removeUser(this.userID);
@@ -423,7 +476,6 @@ public class JosefinFitnessApp implements Serializable {
         }
     }
     //endregion
-
 
     //region stats
     public void loadStats(){
@@ -534,6 +586,7 @@ public class JosefinFitnessApp implements Serializable {
     }
     //endregion
 
+    // region State Management
     public void saveState(String fileName){
         try {
             FileOutputStream fileOut = new FileOutputStream(fileName);
@@ -561,6 +614,7 @@ public class JosefinFitnessApp implements Serializable {
             System.err.println(e.getMessage());
         }
     }
+    //endregion
 
     @Override
     public boolean equals(Object o) {
