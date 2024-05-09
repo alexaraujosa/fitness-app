@@ -711,12 +711,15 @@ class JosefinFitnessAppTest {
     @Test
     void mostCommonActivity() {
         this.loadState();
+        app.loadStats();
+
         assertEquals(app.mostCommonActivity(), "WeightLifting");
     }
 
     @Test
     void distanceDoneByUser() {
         this.loadState();
+        app.loadStats();
 
         app.setSystemDate(LocalDateTime.now());
         int value = app.distanceDoneByUser(1, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
@@ -730,6 +733,7 @@ class JosefinFitnessAppTest {
     @Test
     void altimetryDoneByUser() {
         this.loadState();
+        app.loadStats();
 
         app.setSystemDate(LocalDateTime.now());
         int value = app.altimetryDoneByUser(1, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
