@@ -484,7 +484,7 @@ public class JosefinFitnessApp implements Serializable {
     }
 
     /*This function returns the userId of the user with most calories burned*/
-    public int UserWithMostCaloriesBurned(LocalDateTime from){
+    public int userWithMostCaloriesBurned(LocalDateTime from){
         int burnedCalories = -1;
         int finalUserID = -1;
 
@@ -504,14 +504,14 @@ public class JosefinFitnessApp implements Serializable {
         return finalUserID;
     }
 
-    public int UserWithMostActivitiesCompleted(LocalDateTime from){
+    public int userWithMostActivitiesCompleted(LocalDateTime from){
         int nActivities = -1;
         int finalUserID = -1;
         List<User> users = this.userController.getUsers().getUsersList();
         for(User user : users){
             int newNActivities = 0;
             for(Activity act : user.getActivityController().getActivities().getActivities().values()){
-                if(act.getBegin().isAfter(from) && act.getEnd().isAfter(this.systemDate)){
+                if(act.getBegin().isAfter(from) && act.getEnd().isBefore(this.systemDate)){
                     newNActivities++;
                 }
             }
@@ -552,12 +552,12 @@ public class JosefinFitnessApp implements Serializable {
         User user = this.userController.getUsers().getUserWithId(userID);
         for(Activity act : user.getActivityController().getActivities().getActivities().values()){
             if(act.getBegin().isAfter(from) &&
-                    act.getEnd().isAfter(this.systemDate) &&
+                    act.getEnd().isBefore(this.systemDate) &&
                     act.getClass().getSuperclass().getSimpleName().equals("DistanceAct")){
                 DistanceAct myAct = (DistanceAct) act;
                 distance += myAct.getDistance();
             } else if(act.getBegin().isAfter(from) &&
-                    act.getEnd().isAfter(this.systemDate) &&
+                    act.getEnd().isBefore(this.systemDate) &&
                     act.getClass().getSuperclass().getSimpleName().equals("DistanceAndAltimetryAct")) {
                 DistanceAndAltimetryAct myAct = (DistanceAndAltimetryAct) act;
                 distance += myAct.getDistance();
@@ -571,7 +571,7 @@ public class JosefinFitnessApp implements Serializable {
         User user = this.userController.getUsers().getUserWithId(userID);
         for(Activity act : user.getActivityController().getActivities().getActivities().values()){
             if(act.getBegin().isAfter(from) &&
-                    act.getEnd().isAfter(this.systemDate) &&
+                    act.getEnd().isBefore(this.systemDate) &&
                     act.getClass().getSuperclass().getSimpleName().equals("DistanceAndAltimetryAct")){
                 DistanceAndAltimetryAct myAct = (DistanceAndAltimetryAct) act;
                 altimetry += myAct.getAltimetry();
@@ -580,7 +580,7 @@ public class JosefinFitnessApp implements Serializable {
         return altimetry;
     }
 
-    public List<Activity> getUsersActivities(int userID){
+    public List<Activity> getUsersActivities(int userID) {
         return this.userController.getUsers().getUserWithId(userID).getActivityController().getActivities().getActivities().values().stream().toList();
     }
     //endregion

@@ -690,12 +690,18 @@ class JosefinFitnessAppTest {
         this.loadState();
 
         app.setSystemDate(LocalDateTime.now());
-        int value = app.UserWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
-        System.out.println(value);
+        int value = app.userWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+        assertEquals(value, 1);
     }
 
     @Test
     void userWithMostActivitiesCompleted() {
+        this.loadState();
+
+        app.setSystemDate(LocalDateTime.now());
+        int value = app.userWithMostActivitiesCompleted(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+
+        assertEquals(value, 1);
     }
 
     @Test
@@ -706,14 +712,41 @@ class JosefinFitnessAppTest {
 
     @Test
     void distanceDoneByUser() {
+        this.loadState();
+
+        app.setSystemDate(LocalDateTime.now());
+        int value = app.distanceDoneByUser(1, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+
+        int value2 = app.distanceDoneByUser(3, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+
+        assertEquals(value, 4869);
+        assertEquals(value2, 0);
     }
 
     @Test
     void altimetryDoneByUser() {
+        this.loadState();
+
+        app.setSystemDate(LocalDateTime.now());
+        int value = app.altimetryDoneByUser(1, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+
+        int value2 = app.altimetryDoneByUser(3, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+
+        assertEquals(value, 952);
+        assertEquals(value2, 0);
     }
 
     @Test
     void getUsersActivities() {
+        this.loadState();
+
+        try {
+            System.out.println(app.getUsersActivities(2).toString());
+        } catch (NullPointerException e) {
+            System.err.println(e.getMessage());
+        }
+
+
     }
 
     @Test
@@ -728,12 +761,17 @@ class JosefinFitnessAppTest {
 
         try {
             app.addRowingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+            app.addRowingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+            app.addRowingToUser(4, "Mundial 2018", begin, end, 75, 1623, 2, false);
+            app.addTrailRunningToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
         } catch (InvalidValueException | ErrorAddingActivityException e){
             System.err.println(e.getMessage());
         }
         try {
             app.addWeightLiftingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
-            app.addWeightLiftingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+            app.addWeightLiftingToUser(2, "Mundial 2018", begin, end, 75, 1623, 2, false);
+            app.addWeightLiftingToUser(3, "Mundial 2018", begin, end, 75, 1623, 2, false);
+            app.addWeightLiftingToUser(4, "Mundial 2018", begin, end, 75, 1623, 2, false);
         } catch (InvalidValueException | ErrorAddingActivityException e){
             System.err.println(e.getMessage());
         }
