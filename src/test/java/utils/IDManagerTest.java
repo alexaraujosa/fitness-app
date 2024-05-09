@@ -53,6 +53,7 @@ class IDManagerTest {
         for (int i = 0; i < 100; i++) {
             idManager.generateUniqueUserID();
             idManager.generateUniqueActivityID();
+            idManager.generateUniqueTrainingPlanID();
         }
 
         System.out.println(idManager.toString());

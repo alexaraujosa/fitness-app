@@ -5,6 +5,7 @@ import activities.distance.Skating;
 import activities.distance.TrackRunning;
 import activities.distanceAltimetry.MountainBiking;
 import activities.distanceAltimetry.RoadCycling;
+import activities.distanceAltimetry.RoadRunning;
 import activities.distanceAltimetry.TrailRunning;
 import activities.repetitions.AbdominalExercises;
 import activities.repetitions.PushUps;
@@ -272,8 +273,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        Rowing act = new Rowing(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 2, false);
-        Rowing act2 = new Rowing(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, 2, false);
+        Rowing act = new Rowing(1, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
+        Rowing act2 = new Rowing(2, "Mundial 2018", begin, end, 3, 97, 75, 1623, 2, false);
 
         try {
             app.addRowingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
@@ -302,8 +303,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        Skating act = new Skating(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 2, false);
-        Skating act2 = new Skating(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, 2, false);
+        Skating act = new Skating(1, "Mundial 2018", begin, end, 1, 51, 75, 1623, 2, false);
+        Skating act2 = new Skating(2, "Mundial 2018", begin, end, 3, 51, 75, 1623, 2, false);
 
         try {
             app.addSkatingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
@@ -332,8 +333,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        TrackRunning act = new TrackRunning(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, false);
-        TrackRunning act2 = new TrackRunning(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, false);
+        TrackRunning act = new TrackRunning(1, "Mundial 2018", begin, end, 1, 113, 75, 1623, false);
+        TrackRunning act2 = new TrackRunning(2, "Mundial 2018", begin, end, 3, 113, 75, 1623, false);
 
         try {
             app.addTrackRunningToUser(-1, "Mundial 2018", begin, end, 75, 1623, false);
@@ -362,8 +363,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        MountainBiking act = new MountainBiking(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 952, false);
-        MountainBiking act2 = new MountainBiking(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, 952, false);
+        MountainBiking act = new MountainBiking(1, "Mundial 2018", begin, end, 1, 260, 75, 1623, 952, false);
+        MountainBiking act2 = new MountainBiking(2, "Mundial 2018", begin, end, 3, 260, 75, 1623, 952, false);
 
         try {
             app.addMountainBikingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
@@ -392,8 +393,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        RoadCycling act = new RoadCycling(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 952, false);
-        RoadCycling act2 = new RoadCycling(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, 952, false);
+        RoadCycling act = new RoadCycling(1, "Mundial 2018", begin, end, 1, 148, 75, 1623, 952, false);
+        RoadCycling act2 = new RoadCycling(2, "Mundial 2018", begin, end, 3, 148, 75, 1623, 952, false);
 
         try {
             app.addRoadCyclingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
@@ -414,6 +415,36 @@ class JosefinFitnessAppTest {
     }
 
     @Test
+    void addRoadRunningToUser() {
+        this.fillApp();
+
+        app.login("Casual paulo12340");
+
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        RoadRunning act = new RoadRunning(1, "Mundial 2018", begin, end, 1, 185, 75, 1623, 952, false);
+        RoadRunning act2 = new RoadRunning(2, "Mundial 2018", begin, end, 3, 185, 75, 1623, 952, false);
+
+        try {
+            app.addRoadRunningToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        try {
+            app.addRoadRunningToUser(3, "Mundial 2018", begin, end, 75, 1623, 952, false);
+        } catch (InvalidValueException | ErrorAddingActivityException e){
+            System.err.println(e.getMessage());
+        }
+
+        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act.toString(), finalValue);
+        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
+        assertEquals(act2.toString(), finalValue2);
+    }
+
+    @Test
     void addTrailRunningToUser() {
         this.fillApp();
 
@@ -422,8 +453,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        TrailRunning act = new TrailRunning(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 952, false);
-        TrailRunning act2 = new TrailRunning(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, 952, false);
+        TrailRunning act = new TrailRunning(1, "Mundial 2018", begin, end, 1, 260, 75, 1623, 952, false);
+        TrailRunning act2 = new TrailRunning(2, "Mundial 2018", begin, end, 3, 260, 75, 1623, 952, false);
 
         try {
             app.addTrailRunningToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
@@ -452,8 +483,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        AbdominalExercises act = new AbdominalExercises(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, false);
-        AbdominalExercises act2 = new AbdominalExercises(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, false);
+        AbdominalExercises act = new AbdominalExercises(1, "Mundial 2018", begin, end, 1, 486, 75, 1623, false);
+        AbdominalExercises act2 = new AbdominalExercises(2, "Mundial 2018", begin, end, 3, 486, 75, 1623, false);
 
         try {
             app.addAbdominalExercisesToUser(-1, "Mundial 2018", begin, end, 75, 1623, false);
@@ -482,8 +513,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        PushUps act = new PushUps(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, false);
-        PushUps act2 = new PushUps(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, false);
+        PushUps act = new PushUps(1, "Mundial 2018", begin, end, 1, 324, 75, 1623, false);
+        PushUps act2 = new PushUps(2, "Mundial 2018", begin, end, 3, 324, 75, 1623, false);
 
         try {
             app.addPushUpsToUser(-1, "Mundial 2018", begin, end, 75, 1623, false);
@@ -512,8 +543,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        Stretching act = new Stretching(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, false);
-        Stretching act2 = new Stretching(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, false);
+        Stretching act = new Stretching(1, "Mundial 2018", begin, end, 1, 97, 75, 1623, false);
+        Stretching act2 = new Stretching(2, "Mundial 2018", begin, end, 3, 97, 75, 1623, false);
 
         try {
             app.addStretchingToUser(-1, "Mundial 2018", begin, end, 75, 1623, false);
@@ -542,8 +573,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        LegExtension act = new LegExtension(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 12, 40);
-        LegExtension act2 = new LegExtension(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, 12, 40);
+        LegExtension act = new LegExtension(1, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
+        LegExtension act2 = new LegExtension(2, "Mundial 2018", begin, end, 3, 519, 75, 1623, 12, 40);
 
         try {
             app.addLegExtensionToUser(-1, "Mundial 2018", begin, end, 75, 1623, 12, 40);
@@ -572,8 +603,8 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        WeightLifting act = new WeightLifting(1, "Mundial 2018", begin, end, 1, 0, 75, 1623, 12, false);
-        WeightLifting act2 = new WeightLifting(2, "Mundial 2018", begin, end, 3, 0, 75, 1623, 12, false);
+        WeightLifting act = new WeightLifting(1, "Mundial 2018", begin, end, 1, 1136, 75, 1623, 12, false);
+        WeightLifting act2 = new WeightLifting(2, "Mundial 2018", begin, end, 3, 1136, 75, 1623, 12, false);
 
         try {
             app.addWeightLiftingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 12, false);
