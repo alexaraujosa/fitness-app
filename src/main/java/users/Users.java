@@ -93,7 +93,9 @@ public class Users implements Serializable {
 
     //region UpdateUserInfo
     public void updateUser(User user) {
-        usersList.remove(user);
+        User temp = this.getUserWithId(user.getId());
+        this.usersList.remove(temp);
+
         this.addUser(user);
     }
 

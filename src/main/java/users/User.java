@@ -305,8 +305,8 @@ public abstract class User implements Serializable {
     //endregion
 
     public void addActivity(Activity act){
-        //NOTE: verificar se atividade já existe(idmanager)
         //NOTE: Verificar se a atividade sobrepõe outra atividade?
+        act.calculateCalories();
         this.activityController.add(act);
     }
 

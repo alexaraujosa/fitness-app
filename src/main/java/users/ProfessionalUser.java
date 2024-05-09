@@ -35,11 +35,16 @@ public class ProfessionalUser extends User implements Serializable {
 
     @Override
     public int calculateBurnedCalories(int activityID) {
-    double multiplier = 0;
-    double bmr = this.calculateBMR();
-    multiplier = (bmr * this.getHeartFreq())/50; // Assuming heartFreq is in beats per minute
+        double userValue = 0;
+        double bmr = this.calculateBMR();
 
-        return (int) (multiplier * this.getActivityController().get(activityID).getBurnedCalories());
+        double typeBasedBmr = ((bmr * this.getHeartFreq())/50);
+
+        double percentage = 1 - (1 * typeBasedBmr) / bmr;
+
+        userValue = (double) (this.getActivityController().get(activityID).getBurnedCalories() * this.getActivityController().get(activityID).getHeartRate()) /50;
+
+        return (int) (userValue + userValue * (percentage));
     }
 
     public ProfessionalUser clone() {

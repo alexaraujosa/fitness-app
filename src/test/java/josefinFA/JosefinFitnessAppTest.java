@@ -656,6 +656,11 @@ class JosefinFitnessAppTest {
 
     @Test
     void userWithMostCaloriesBurned() {
+        this.loadState();
+
+        app.setSystemDate(LocalDateTime.now());
+        int value = app.UserWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+        System.out.println(value);
     }
 
     @Test
@@ -665,7 +670,7 @@ class JosefinFitnessAppTest {
     @Test
     void mostCommunActivity() {
         this.loadState();
-        System.out.println(app.mostCommunActivity());
+        assertEquals(app.mostCommunActivity(), "WeightLifting");
     }
 
     @Test
@@ -702,7 +707,7 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        System.out.println(app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().toString());
+        //System.out.println(app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().toString());
 
         app.saveState("TesteFile");
     }

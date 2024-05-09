@@ -528,11 +528,9 @@ public class JosefinFitnessApp implements Serializable {
         List<User> users = this.userController.getUsers().getUsersList();
 
         for (User user : users) {
-            for (Activity act : user.getActivityController().getActivities().getActivities().values()) {
+            for (Activity act : user.getActivityController().getActivities().getActivities().values().stream().toList()) {
                 String activityType = act.getClass().getSimpleName();
                 nActivitiesByType.put(activityType, nActivitiesByType.getOrDefault(activityType, 0) + 1);
-                System.out.println(activityType);
-                System.out.println(user.getUsername() + "--" + nActivitiesByType.values());
             }
         }
 
