@@ -370,17 +370,17 @@ public abstract class User implements Serializable {
 
     @Override
     public String toString() {
-        return "User {\n" +
-                "\tid: " + id + ",\n" +
-                "\tname: " + name + ",\n" +
-                "\tusername: " + username + ",\n" +
-                "\tbirthdate: " + birthdate.toString() + ",\n" +
-                "\taddress: " + address + ",\n" +
-                "\temail: " + email + ",\n" +
-                "\tsex: " + (sex ? "Male" : "Female") + ",\n" +
-                "\theight: " + height + ",\n" +
-                "\tweight: " + weight + ",\n" +
-                "\theartFreq: " + heartFreq + "\n" +
+        return "{User}--{" +
+                " | ID: " + this.id +
+                " | NAME: " + this.name +
+                " | USERNAME: " + this.username +
+                " | BIRTHDATE: " + this.birthdate +
+                " | ADDRESS: " + this.address +
+                " | EMAIL: " + this.email +
+                " | SEX: " + (this.sex ? "Male" : "Female") +
+                " | HEIGHT: " + this.height +
+                " | WEIGHT: " + this.weight +
+                " | HEART FREQ: " + this.heartFreq +
                 "}";
     }
 

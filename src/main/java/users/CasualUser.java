@@ -51,6 +51,22 @@ public class CasualUser extends User implements Serializable {
         return (int) (userValue + userValue * (percentage));
     }
 
+    @Override
+    public String toString() {
+        return "{CASUAL USER}--{" +
+                " | ID: " + super.getId() +
+                " | NAME: " + super.getName() +
+                " | USERNAME: " + super.getUsername() +
+                " | BIRTHDATE: " + super.getBirthdate() +
+                " | ADDRESS: " + super.getAddress() +
+                " | EMAIL: " + super.getEmail() +
+                " | SEX: " + (super.getSex() ? "Male" : "Female") +
+                " | HEIGHT: " + super.getHeight() +
+                " | WEIGHT: " + super.getWeight() +
+                " | HEART FREQ: " + super.getHeartFreq() +
+                "}";
+    }
+
     public CasualUser clone() {
         return new CasualUser(this);
     }
