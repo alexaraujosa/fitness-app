@@ -121,36 +121,45 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void updateLoggedUserName() {
+    void updateUserName() {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
 
         try {
-            app.updateLoggedUserName("LindaFlor");
+            app.updateUserName(-1, "LindaFlor");
         } catch (ErrorUpdatingUserException e){
             System.err.println(e.getMessage());
         }
 
         assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getName(), "LindaFlor");
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+
+        try {
+            app.updateUserName(1, "EuSouLindo");
+        } catch (ErrorUpdatingUserException e){
+            System.err.println(e.getMessage());
+        }
+
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getName(), "EuSouLindo");
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
     }
 
     @Test
-    void updateLoggedUserUsername() {
+    void updateUserUsername() {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
         app.addProfessionalUser("Paulão", "gigaChad", birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
 
         try {
-            app.updateLoggedUserUsername("gigaChad");
+            app.updateUserUsername(-1, "gigaChad");
         } catch (ErrorUpdatingUserException | UsernameAlreadyExistsException e){
             assertEquals(e.getMessage(),"A User with that username already Exists!");
         }
 
         try {
-            app.updateLoggedUserUsername("LindaFlor");
+            app.updateUserUsername(-1, "LindaFlor");
         } catch (ErrorUpdatingUserException | UsernameAlreadyExistsException e){
             System.err.println(e.getMessage());
         }
@@ -159,17 +168,35 @@ class JosefinFitnessAppTest {
         assertTrue(app.getUserController().userWithUsernameExists("LindaFlor"));
         assertEquals(app.getUserController().getUsers().getUserWithUsername("LindaFlor").getUsername(), "LindaFlor");
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("LindaFlor").toString());
+
+
+        try {
+            app.updateUserUsername(1, "gigaChad");
+        } catch (ErrorUpdatingUserException | UsernameAlreadyExistsException e){
+            assertEquals(e.getMessage(),"A User with that username already Exists!");
+        }
+
+        try {
+            app.updateUserUsername(1, "LindaFlori");
+        } catch (ErrorUpdatingUserException | UsernameAlreadyExistsException e){
+            System.err.println(e.getMessage());
+        }
+
+        assertFalse(app.getUserController().userWithUsernameExists("LindaFlor"));
+        assertTrue(app.getUserController().userWithUsernameExists("LindaFlori"));
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("LindaFlori").getUsername(), "LindaFlori");
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("LindaFlori").toString());
     }
 
     @Test
-    void updateLoggedUserBirthdate() {
+    void updateUserBirthdate() {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
 
         LocalDate newBirthday = LocalDate.of(2020, Month.DECEMBER, 17);
         try {
-            app.updateLoggedUserBirthdate(newBirthday);
+            app.updateUserBirthdate(-1, newBirthday);
         } catch (ErrorUpdatingUserException e){
             System.err.println(e.getMessage());
         }
@@ -177,16 +204,26 @@ class JosefinFitnessAppTest {
         assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getBirthdate(), newBirthday);
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
+
+        LocalDate newBirthday2 = LocalDate.of(2021, Month.DECEMBER, 13);
+        try {
+            app.updateUserBirthdate(1, newBirthday2);
+        } catch (ErrorUpdatingUserException e){
+            System.err.println(e.getMessage());
+        }
+
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getBirthdate(), newBirthday2);
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
     }
 
     @Test
-    void updateLoggedUserAddress() {
+    void updateUserAddress() {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
 
         try {
-            app.updateLoggedUserAddress("Rua de abana o pinto");
+            app.updateUserAddress(-1, "Rua de abana o pinto");
         } catch (ErrorUpdatingUserException e){
             System.err.println(e.getMessage());
         }
@@ -194,16 +231,25 @@ class JosefinFitnessAppTest {
         assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getAddress(), "Rua de abana o pinto");
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
+
+        try {
+            app.updateUserAddress(1, "Rua de abana o rabo");
+        } catch (ErrorUpdatingUserException e){
+            System.err.println(e.getMessage());
+        }
+
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getAddress(), "Rua de abana o rabo");
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
     }
 
     @Test
-    void updateLoggedUserEmail() {
+    void updateUserEmail() {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
 
         try {
-            app.updateLoggedUserEmail("panadosComAtum@gmail.com");
+            app.updateUserEmail(-1, "panadosComAtum@gmail.com");
         } catch (ErrorUpdatingUserException e){
             System.err.println(e.getMessage());
         }
@@ -211,16 +257,25 @@ class JosefinFitnessAppTest {
         assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getEmail(), "panadosComAtum@gmail.com");
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
+
+        try {
+            app.updateUserEmail(1, "panadosConTigo@gmail.com");
+        } catch (ErrorUpdatingUserException e){
+            System.err.println(e.getMessage());
+        }
+
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getEmail(), "panadosConTigo@gmail.com");
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
     }
 
     @Test
-    void updateLoggedUserHeight() {
+    void updateUserHeight() {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
 
         try {
-            app.updateLoggedUserHeight(195.2);
+            app.updateUserHeight(-1, 195.2);
         } catch (ErrorUpdatingUserException e){
             System.err.println(e.getMessage());
         }
@@ -228,16 +283,25 @@ class JosefinFitnessAppTest {
         assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getHeight(), 195.2);
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
+
+        try {
+            app.updateUserHeight(1, 135.2);
+        } catch (ErrorUpdatingUserException e){
+            System.err.println(e.getMessage());
+        }
+
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getHeight(), 135.2);
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
     }
 
     @Test
-    void updateLoggedUserWeight() {
+    void updateUserWeight() {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
 
         try {
-            app.updateLoggedUserWeight(124.5);
+            app.updateUserWeight(-1, 124.5);
         } catch (ErrorUpdatingUserException e){
             System.err.println(e.getMessage());
         }
@@ -245,16 +309,25 @@ class JosefinFitnessAppTest {
         assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getWeight(), 124.5);
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
+
+        try {
+            app.updateUserWeight(1, 104.5);
+        } catch (ErrorUpdatingUserException e){
+            System.err.println(e.getMessage());
+        }
+
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getWeight(), 104.5);
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
     }
 
     @Test
-    void updateLoggedUserHearFreq() {
+    void updateUserHearFreq() {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
 
         try {
-            app.updateLoggedUserHearFreq(75);
+            app.updateUserHearFreq(-1, 75);
         } catch (ErrorUpdatingUserException e){
             System.err.println(e.getMessage());
         }
@@ -262,6 +335,15 @@ class JosefinFitnessAppTest {
         assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getHeartFreq(), 75);
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
+
+        try {
+            app.updateUserHearFreq(-1, 90);
+        } catch (ErrorUpdatingUserException e){
+            System.err.println(e.getMessage());
+        }
+
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getHeartFreq(), 90);
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
     }
 
     @Test

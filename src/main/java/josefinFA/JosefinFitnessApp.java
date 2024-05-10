@@ -118,37 +118,86 @@ public class JosefinFitnessApp implements Serializable {
     public String getLoggedUserInfo(){
         return this.userController.getUsers().getUserWithId(this.userID).toString();
     }
+    //endregion
 
-    public void updateLoggedUserName(String name) throws ErrorUpdatingUserException {
-        this.userController.updateUserName(this.userID, name);
+    //region User Methods
+    public void updateUserName(
+            int id,
+            String name
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserName(_id, name);
     }
 
-    public void updateLoggedUserUsername(String username) throws UsernameAlreadyExistsException, ErrorUpdatingUserException {
-        this.userController.updateUserUsername(this.userID, username);
+    public void updateUserUsername(
+            int id,
+            String username
+    ) throws UsernameAlreadyExistsException, ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserUsername(_id, username);
     }
 
-    public void updateLoggedUserBirthdate(LocalDate birthdate) throws ErrorUpdatingUserException {
-        this.userController.updateUserBirthdate(this.userID, birthdate);
+    public void updateUserBirthdate(
+            int id,
+            LocalDate birthdate) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserBirthdate(_id, birthdate);
     }
 
-    public void updateLoggedUserAddress(String address) throws ErrorUpdatingUserException {
-        this.userController.updateUserAddress(this.userID, address);
+    public void updateUserAddress(
+            int id,
+            String address
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserAddress(_id, address);
     }
 
-    public void updateLoggedUserEmail(String email) throws ErrorUpdatingUserException {
-        this.userController.updateUserEmail(this.userID, email);
+    public void updateUserEmail(
+            int id,
+            String email
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserEmail(_id, email);
     }
 
-    public void updateLoggedUserHeight(double height) throws ErrorUpdatingUserException {
-        this.userController.updateUserHeight(this.userID, height);
+    public void updateUserHeight(
+            int id,
+            double height
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserHeight(_id, height);
     }
 
-    public void updateLoggedUserWeight(double weight) throws ErrorUpdatingUserException {
-        this.userController.updateUserWeight(this.userID, weight);
+    public void updateUserWeight(
+            int id,
+            double weight
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserWeight(_id, weight);
     }
 
-    public void updateLoggedUserHearFreq(int hearFreq) throws ErrorUpdatingUserException {
-        this.userController.updateUserHeartFrequency(this.userID, hearFreq);
+    public void updateUserHearFreq(
+            int id,
+            int hearFreq
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserHeartFrequency(_id, hearFreq);
     }
     //endregion
 
