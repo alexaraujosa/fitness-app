@@ -36,7 +36,7 @@ class JosefinFitnessAppTest {
     int heartFreq = 70;
     CasualUser caUser = new CasualUser(1,name, username, birthday, address, email, true, weight, height, heartFreq);
 
-    private void fillApp(){
+    private void fillApp() throws UsernameAlreadyExistsException {
         // Adicionando 10 CasualUsers
         for (int i = 0; i < 10; i++) {
             app.addCasualUser("Casual " + name + i, "Casual " + username + i, birthday, address, email, true, weight, height, heartFreq);
@@ -84,7 +84,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void login() {
+    void login() throws UsernameAlreadyExistsException {
         //Adding user to test login
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
@@ -99,7 +99,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void logout() {
+    void logout() throws UsernameAlreadyExistsException {
 
         //Adding user to test login
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
@@ -110,7 +110,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void getLoggedUserInfo() {
+    void getLoggedUserInfo() throws UsernameAlreadyExistsException {
 
         //Adding user to test login
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
@@ -121,7 +121,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void updateUserName() {
+    void updateUserName() throws UsernameAlreadyExistsException {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
@@ -146,7 +146,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void updateUserUsername() {
+    void updateUserUsername() throws UsernameAlreadyExistsException {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
         app.addProfessionalUser("Paulão", "gigaChad", birthday, address, email, true, weight, height, heartFreq);
 
@@ -189,7 +189,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void updateUserBirthdate() {
+    void updateUserBirthdate() throws UsernameAlreadyExistsException {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
@@ -217,7 +217,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void updateUserAddress() {
+    void updateUserAddress() throws UsernameAlreadyExistsException {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
@@ -243,7 +243,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void updateUserEmail() {
+    void updateUserEmail() throws UsernameAlreadyExistsException {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
@@ -269,7 +269,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void updateUserHeight() {
+    void updateUserHeight() throws UsernameAlreadyExistsException {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
@@ -295,7 +295,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void updateUserWeight() {
+    void updateUserWeight() throws UsernameAlreadyExistsException {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
@@ -321,7 +321,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void updateUserHearFreq() {
+    void updateUserHearFreq() throws UsernameAlreadyExistsException {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
@@ -347,7 +347,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addRowingToUser() {
+    void addRowingToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -377,7 +377,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addSkatingToUser() {
+    void addSkatingToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -407,7 +407,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addTrackRunningToUser() {
+    void addTrackRunningToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -437,7 +437,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addMountainBikingToUser() {
+    void addMountainBikingToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -467,7 +467,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addRoadCyclingToUser() {
+    void addRoadCyclingToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -497,7 +497,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addRoadRunningToUser() {
+    void addRoadRunningToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -527,7 +527,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addTrailRunningToUser() {
+    void addTrailRunningToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -557,7 +557,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addAbdominalExercisesToUser() {
+    void addAbdominalExercisesToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -587,7 +587,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addPushUpsToUser() {
+    void addPushUpsToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -617,7 +617,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addStretchingToUser() {
+    void addStretchingToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -647,7 +647,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addLegExtensionToUser() {
+    void addLegExtensionToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -677,7 +677,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addWeightLiftingToUser() {
+    void addWeightLiftingToUser() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         app.login("Casual paulo12340");
@@ -707,7 +707,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void deleteAccount() {
+    void deleteAccount() throws UsernameAlreadyExistsException {
         this.fillApp();
 //        for(User u : app.getUserController().getUsers().getUsersList()){
 //            System.out.println(u.toString());
@@ -730,7 +730,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addCasualUser() {
+    void addCasualUser() throws UsernameAlreadyExistsException {
         CasualUser u = new CasualUser(1, name, username, birthday, address, email, true, weight, height, heartFreq);
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
@@ -739,7 +739,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addAmateurUser() {
+    void addAmateurUser() throws UsernameAlreadyExistsException {
         AmateurUser u = new AmateurUser(1, name, username, birthday, address, email, true, weight, height, heartFreq);
         app.addAmateurUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
@@ -748,7 +748,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addProfessionalUser() {
+    void addProfessionalUser() throws UsernameAlreadyExistsException {
         ProfessionalUser u = new ProfessionalUser(1, name, username, birthday, address, email, true, weight, height, heartFreq);
         app.addProfessionalUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
@@ -757,7 +757,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void removeUser() {
+    void removeUser() throws UsernameAlreadyExistsException {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
         app.login("paulo1234");
@@ -768,7 +768,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void userWithMostCaloriesBurned() {
+    void userWithMostCaloriesBurned() throws UsernameAlreadyExistsException {
         this.loadState();
 
         app.loadStats();
@@ -778,7 +778,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void userWithMostActivitiesCompleted() {
+    void userWithMostActivitiesCompleted() throws UsernameAlreadyExistsException {
         this.loadState();
 
         app.loadStats();
@@ -791,7 +791,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void mostCommonActivity() {
+    void mostCommonActivity() throws UsernameAlreadyExistsException {
         this.loadState();
         app.loadStats();
 
@@ -799,7 +799,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void distanceDoneByUser() {
+    void distanceDoneByUser() throws UsernameAlreadyExistsException {
         this.loadState();
         app.loadStats();
 
@@ -813,7 +813,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void altimetryDoneByUser() {
+    void altimetryDoneByUser() throws UsernameAlreadyExistsException {
         this.loadState();
         app.loadStats();
 
@@ -827,7 +827,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void getUsersActivities() {
+    void getUsersActivities() throws UsernameAlreadyExistsException {
         this.loadState();
 
         try {
@@ -840,7 +840,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void saveState(){
+    void saveState() throws UsernameAlreadyExistsException {
         this.fillApp();
 
 
@@ -872,7 +872,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void loadState() {
+    void loadState() throws UsernameAlreadyExistsException {
         assertEquals(app.getUserID(), -1);
 
         app.loadState("TesteFile");

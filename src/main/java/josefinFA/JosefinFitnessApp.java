@@ -106,6 +106,68 @@ public class JosefinFitnessApp implements Serializable {
         }
     }
 
+    //TODO: Fazer testes para isto tb
+    //TODO: Tratar erros nos testes
+    public void signupCasualUser(
+            String name,
+            String username,
+            LocalDate birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ) throws UsernameAlreadyExistsException {
+        if(userController.isUsernameAvailable(username)){
+            int id = idManager.generateUniqueUserID();
+            userController.addCasualUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
+            this.userID = id;
+        } else {
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
+        }
+    }
+
+    public void signupAmateurUser(
+            String name,
+            String username,
+            LocalDate birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ) throws UsernameAlreadyExistsException {
+        if(userController.isUsernameAvailable(username)){
+            int id = idManager.generateUniqueUserID();
+            userController.addAmateurUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
+            this.userID = id;
+        } else {
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
+        }
+    }
+
+    public void signupProfessionalUser(
+            String name,
+            String username,
+            LocalDate birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ) throws UsernameAlreadyExistsException {
+        if(userController.isUsernameAvailable(username)){
+            int id = idManager.generateUniqueUserID();
+            userController.addProfessionalUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
+            this.userID = id;
+        } else {
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
+        }
+    }
+
     public void logout(){
         this.userID = -1;
     }
@@ -497,12 +559,12 @@ public class JosefinFitnessApp implements Serializable {
             double height,
             double weight,
             int heartFreq
-    ) {
+    ) throws UsernameAlreadyExistsException {
         if(userController.isUsernameAvailable(username)){
             int id = idManager.generateUniqueUserID();
             userController.addCasualUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
         } else {
-            System.err.println("Username " + username + " already exists");
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
         }
     }
 
@@ -516,12 +578,12 @@ public class JosefinFitnessApp implements Serializable {
             double height,
             double weight,
             int heartFreq
-    ) {
+    ) throws UsernameAlreadyExistsException {
         if(userController.isUsernameAvailable(username)){
             int id = idManager.generateUniqueUserID();
             userController.addAmateurUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
         } else {
-            System.err.println("Username " + username + " already exists");
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
         }
     }
 
@@ -535,12 +597,12 @@ public class JosefinFitnessApp implements Serializable {
             double height,
             double weight,
             int heartFreq
-    ) {
+    ) throws UsernameAlreadyExistsException {
         if(userController.isUsernameAvailable(username)){
             int id = idManager.generateUniqueUserID();
             userController.addProfessionalUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
         } else {
-            System.err.println("Username " + username + " already exists");
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
         }
     }
 
