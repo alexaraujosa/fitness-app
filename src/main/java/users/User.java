@@ -3,6 +3,7 @@ package users;
 import TrainingPlan.TrainingPlan;
 import activities.Activity;
 import activities.ActivityController;
+import activities.Hard;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
@@ -324,11 +325,11 @@ public abstract class User implements Serializable {
     //endregion
 
     //region Training Plan Methods
-    public void addTrainingPlan(TrainingPlan tp){
-        //TODO: esta função tera que verificar as regras do plano de treino
+    public void addTrainingPlan(TrainingPlan tp) {
         this.trainingSchedule.add(tp);
-        // Uma plano de treino não pode ter mais de uma atividade hard por dia, nem pode ter ativadade hard em dias consecutivos
-        // nunca pode ter mais de 3 atividades por dia
+        for(Activity a : tp.getActivities()) {
+            this.addActivity(a);
+        }
     }
 
     public void updateTrainingPlan(TrainingPlan oldTp, TrainingPlan newTp){

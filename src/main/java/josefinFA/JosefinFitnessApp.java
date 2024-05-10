@@ -452,7 +452,38 @@ public class JosefinFitnessApp implements Serializable {
     //endregion
 
     //region Training Plan Methods
-    //TODO: Adicionar planos de treino
+    public void addManualTrainingPlan(
+            int id,
+            List<Activity> activities,
+            LocalDate doDate,
+            boolean[] repeat
+    ) throws InvalidValueException, ErrorHardActivityCloseException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int idTrainingPlan = this.idManager.generateUniqueTrainingPlanID();
+        this.userController.addManualTrainingPlan(idTrainingPlan, _id, activities, doDate, repeat);
+    }
+
+    public void addAutomaticTrainingPlan(
+            int id,
+            boolean wantsHard,
+            int maximumActivityPerDay,
+            LocalDate doDate,
+            boolean[] repeat,
+            int minimumCaloriesConsumption,
+            int planType
+    ) throws ErrorHardActivityCloseException, InvalidValueException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int idTrainingPlan = this.idManager.generateUniqueTrainingPlanID();
+        int[] idsActivity = new int[maximumActivityPerDay];
+        for(int i = 0; i < maximumActivityPerDay; i++) {
+            idsActivity[i] = this.idManager.generateUniqueActivityID();
+        }
+        this.userController.addAutomaticTrainingPlan(idTrainingPlan, _id, idsActivity, wantsHard, maximumActivityPerDay, doDate, repeat, minimumCaloriesConsumption, planType);
+    }
     //endregion Methods
 
     //region Administrator Methods

@@ -1,6 +1,7 @@
 package TrainingPlan;
 
 import activities.Activity;
+import activities.Hard;
 
 import java.io.Serializable;
 import java.time.LocalDate;
@@ -33,15 +34,9 @@ public class TrainingPlan implements Serializable {
     public LocalDate getDoDate() { return this.doDate; }
     public boolean[] getRepeat() { return Arrays.copyOf(this.repeat, this.repeat.length); }
     public int getCalories() { return this.calories; }
+    public boolean containsHardActivity() {
+        return this.getActivities().stream().anyMatch(a -> a instanceof Hard);
+    }
     //endregion
 
-
-    //TODO: O que o utilziador pode escolher no plano de treino?
-    /**
-     * o tipo de atividades que quer ter
-     * o numero maximo de atividades por dia e numero maximo de atividades distintas
-     * a recurrencia semanal das atividades
-     * o consumo calorico minimo que pertende ter
-     */
-    // Ao tentar adicionar o plano de treino terão de ser feitas as verificações que estão em user.addTrainingplan
 }
