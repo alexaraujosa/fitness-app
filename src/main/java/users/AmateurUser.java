@@ -51,6 +51,22 @@ public class AmateurUser extends User implements Serializable {
         return (int) (userValue + userValue * (percentage));
     }
 
+    @Override
+    public String toString() {
+        return "{AMATEUR USER}--{" +
+                " | ID: " + super.getId() +
+                " | NAME: " + super.getName() +
+                " | USERNAME: " + super.getUsername() +
+                " | BIRTHDATE: " + super.getBirthdate() +
+                " | ADDRESS: " + super.getAddress() +
+                " | EMAIL: " + super.getEmail() +
+                " | SEX: " + (super.getSex() ? "Male" : "Female") +
+                " | HEIGHT: " + super.getHeight() +
+                " | WEIGHT: " + super.getWeight() +
+                " | HEART FREQ: " + super.getHeartFreq() +
+                "}";
+    }
+
     public AmateurUser clone(){
         return new AmateurUser(this);
     }

@@ -1,8 +1,6 @@
 package josefinFA;
 
 import activities.Activity;
-import activities.DistanceAct;
-import activities.DistanceAndAltimetryAct;
 import exceptions.*;
 import users.User;
 import users.UserController;
@@ -11,9 +9,7 @@ import utils.IDManager;
 import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class JosefinFitnessApp implements Serializable {
     private int userID;
@@ -110,6 +106,68 @@ public class JosefinFitnessApp implements Serializable {
         }
     }
 
+    //TODO: Fazer testes para isto tb
+    //TODO: Tratar erros nos testes
+    public void signupCasualUser(
+            String name,
+            String username,
+            LocalDate birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ) throws UsernameAlreadyExistsException {
+        if(userController.isUsernameAvailable(username)){
+            int id = idManager.generateUniqueUserID();
+            userController.addCasualUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
+            this.userID = id;
+        } else {
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
+        }
+    }
+
+    public void signupAmateurUser(
+            String name,
+            String username,
+            LocalDate birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ) throws UsernameAlreadyExistsException {
+        if(userController.isUsernameAvailable(username)){
+            int id = idManager.generateUniqueUserID();
+            userController.addAmateurUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
+            this.userID = id;
+        } else {
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
+        }
+    }
+
+    public void signupProfessionalUser(
+            String name,
+            String username,
+            LocalDate birthdate,
+            String address,
+            String email,
+            boolean sex,
+            double height,
+            double weight,
+            int heartFreq
+    ) throws UsernameAlreadyExistsException {
+        if(userController.isUsernameAvailable(username)){
+            int id = idManager.generateUniqueUserID();
+            userController.addProfessionalUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
+            this.userID = id;
+        } else {
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
+        }
+    }
+
     public void logout(){
         this.userID = -1;
     }
@@ -122,37 +180,86 @@ public class JosefinFitnessApp implements Serializable {
     public String getLoggedUserInfo(){
         return this.userController.getUsers().getUserWithId(this.userID).toString();
     }
+    //endregion
 
-    public void updateLoggedUserName(String name) throws ErrorUpdatingUserException {
-        this.userController.updateUserName(this.userID, name);
+    //region User Methods
+    public void updateUserName(
+            int id,
+            String name
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserName(_id, name);
     }
 
-    public void updateLoggedUserUsername(String username) throws UsernameAlreadyExistsException, ErrorUpdatingUserException {
-        this.userController.updateUserUsername(this.userID, username);
+    public void updateUserUsername(
+            int id,
+            String username
+    ) throws UsernameAlreadyExistsException, ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserUsername(_id, username);
     }
 
-    public void updateLoggedUserBirthdate(LocalDate birthdate) throws ErrorUpdatingUserException {
-        this.userController.updateUserBirthdate(this.userID, birthdate);
+    public void updateUserBirthdate(
+            int id,
+            LocalDate birthdate) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserBirthdate(_id, birthdate);
     }
 
-    public void updateLoggedUserAddress(String address) throws ErrorUpdatingUserException {
-        this.userController.updateUserAddress(this.userID, address);
+    public void updateUserAddress(
+            int id,
+            String address
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserAddress(_id, address);
     }
 
-    public void updateLoggedUserEmail(String email) throws ErrorUpdatingUserException {
-        this.userController.updateUserEmail(this.userID, email);
+    public void updateUserEmail(
+            int id,
+            String email
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserEmail(_id, email);
     }
 
-    public void updateLoggedUserHeight(double height) throws ErrorUpdatingUserException {
-        this.userController.updateUserHeight(this.userID, height);
+    public void updateUserHeight(
+            int id,
+            double height
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserHeight(_id, height);
     }
 
-    public void updateLoggedUserWeight(double weight) throws ErrorUpdatingUserException {
-        this.userController.updateUserWeight(this.userID, weight);
+    public void updateUserWeight(
+            int id,
+            double weight
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserWeight(_id, weight);
     }
 
-    public void updateLoggedUserHearFreq(int hearFreq) throws ErrorUpdatingUserException {
-        this.userController.updateUserHeartFrequency(this.userID, hearFreq);
+    public void updateUserHearFreq(
+            int id,
+            int hearFreq
+    ) throws ErrorUpdatingUserException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        this.userController.updateUserHeartFrequency(_id, hearFreq);
     }
     //endregion
 
@@ -407,7 +514,38 @@ public class JosefinFitnessApp implements Serializable {
     //endregion
 
     //region Training Plan Methods
-    //TODO: Adicionar planos de treino
+    public void addManualTrainingPlan(
+            int id,
+            List<Activity> activities,
+            LocalDate doDate,
+            boolean[] repeat
+    ) throws InvalidValueException, ErrorHardActivityCloseException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int idTrainingPlan = this.idManager.generateUniqueTrainingPlanID();
+        this.userController.addManualTrainingPlan(idTrainingPlan, _id, activities, doDate, repeat);
+    }
+
+    public void addAutomaticTrainingPlan(
+            int id,
+            boolean wantsHard,
+            int maximumActivityPerDay,
+            LocalDate doDate,
+            boolean[] repeat,
+            int minimumCaloriesConsumption,
+            int planType
+    ) throws ErrorHardActivityCloseException, InvalidValueException {
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int idTrainingPlan = this.idManager.generateUniqueTrainingPlanID();
+        int[] idsActivity = new int[maximumActivityPerDay];
+        for(int i = 0; i < maximumActivityPerDay; i++) {
+            idsActivity[i] = this.idManager.generateUniqueActivityID();
+        }
+        this.userController.addAutomaticTrainingPlan(idTrainingPlan, _id, idsActivity, wantsHard, maximumActivityPerDay, doDate, repeat, minimumCaloriesConsumption, planType);
+    }
     //endregion Methods
 
     //region Administrator Methods
@@ -421,12 +559,12 @@ public class JosefinFitnessApp implements Serializable {
             double height,
             double weight,
             int heartFreq
-    ) {
+    ) throws UsernameAlreadyExistsException {
         if(userController.isUsernameAvailable(username)){
             int id = idManager.generateUniqueUserID();
             userController.addCasualUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
         } else {
-            System.err.println("Username " + username + " already exists");
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
         }
     }
 
@@ -440,12 +578,12 @@ public class JosefinFitnessApp implements Serializable {
             double height,
             double weight,
             int heartFreq
-    ) {
+    ) throws UsernameAlreadyExistsException {
         if(userController.isUsernameAvailable(username)){
             int id = idManager.generateUniqueUserID();
             userController.addAmateurUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
         } else {
-            System.err.println("Username " + username + " already exists");
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
         }
     }
 
@@ -459,12 +597,12 @@ public class JosefinFitnessApp implements Serializable {
             double height,
             double weight,
             int heartFreq
-    ) {
+    ) throws UsernameAlreadyExistsException {
         if(userController.isUsernameAvailable(username)){
             int id = idManager.generateUniqueUserID();
             userController.addProfessionalUser(id, name, username, birthdate, address, email, sex, height, weight, heartFreq);
         } else {
-            System.err.println("Username " + username + " already exists");
+            throw new UsernameAlreadyExistsException("Username " + username + " already exists");
         }
     }
 
@@ -479,110 +617,37 @@ public class JosefinFitnessApp implements Serializable {
     //endregion
 
     //region Stats
+    //Chamar sempre esta função quando entras na view das stats... ela atualiza as fixas e clona o estado da app para lá
     public void loadStats(){
-
+        this.stats.setUserController(this.userController.clone());
+        this.stats.setSystemDate(this.systemDate);
+        this.stats.updateAllTimeValues();
     }
 
-    /*This function returns the userId of the user with most calories burned*/
-    public int UserWithMostCaloriesBurned(LocalDateTime from){
-        int burnedCalories = -1;
-        int finalUserID = -1;
-
-        List<User> users = this.userController.getUsers().getUsersList();
-        for(User user : users){
-            int newBurnedCalories = 0;
-            for(Activity act : user.getActivityController().getActivities().getActivities().values()){
-                if(act.getBegin().isAfter(from) && act.getEnd().isBefore(this.systemDate)){
-                    newBurnedCalories += user.calculateBurnedCalories(act.getId());
-                }
-            }
-            if(newBurnedCalories > burnedCalories){
-                burnedCalories = newBurnedCalories;
-                finalUserID = user.getId();
-            }
-        }
-        return finalUserID;
+    public User userWithMostCaloriesBurned(LocalDateTime from){
+        return this.stats.userWithMostCaloriesBurned(from);
     }
 
-    public int UserWithMostActivitiesCompleted(LocalDateTime from){
-        int nActivities = -1;
-        int finalUserID = -1;
-        List<User> users = this.userController.getUsers().getUsersList();
-        for(User user : users){
-            int newNActivities = 0;
-            for(Activity act : user.getActivityController().getActivities().getActivities().values()){
-                if(act.getBegin().isAfter(from) && act.getEnd().isAfter(this.systemDate)){
-                    newNActivities++;
-                }
-            }
-            if(newNActivities > nActivities){
-                nActivities = newNActivities;
-                finalUserID = user.getId();
-            }
-        }
-        return finalUserID;
+    public User userWithMostActivitiesCompleted(LocalDateTime from){
+        return this.stats.userWithMostActivitiesCompleted(from);
     }
 
-
-    public String mostCommunActivity() {
-        Map<String, Integer> nActivitiesByType = new HashMap<>();
-        List<User> users = this.userController.getUsers().getUsersList();
-
-        for (User user : users) {
-            for (Activity act : user.getActivityController().getActivities().getActivities().values().stream().toList()) {
-                String activityType = act.getClass().getSimpleName();
-                nActivitiesByType.put(activityType, nActivitiesByType.getOrDefault(activityType, 0) + 1);
-            }
-        }
-
-        String mostCommonActivityType = "";
-        int maxCount = 0;
-        for (Map.Entry<String, Integer> entry : nActivitiesByType.entrySet()) {
-            if (entry.getValue() > maxCount) {
-                maxCount = entry.getValue();
-                mostCommonActivityType = entry.getKey();
-            }
-        }
-
-        return mostCommonActivityType;
+    public String mostCommonActivity() {
+        return this.stats.mostCommunActivity();
     }
 
     public int distanceDoneByUser(int userID, LocalDateTime from){
-        int distance = 0;
-        User user = this.userController.getUsers().getUserWithId(userID);
-        for(Activity act : user.getActivityController().getActivities().getActivities().values()){
-            if(act.getBegin().isAfter(from) &&
-                    act.getEnd().isAfter(this.systemDate) &&
-                    act.getClass().getSuperclass().getSimpleName().equals("DistanceAct")){
-                DistanceAct myAct = (DistanceAct) act;
-                distance += myAct.getDistance();
-            } else if(act.getBegin().isAfter(from) &&
-                    act.getEnd().isAfter(this.systemDate) &&
-                    act.getClass().getSuperclass().getSimpleName().equals("DistanceAndAltimetryAct")) {
-                DistanceAndAltimetryAct myAct = (DistanceAndAltimetryAct) act;
-                distance += myAct.getDistance();
-            }
-        }
-        return distance;
+        return this.stats.distanceDoneByUser(userID, from);
     }
 
     public int altimetryDoneByUser(int userID, LocalDateTime from){
-        int altimetry = 0;
-        User user = this.userController.getUsers().getUserWithId(userID);
-        for(Activity act : user.getActivityController().getActivities().getActivities().values()){
-            if(act.getBegin().isAfter(from) &&
-                    act.getEnd().isAfter(this.systemDate) &&
-                    act.getClass().getSuperclass().getSimpleName().equals("DistanceAndAltimetryAct")){
-                DistanceAndAltimetryAct myAct = (DistanceAndAltimetryAct) act;
-                altimetry += myAct.getAltimetry();
-            }
-        }
-        return altimetry;
+        return this.stats.altimetryDoneByUser(userID, from);
     }
 
-    public List<Activity> getUsersActivities(int userID){
+    public List<Activity> getUsersActivities(int userID) {
         return this.userController.getUsers().getUserWithId(userID).getActivityController().getActivities().getActivities().values().stream().toList();
     }
+
     //endregion
 
     // region State Management
