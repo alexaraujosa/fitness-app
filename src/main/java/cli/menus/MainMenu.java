@@ -1,5 +1,6 @@
 package cli.menus;
 
+import cli.Constants;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.graphics.SimpleTheme;
@@ -40,27 +41,27 @@ public class MainMenu extends AbstractWindow implements MenuPage {
         Panel contentPanel = new Panel();
         contentPanel.setFillColorOverride(BACKGROUND);
 
-        Theme theme = SimpleTheme.makeTheme(
-                true,
-                TextColor.ANSI.WHITE,
-                BACKGROUND,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLACK,
-                TextColor.ANSI.BLUE,
-                TextColor.ANSI.YELLOW,
-                TextColor.ANSI.MAGENTA
-        );
-
-        Theme disabledTheme = SimpleTheme.makeTheme(
-                true,
-                TextColor.ANSI.BLACK,
-                TextColor.ANSI.CYAN,
-                TextColor.ANSI.WHITE,
-                TextColor.ANSI.BLACK,
-                TextColor.ANSI.BLUE,
-                TextColor.ANSI.YELLOW,
-                TextColor.ANSI.MAGENTA
-        );
+//        Theme theme = SimpleTheme.makeTheme(
+//                true,
+//                TextColor.ANSI.WHITE,
+//                BACKGROUND,
+//                TextColor.ANSI.WHITE,
+//                TextColor.ANSI.BLACK,
+//                TextColor.ANSI.BLUE,
+//                TextColor.ANSI.YELLOW,
+//                TextColor.ANSI.MAGENTA
+//        );
+//
+//        Theme disabledTheme = SimpleTheme.makeTheme(
+//                true,
+//                TextColor.ANSI.BLACK,
+//                TextColor.ANSI.CYAN,
+//                TextColor.ANSI.WHITE,
+//                TextColor.ANSI.BLACK,
+//                TextColor.ANSI.BLUE,
+//                TextColor.ANSI.YELLOW,
+//                TextColor.ANSI.MAGENTA
+//        );
 
         var loginWrapper = new Object(){
             String username = (app.getUserID() != -1)
@@ -72,14 +73,14 @@ public class MainMenu extends AbstractWindow implements MenuPage {
 
             public void updateAccountStatus(boolean active) {
                 if (active) {
-                    this.loginButton.setTheme(disabledTheme);
+                    this.loginButton.setTheme(Constants.DISABLED_THEME);
                     this.loginButton.setEnabled(false);
-                    this.signupButton.setTheme(disabledTheme);
+                    this.signupButton.setTheme(Constants.DISABLED_THEME);
                     this.signupButton.setEnabled(false);
                 } else {
-                    this.loginButton.setTheme(theme);
+                    this.loginButton.setTheme(Constants.ENABLED_THEME);
                     this.loginButton.setEnabled(true);
-                    this.signupButton.setTheme(theme);
+                    this.signupButton.setTheme(Constants.ENABLED_THEME);
                     this.signupButton.setEnabled(true);
                 }
             }
@@ -88,7 +89,7 @@ public class MainMenu extends AbstractWindow implements MenuPage {
         Logger.logger.info("Logged in: " + loginWrapper.loggedIn + " | Username: '" + loginWrapper.username + "'" + " | ID: " + app.getUserID());
 
         Label sizeLabel = new Label("Size: {" + size.getColumns() + "x" + size.getRows() + "}" + "\nUsername: <None>\nUser Id: <None>");
-        sizeLabel.setTheme(theme);
+        sizeLabel.setTheme(Constants.ENABLED_THEME);
         sizeLabel.setLayoutData(GridLayout.createLayoutData(
                 GridLayout.Alignment.CENTER,
                 GridLayout.Alignment.CENTER,
@@ -124,7 +125,7 @@ public class MainMenu extends AbstractWindow implements MenuPage {
                     Logger.logger.info("RESULT: " + this.result);
                     this.close();
                 }
-        ).setTheme(theme)
+        ).setTheme(Constants.ENABLED_THEME)
             .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER));
 
         if (loginWrapper.loggedIn) loginButton.setEnabled(false);
@@ -140,7 +141,7 @@ public class MainMenu extends AbstractWindow implements MenuPage {
                 () -> {
                     new SignupMenu(this.textGUI, "Signup", app).show();
                 }
-        ).setTheme(theme)
+        ).setTheme(Constants.ENABLED_THEME)
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER));
 
         if (loginWrapper.loggedIn) signupButton.setEnabled(false);
@@ -155,14 +156,16 @@ public class MainMenu extends AbstractWindow implements MenuPage {
                                 "Admin Menu", "This would take us to the admin menu.", MessageDialogButton.OK
                         )
                 )
-                .setTheme(theme)
+                .setTheme(Constants.ENABLED_THEME)
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER))
         );
 
         contentPanel.addComponent(
-                new Button("Close", this::close)
-                        .setTheme(theme)
-                        .setLayoutData(GridLayout.createHorizontallyEndAlignedLayoutData(2))
+                new Button("Close", () -> {
+                    this.result = MenuId.NONE;
+                    this.close();
+                }).setTheme(Constants.ENABLED_THEME)
+                    .setLayoutData(GridLayout.createHorizontallyEndAlignedLayoutData(2))
         );
 
         // Add padding to the end

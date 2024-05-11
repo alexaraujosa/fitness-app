@@ -312,6 +312,10 @@ public class CLI {
                 Logger.logger.info("New Menu: " + menu);
 
                 switch (menu) {
+                    case MenuId.NONE: {
+                        window = null;
+                        break;
+                    }
                     case MenuId.MAIN_MENU: {
                         window = new MainMenu(textGUI, "Josefin Fitness App", app);
                         break;
@@ -326,6 +330,8 @@ public class CLI {
                         break;
                     }
                 }
+
+                if (window == null) break;
 
                 menu = (MenuId)((MenuPage)window).show();
                 Logger.logger.info("Return Menu: " + menu);

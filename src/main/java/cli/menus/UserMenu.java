@@ -1,15 +1,12 @@
 package cli.menus;
 
+import cli.Constants;
 import cli.components.CustomMessageDialog;
 import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
-import exceptions.ErrorLoggingInException;
 import exceptions.ErrorRemovingUserException;
 import josefinFA.JosefinFitnessApp;
 import utils.Logger;
 
-import java.io.IOException;
 import java.util.Collections;
 
 public class UserMenu extends AbstractWindow implements MenuPage {
@@ -25,6 +22,7 @@ public class UserMenu extends AbstractWindow implements MenuPage {
 
         Panel contentPanel = new Panel();
         contentPanel.setLayoutManager((new GridLayout(1)).setLeftMarginSize(1).setRightMarginSize(1));
+        contentPanel.setTheme(Constants.ENABLED_THEME);
 
         Button updateInfoButton = (Button)new Button(
                 "Update Information",
@@ -71,8 +69,17 @@ public class UserMenu extends AbstractWindow implements MenuPage {
                             cmd.close();
                         }, 2)
                 )
-        );
+        ).setTheme(Constants.WARNING_TEXT);
         contentPanel.addComponent(removeAccountButton);
+
+        Button logoutButton = (Button)new Button(
+                "Logout",
+                () -> {
+                    app.logout();
+                    this.close();
+                }
+        );
+        contentPanel.addComponent(logoutButton);
 
         this.setComponent(contentPanel);
     }
