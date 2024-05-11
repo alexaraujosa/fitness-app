@@ -106,7 +106,6 @@ public class AddActivityMenu extends AbstractWindow implements MenuPage {
 
                         Object[] result = new Object[params.length];
                         for (int j = 0; j < params.length; j++) {
-                            Parameter param = params[j];
                             String paramName = activityConstructorParameterNames[finalI][j];
                             if (Arrays.asList(reservedParameterNames).contains(paramName)) {
                                 if (paramName.equals("id")) {
@@ -118,8 +117,15 @@ public class AddActivityMenu extends AbstractWindow implements MenuPage {
                         }
 
                         try {
+//                            Logger.logger.info("OLD ACTIVITIES: " + app.getUsersActivities(app.getUserID()));
+//
+//                            Logger.logger.info("RESULT: " + Arrays.toString(result));
+//                            Logger.logger.info("PARAMS: " + Arrays.toString(params));
+
                             constructor.invoke(app, result);
-//                            app.saveState(Constants.getSaveFilePath());
+                            app.saveState(Constants.getSaveFilePath());
+
+//                            Logger.logger.info("NEW ACTIVITIES: " + app.getUsersActivities(app.getUserID()));
                             this.close();
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             Logger.logger.warning("Unable to add activity: " + e.getMessage());
