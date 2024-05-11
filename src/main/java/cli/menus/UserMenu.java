@@ -13,12 +13,16 @@ public class UserMenu extends AbstractWindow implements MenuPage {
     private WindowBasedTextGUI textGUI;
     private JosefinFitnessApp app;
 
+    private MenuId result;
+
     public UserMenu(WindowBasedTextGUI textGUI, String title, JosefinFitnessApp app) {
         super(title);
         this.setHints(java.util.Set.copyOf(Collections.singletonList(Hint.CENTERED)));
 
         this.textGUI = textGUI;
         this.app = app;
+
+        this.result = MenuId.MAIN_MENU;
 
         Panel contentPanel = new Panel();
         contentPanel.setLayoutManager((new GridLayout(1)).setLeftMarginSize(1).setRightMarginSize(1));
@@ -43,7 +47,8 @@ public class UserMenu extends AbstractWindow implements MenuPage {
         Button addTrainingPlanButton = (Button)new Button(
                 "Add Training Plan",
                 () -> {
-
+                    this.result = MenuId.TRAINING_PLAN_MENU;
+                    this.close();
                 }
         );
         contentPanel.addComponent(addTrainingPlanButton);
@@ -52,7 +57,7 @@ public class UserMenu extends AbstractWindow implements MenuPage {
                 "Add Activity",
                 () -> {
                     try {
-                        new AddActivityMenu(textGUI,"", app).show();
+                        new AddActivityMenu(textGUI,"", app, false).show();
                     } catch (NoSuchMethodException e) {
                         Logger.logger.warning("Unable to open AddActivityMenu: " + e.getMessage() + "\n" + e.getStackTrace());
                     }
@@ -100,6 +105,6 @@ public class UserMenu extends AbstractWindow implements MenuPage {
     public Object show() {
         this.textGUI.addWindow(this);
         this.waitUntilClosed();
-        return MenuId.MAIN_MENU;
+        return this.result;
     }
 }
