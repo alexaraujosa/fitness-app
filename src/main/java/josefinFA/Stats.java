@@ -12,6 +12,7 @@ import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class Stats implements Serializable {
     private UserController userController;
@@ -223,9 +224,16 @@ public class Stats implements Serializable {
     }
     //endregion
 
+
     @Override
-    public boolean equals(Object obj) {
-        return true;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Stats stats = (Stats) o;
+        return Objects.equals(getUserController(), stats.getUserController()) &&
+                Objects.equals(getSystemDate(), stats.getSystemDate()) &&
+                Objects.equals(getAllTimeUserWithMostCaloriesBurned(), stats.getAllTimeUserWithMostCaloriesBurned()) &&
+                Objects.equals(getAllTimeUserWithMostActivitiesCompleted(), stats.getAllTimeUserWithMostActivitiesCompleted());
     }
 
     public Stats clone(){
