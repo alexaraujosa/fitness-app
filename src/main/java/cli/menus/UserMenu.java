@@ -1,0 +1,86 @@
+package cli.menus;
+
+import cli.components.CustomMessageDialog;
+import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
+import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
+import exceptions.ErrorLoggingInException;
+import exceptions.ErrorRemovingUserException;
+import josefinFA.JosefinFitnessApp;
+import utils.Logger;
+
+import java.io.IOException;
+import java.util.Collections;
+
+public class UserMenu extends AbstractWindow implements MenuPage {
+    private WindowBasedTextGUI textGUI;
+    private JosefinFitnessApp app;
+
+    public UserMenu(WindowBasedTextGUI textGUI, String title, JosefinFitnessApp app) {
+        super(title);
+        this.setHints(java.util.Set.copyOf(Collections.singletonList(Hint.CENTERED)));
+
+        this.textGUI = textGUI;
+        this.app = app;
+
+        Panel contentPanel = new Panel();
+        contentPanel.setLayoutManager((new GridLayout(1)).setLeftMarginSize(1).setRightMarginSize(1));
+
+        Button updateInfoButton = (Button)new Button(
+                "Update Information",
+                () -> {
+
+                }
+        );
+        contentPanel.addComponent(updateInfoButton);
+
+        Button addTrainingPlanButton = (Button)new Button(
+                "Add Training Plan",
+                () -> {
+
+                }
+        );
+        contentPanel.addComponent(addTrainingPlanButton);
+
+        Button addActivityButton = (Button)new Button(
+                "Add Activity",
+                () -> {
+
+                }
+        );
+        contentPanel.addComponent(addActivityButton);
+
+        Button removeAccountButton = (Button)new Button(
+                "Remove Account",
+                () -> CustomMessageDialog.showMessageDialog(
+                        this.textGUI,
+                        "Remove Account",
+                        "Are you sure you want to delete your account?" +
+                                "\n This action cannot be undone!",
+                        new CustomMessageDialog.CustomMessageDialogButton("Yes", (cmd) -> {
+                            cmd.close();
+                            try {
+                                app.deleteAccount();
+                                this.close();
+                            } catch (ErrorRemovingUserException e) {
+                                // We are guaranteed to have the user exist at this point. However, log it anyway.
+                                Logger.logger.severe(e.getMessage());
+                            }
+                        }, 1),
+                        new CustomMessageDialog.CustomMessageDialogButton("No", (cmd) -> {
+                            cmd.close();
+                        }, 2)
+                )
+        );
+        contentPanel.addComponent(removeAccountButton);
+
+        this.setComponent(contentPanel);
+    }
+
+    @Override
+    public Object show() {
+        this.textGUI.addWindow(this);
+        this.waitUntilClosed();
+        return MenuId.MAIN_MENU;
+    }
+}
