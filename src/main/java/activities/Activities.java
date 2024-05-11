@@ -61,6 +61,15 @@ public class Activities implements Serializable {
         // TODO: Else, error handler
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("--{ ACTIVITIES LIST }--\n");
+        this.getActivities().values().forEach(activity -> sb.append(activity.toString()));
+        sb.append("--{ END ACTIVITIES LIST }--\n");
+        return sb.toString();
+    }
+
     public Activities clone() { return new Activities(this); }
 
     public boolean equals(Object o) {
