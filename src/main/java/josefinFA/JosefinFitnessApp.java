@@ -930,10 +930,12 @@ public class JosefinFitnessApp implements Serializable {
             JosefinFitnessApp app = (JosefinFitnessApp) in.readObject();
             in.close();
             fileIn.close();
+
             this.userController = app.getUserController();
             this.idManager = app.getIdManager();
             this.systemDate = app.getSystemDate();
             this.userID = app.getUserID();
+            this.stats = app.getStats();
         } catch (IOException | ClassNotFoundException e) {
             System.err.println(e.getMessage());
         }
@@ -945,7 +947,9 @@ public class JosefinFitnessApp implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         JosefinFitnessApp that = (JosefinFitnessApp) o;
-        return this.getUserController().equals(that.getUserController()) &&
+        return this.userID == that.getUserID() &&
+                this.systemDate.isEqual(that.getSystemDate()) &&
+                this.getUserController().equals(that.getUserController()) &&
                 this.getIdManager().equals(that.getIdManager()) &&
                 this.getStats().equals(that.getStats());
     }

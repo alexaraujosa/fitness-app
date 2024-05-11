@@ -208,7 +208,8 @@ public class Users implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         Users users = (Users) o;
         return this.getUsersByUsername().equals(users.getUsersByUsername()) &&
-                this.getUsersById().equals(users.getUsersById());
+                this.getUsersById().equals(users.getUsersById()) &&
+                this.usersList.equals(users.getUsersList());
     }
 
     /**

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class TrainingPlan implements Serializable {
     private int id;
@@ -57,5 +58,22 @@ public class TrainingPlan implements Serializable {
         sb.append("}\n");
 
         return sb.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        TrainingPlan that = (TrainingPlan) o;
+        return getId() == that.getId() &&
+                getCalories() == that.getCalories() &&
+                Objects.equals(getActivities(), that.getActivities()) &&
+                Objects.equals(getDoDate(), that.getDoDate()) &&
+                Objects.deepEquals(getRepeat(), that.getRepeat());
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getActivities(), getDoDate(), Arrays.hashCode(getRepeat()), getCalories());
     }
 }

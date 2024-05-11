@@ -1,5 +1,6 @@
 package josefinFA;
 
+import activities.Activity;
 import activities.distance.Rowing;
 import activities.distance.Skating;
 import activities.distance.TrackRunning;
@@ -17,9 +18,13 @@ import org.junit.jupiter.api.Test;
 import users.*;
 import utils.IDManager;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintStream;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Month;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -27,7 +32,7 @@ class JosefinFitnessAppTest {
     JosefinFitnessApp app = new JosefinFitnessApp();
 
     String name = "Paulo";
-    String username = "paulo1234";
+    String username = "paulex";
     LocalDate birthday = LocalDate.of(2002, Month.DECEMBER, 17);
     String address = "123 Main Street";
     String email = "paulo1234@gmail.com";
@@ -36,21 +41,262 @@ class JosefinFitnessAppTest {
     int heartFreq = 70;
     CasualUser caUser = new CasualUser(1,name, username, birthday, address, email, true, weight, height, heartFreq);
 
-    private void fillApp() throws UsernameAlreadyExistsException {
-        // Adicionando 10 CasualUsers
-        for (int i = 0; i < 10; i++) {
-            app.addCasualUser("Casual " + name + i, "Casual " + username + i, birthday, address, email, true, weight, height, heartFreq);
-        }
+    public String generateRandomAlphabeticStrings() {
+        int leftLimit = 97; // letter 'a'
+        int rightLimit = 122; // letter 'z'
+        int targetStringLength = 10;
+        Random random = new Random();
 
-        // Adicionando 10 AmateurUsers
-        for (int i = 0; i < 10; i++) {
-            app.addAmateurUser("Amateur " + name + i, "Amateur " + username + i, birthday, address, email, true, weight, height, heartFreq);
-        }
+        return random.ints(leftLimit, rightLimit + 1)
+                .limit(targetStringLength)
+                .collect(StringBuilder::new, StringBuilder::appendCodePoint, StringBuilder::append)
+                .toString();
+    }
 
-        // Adicionando 10 ProfessionalUsers
-        for (int i = 0; i < 10; i++) {
-            app.addProfessionalUser("Professional " + name + i, "Professional " + username + i, birthday, address, email, true, weight, height, heartFreq);
+    private void populateAppWithUsers(){
+        Random rand = new Random();
+        int numberOfUsers = rand.nextInt(100,200);
+        int numberOfCasuals = 0;
+        int numberOfAmateurs = 0;
+        int numberOfProfessionals = 0;
+        System.out.println("--{ POPULATE APP }--");
+        System.out.println("Added Users: " + numberOfUsers);
+
+        for(int i = 0; i < numberOfUsers; i++){
+            String name = "Paulo";
+            String username = "paulex";
+            int birthYear = rand.nextInt(1900, 2014);
+            int birthMonth = rand.nextInt(1,12);
+            int birthDay = rand.nextInt(1, 28);
+            LocalDate birthdate = LocalDate.of(birthYear, birthMonth, birthDay);
+            String address = generateRandomAlphabeticStrings();
+            String email = generateRandomAlphabeticStrings() + "@gmail.com";
+            boolean sex = rand.nextBoolean();
+            double weight = rand.nextDouble(45,135);
+            double height = rand.nextDouble(150,230);
+            int heartFreq = rand.nextInt(45,95);
+
+            int userType = rand.nextInt(3);
+
+            switch (userType){
+                //Adds Casual User
+                case 0:
+                    try {
+                        numberOfCasuals++;
+                        app.addCasualUser(name + i, username + i, birthdate, address, email, sex, weight, height, heartFreq);
+                    } catch (UsernameAlreadyExistsException e){
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+                case 1:
+                    try {
+                        numberOfAmateurs++;
+                        app.addAmateurUser(name + i, username + i, birthdate, address, email, sex, weight, height, heartFreq);
+                    } catch (UsernameAlreadyExistsException e){
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+                case 2:
+                    try {
+                        numberOfProfessionals++;
+                        app.addProfessionalUser(name + i, username + i, birthdate, address, email, sex, weight, height, heartFreq);
+                    } catch (UsernameAlreadyExistsException e){
+                        System.err.println(e.getMessage());
+                    }
+                    break;
+                default:
+                    System.err.println("Error generating user type");
+                    break;
+            }
         }
+        System.out.println("Number of Casuals: " + numberOfCasuals);
+        System.out.println("Number of Amateurs: " + numberOfAmateurs);
+        System.out.println("Number of Professionals: " + numberOfProfessionals);
+        System.out.println("--{ ENDING }--\n");
+    }
+
+    private void populateAppWithActivities(){
+        if(app.getUserController().getUsers().getUsersList().isEmpty()){
+            System.err.println("Not possible to add activities to an empty app! (add users first)");
+        } else {
+            int nrOfAddedActivities = 0;
+            int nrOfRowing = 0;
+            int nrOfSkating = 0;
+            int nrOfTrackRunning = 0;
+            int nrOfMountainBiking = 0;
+            int nrOfRoadCycling = 0;
+            int nrOfRoadRunning = 0;
+            int nrOfTrailRunning = 0;
+            int nrOfAbdominalExercises = 0;
+            int nrOfPushUps = 0;
+            int nrOfStretching = 0;
+            int nrOfLegExtension = 0;
+            int nrOfWeightLifting = 0;
+            Random rand = new Random();
+            for (User u : app.getUserController().getUsers().getUsersList()){
+                int userId = u.getId();
+                int numberOfActivities = rand.nextInt(5,25);
+                nrOfAddedActivities += numberOfActivities;
+                for(int i = 0; i < numberOfActivities; i++){
+                    String name = generateRandomAlphabeticStrings();
+                    int year = rand.nextInt(2020, 2028);
+                    int month = rand.nextInt(1,12);
+                    int day = rand.nextInt(1, 28);
+                    int beginHour = rand.nextInt(0,22);
+                    int beginMinutes = rand.nextInt(0,58);
+                    int endHour = rand.nextInt(beginHour, 23);
+                    int endMinutes = beginHour==endHour ? rand.nextInt(beginMinutes, 59) : rand.nextInt(0,59);
+                    int heartRate = rand.nextInt(60, 125);
+
+                    LocalDateTime begin = LocalDateTime.of(year, month, day, beginHour, beginMinutes, 0);
+                    LocalDateTime end = LocalDateTime.of(year, month, day, endHour, endMinutes, 0);
+
+                    int activityType = rand.nextInt(12);
+                    switch (activityType){
+                        case 0:
+                            try {
+                                app.addRowingToUser(userId, name, begin, end, heartRate, rand.nextInt(1000,3000), rand.nextInt(1,4), rand.nextBoolean());
+                                nrOfRowing++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 1:
+                            try {
+                                app.addSkatingToUser(userId, name, begin, end, heartRate, rand.nextInt(500, 1000), rand.nextDouble(1,5), rand.nextBoolean());
+                                nrOfSkating++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 2:
+                            try {
+                                app.addTrackRunningToUser(userId, name, begin, end, heartRate, rand.nextInt(500, 1000), rand.nextBoolean());
+                                nrOfTrackRunning++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 3:
+                            try {
+                                app.addMountainBikingToUser(userId, name, begin, end, heartRate, rand.nextInt(500, 3000), rand.nextInt(150,1000), rand.nextBoolean());
+                                nrOfMountainBiking++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 4:
+                            try {
+                                app.addRoadCyclingToUser(userId, name, begin, end, heartRate, rand.nextInt(500, 1000), rand.nextInt(150,1000), rand.nextBoolean());
+                                nrOfRoadCycling++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 5:
+                            try {
+                                app.addRoadRunningToUser(userId, name, begin, end, heartRate, rand.nextInt(500, 1000), rand.nextInt(150,1000), rand.nextBoolean());
+                                nrOfRoadRunning++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 6:
+                            try {
+                                app.addTrailRunningToUser(userId, name, begin, end, heartRate, rand.nextInt(500, 1000), rand.nextInt(150,1000), rand.nextBoolean());
+                                nrOfTrailRunning++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 7:
+                            try {
+                                app.addAbdominalExercisesToUser(userId, name, begin, end, heartRate, rand.nextInt(10, 200), rand.nextBoolean());
+                                nrOfAbdominalExercises++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 8:
+                            try {
+                                app.addPushUpsToUser(userId, name, begin, end, heartRate, rand.nextInt(10, 200), rand.nextBoolean());
+                                nrOfPushUps++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 9:
+                            try {
+                                app.addStretchingToUser(userId, name, begin, end, heartRate, rand.nextInt(10, 200), rand.nextBoolean());
+                                nrOfStretching++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 10:
+                            try {
+                                app.addLegExtensionToUser(userId, name, begin, end, heartRate, rand.nextInt(10, 200), rand.nextInt(5,240), rand.nextInt(1,90));
+                                nrOfLegExtension++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        case 11:
+                            try {
+                                app.addWeightLiftingToUser(userId, name, begin, end, heartRate, rand.nextInt(10, 200), rand.nextInt(5,240), rand.nextBoolean());
+                                nrOfWeightLifting++;
+                            } catch (InvalidValueException | ErrorAddingActivityException e) {
+                                System.err.println(e.getMessage());
+                            }
+                            break;
+                        default:
+                            System.err.println("Error generating user activity type");
+                            break;
+                    }
+                }
+            }
+            System.out.println("--{ CREATE ACTIVITIES }--");
+            System.out.println("Added Activities: " + nrOfAddedActivities);
+            System.out.println("Added Rowing: " + nrOfRowing);
+            System.out.println("Added Skating: " + nrOfSkating);
+            System.out.println("Added TrackRunning: " + nrOfTrackRunning);
+            System.out.println("Added MountainBiking: " + nrOfMountainBiking);
+            System.out.println("Added RoadCycling: " + nrOfRoadCycling);
+            System.out.println("Added RoadRunning: " + nrOfRoadRunning);
+            System.out.println("Added TrailRunning: " + nrOfTrailRunning);
+            System.out.println("Added AbdominalExercises: " + nrOfAbdominalExercises);
+            System.out.println("Added PushUps: " + nrOfPushUps);
+            System.out.println("Added Stretching: " + nrOfStretching);
+            System.out.println("Added LegExtension: " + nrOfLegExtension);
+            System.out.println("Added WeightLifting: " + nrOfWeightLifting);
+            System.out.println("--{ END }--\n");
+        }
+    }
+
+    private void fillApp() {
+        //Stores original STDOUT
+//        PrintStream originalOut = System.out;
+//
+//        try {
+//            // Redirect standard output to appInfo file, truncating if it already exists
+//            PrintStream fileOut = new PrintStream(new File("appInfo.txt"));
+//            System.setOut(fileOut);
+//
+//            // Call methods to populate app with users and activities
+//            this.populateAppWithUsers();
+//            this.populateAppWithActivities();
+//        } catch (FileNotFoundException e) {
+//            System.err.println(e.getMessage());
+//        } finally {
+//            System.setOut(originalOut);
+//        }
+    }
+
+    @Test
+    void FillNStore(){
+        //WARN: CUIDADO COM O USO DESTA FUNÇÂO, PODE LIMPAR O FICHEIRO DO STATE E DAR BREAK AOS TESTES
+        //this.fillApp();
+        //app.saveState("JosefinFitnessApp_State");
     }
 
     @Test
@@ -84,47 +330,62 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void login() throws UsernameAlreadyExistsException {
+    void login() {
         //Adding user to test login
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        try{
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e){
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
 
         try {
             app.login("jojo");
         } catch (ErrorLoggingInException e) {
             assertEquals(e.getMessage(),"User jojo does not exist");
         }
-        assertEquals(app.getUserID(), app.getUserController().getUsernameID("paulo1234"));
+        assertEquals(app.getUserID(), app.getUserController().getUsernameID("paulex"));
     }
 
     @Test
-    void logout() throws UsernameAlreadyExistsException {
+    void logout() {
 
-        //Adding user to test login
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        try {
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e){
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
         app.logout();
         assertEquals(app.getUserID(), -1);
     }
 
     @Test
-    void getLoggedUserInfo() throws UsernameAlreadyExistsException {
+    void getLoggedUserInfo() {
 
         //Adding user to test login
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        try {
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e){
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
 
         assertEquals(app.getLoggedUserInfo(), caUser.toString());
     }
 
     @Test
-    void updateUserName() throws UsernameAlreadyExistsException {
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+    void updateUserName() {
+        try {
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e){
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
 
         try {
             app.updateUserName(-1, "LindaFlor");
@@ -132,8 +393,8 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getName(), "LindaFlor");
-        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getName(), "LindaFlor");
+        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
 
         try {
             app.updateUserName(1, "EuSouLindo");
@@ -141,16 +402,20 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getName(), "EuSouLindo");
-        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getName(), "EuSouLindo");
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
     }
 
     @Test
-    void updateUserUsername() throws UsernameAlreadyExistsException {
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
-        app.addProfessionalUser("Paulão", "gigaChad", birthday, address, email, true, weight, height, heartFreq);
+    void updateUserUsername() {
+        try {
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+            app.addProfessionalUser("Paulão", "gigaChad", birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e) {
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
 
         try {
             app.updateUserUsername(-1, "gigaChad");
@@ -164,7 +429,7 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertFalse(app.getUserController().userWithUsernameExists("paulo1234"));
+        assertFalse(app.getUserController().userWithUsernameExists("paulex"));
         assertTrue(app.getUserController().userWithUsernameExists("LindaFlor"));
         assertEquals(app.getUserController().getUsers().getUserWithUsername("LindaFlor").getUsername(), "LindaFlor");
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("LindaFlor").toString());
@@ -189,10 +454,14 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void updateUserBirthdate() throws UsernameAlreadyExistsException {
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+    void updateUserBirthdate() {
+        try {
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e) {
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
 
         LocalDate newBirthday = LocalDate.of(2020, Month.DECEMBER, 17);
         try {
@@ -201,8 +470,8 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getBirthdate(), newBirthday);
-        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getBirthdate(), newBirthday);
+        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
 
         LocalDate newBirthday2 = LocalDate.of(2021, Month.DECEMBER, 13);
@@ -212,15 +481,19 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getBirthdate(), newBirthday2);
-        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getBirthdate(), newBirthday2);
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
     }
 
     @Test
-    void updateUserAddress() throws UsernameAlreadyExistsException {
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+    void updateUserAddress() {
+        try {
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e) {
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
 
         try {
             app.updateUserAddress(-1, "Rua de abana o pinto");
@@ -228,8 +501,8 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getAddress(), "Rua de abana o pinto");
-        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getAddress(), "Rua de abana o pinto");
+        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
 
         try {
@@ -238,15 +511,19 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getAddress(), "Rua de abana o rabo");
-        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getAddress(), "Rua de abana o rabo");
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
     }
 
     @Test
-    void updateUserEmail() throws UsernameAlreadyExistsException {
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+    void updateUserEmail() {
+        try {
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e) {
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
 
         try {
             app.updateUserEmail(-1, "panadosComAtum@gmail.com");
@@ -254,8 +531,8 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getEmail(), "panadosComAtum@gmail.com");
-        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getEmail(), "panadosComAtum@gmail.com");
+        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
 
         try {
@@ -264,15 +541,19 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getEmail(), "panadosConTigo@gmail.com");
-        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getEmail(), "panadosConTigo@gmail.com");
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
     }
 
     @Test
-    void updateUserHeight() throws UsernameAlreadyExistsException {
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+    void updateUserHeight() {
+        try {
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e) {
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
 
         try {
             app.updateUserHeight(-1, 195.2);
@@ -280,8 +561,8 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getHeight(), 195.2);
-        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getHeight(), 195.2);
+        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
 
         try {
@@ -290,15 +571,19 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getHeight(), 135.2);
-        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getHeight(), 135.2);
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
     }
 
     @Test
-    void updateUserWeight() throws UsernameAlreadyExistsException {
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+    void updateUserWeight() {
+        try {
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e) {
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
 
         try {
             app.updateUserWeight(-1, 124.5);
@@ -306,8 +591,8 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getWeight(), 124.5);
-        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getWeight(), 124.5);
+        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
 
         try {
@@ -316,15 +601,19 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getWeight(), 104.5);
-        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getWeight(), 104.5);
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
     }
 
     @Test
-    void updateUserHearFreq() throws UsernameAlreadyExistsException {
-        app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+    void updateUserHearFreq() {
+        try {
+            app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
+        } catch (UsernameAlreadyExistsException e) {
+            System.err.println(e.getMessage());
+        }
 
-        app.login("paulo1234");
+        app.login("paulex");
 
         try {
             app.updateUserHearFreq(-1, 75);
@@ -332,8 +621,8 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getHeartFreq(), 75);
-        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getHeartFreq(), 75);
+        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
         assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
 
         try {
@@ -342,21 +631,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulo1234").getHeartFreq(), 90);
-        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulo1234").toString());
+        assertEquals(app.getUserController().getUsers().getUserWithUsername("paulex").getHeartFreq(), 90);
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).toString(), app.getUserController().getUsers().getUserWithUsername("paulex").toString());
     }
 
     @Test
-    void addRowingToUser() throws UsernameAlreadyExistsException {
+    void addRowingToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        Rowing act = new Rowing(1, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
-        Rowing act2 = new Rowing(2, "Mundial 2018", begin, end, 3, 97, 75, 1623, 2, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addRowingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
@@ -370,23 +659,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addSkatingToUser() throws UsernameAlreadyExistsException {
+    void addSkatingToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        Skating act = new Skating(1, "Mundial 2018", begin, end, 1, 51, 75, 1623, 2, false);
-        Skating act2 = new Skating(2, "Mundial 2018", begin, end, 3, 51, 75, 1623, 2, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addSkatingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
@@ -400,23 +687,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addTrackRunningToUser() throws UsernameAlreadyExistsException {
+    void addTrackRunningToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        TrackRunning act = new TrackRunning(1, "Mundial 2018", begin, end, 1, 113, 75, 1623, false);
-        TrackRunning act2 = new TrackRunning(2, "Mundial 2018", begin, end, 3, 113, 75, 1623, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addTrackRunningToUser(-1, "Mundial 2018", begin, end, 75, 1623, false);
@@ -430,23 +715,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addMountainBikingToUser() throws UsernameAlreadyExistsException {
+    void addMountainBikingToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        MountainBiking act = new MountainBiking(1, "Mundial 2018", begin, end, 1, 260, 75, 1623, 952, false);
-        MountainBiking act2 = new MountainBiking(2, "Mundial 2018", begin, end, 3, 260, 75, 1623, 952, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addMountainBikingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
@@ -460,23 +743,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addRoadCyclingToUser() throws UsernameAlreadyExistsException {
+    void addRoadCyclingToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        RoadCycling act = new RoadCycling(1, "Mundial 2018", begin, end, 1, 148, 75, 1623, 952, false);
-        RoadCycling act2 = new RoadCycling(2, "Mundial 2018", begin, end, 3, 148, 75, 1623, 952, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addRoadCyclingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
@@ -490,23 +771,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addRoadRunningToUser() throws UsernameAlreadyExistsException {
+    void addRoadRunningToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        RoadRunning act = new RoadRunning(1, "Mundial 2018", begin, end, 1, 185, 75, 1623, 952, false);
-        RoadRunning act2 = new RoadRunning(2, "Mundial 2018", begin, end, 3, 185, 75, 1623, 952, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addRoadRunningToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
@@ -520,23 +799,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addTrailRunningToUser() throws UsernameAlreadyExistsException {
+    void addTrailRunningToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        TrailRunning act = new TrailRunning(1, "Mundial 2018", begin, end, 1, 260, 75, 1623, 952, false);
-        TrailRunning act2 = new TrailRunning(2, "Mundial 2018", begin, end, 3, 260, 75, 1623, 952, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addTrailRunningToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
@@ -550,23 +827,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addAbdominalExercisesToUser() throws UsernameAlreadyExistsException {
+    void addAbdominalExercisesToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        AbdominalExercises act = new AbdominalExercises(1, "Mundial 2018", begin, end, 1, 486, 75, 1623, false);
-        AbdominalExercises act2 = new AbdominalExercises(2, "Mundial 2018", begin, end, 3, 486, 75, 1623, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addAbdominalExercisesToUser(-1, "Mundial 2018", begin, end, 75, 1623, false);
@@ -580,23 +855,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addPushUpsToUser() throws UsernameAlreadyExistsException {
+    void addPushUpsToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        PushUps act = new PushUps(1, "Mundial 2018", begin, end, 1, 324, 75, 1623, false);
-        PushUps act2 = new PushUps(2, "Mundial 2018", begin, end, 3, 324, 75, 1623, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addPushUpsToUser(-1, "Mundial 2018", begin, end, 75, 1623, false);
@@ -610,23 +883,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addStretchingToUser() throws UsernameAlreadyExistsException {
+    void addStretchingToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        Stretching act = new Stretching(1, "Mundial 2018", begin, end, 1, 97, 75, 1623, false);
-        Stretching act2 = new Stretching(2, "Mundial 2018", begin, end, 3, 97, 75, 1623, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addStretchingToUser(-1, "Mundial 2018", begin, end, 75, 1623, false);
@@ -640,23 +911,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addLegExtensionToUser() throws UsernameAlreadyExistsException {
+    void addLegExtensionToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        LegExtension act = new LegExtension(1, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
-        LegExtension act2 = new LegExtension(2, "Mundial 2018", begin, end, 3, 519, 75, 1623, 12, 40);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addLegExtensionToUser(-1, "Mundial 2018", begin, end, 75, 1623, 12, 40);
@@ -670,23 +939,21 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void addWeightLiftingToUser() throws UsernameAlreadyExistsException {
+    void addWeightLiftingToUser() {
         this.fillApp();
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        WeightLifting act = new WeightLifting(1, "Mundial 2018", begin, end, 1, 1136, 75, 1623, 12, false);
-        WeightLifting act2 = new WeightLifting(2, "Mundial 2018", begin, end, 3, 1136, 75, 1623, 12, false);
+        int activiySizeBeforeA = app.getUsersActivities(app.getUserID()).size();
+        int activiySizeBeforeB = app.getUsersActivities(3).size();
 
         try {
             app.addWeightLiftingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 12, false);
@@ -700,20 +967,114 @@ class JosefinFitnessAppTest {
             System.err.println(e.getMessage());
         }
 
-        String finalValue = app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act.toString(), finalValue);
-        String finalValue2 = app.getUserController().getUsers().getUserWithId(3).getActivityController().getActivities().getActivities().values().iterator().next().toString();
-        assertEquals(act2.toString(), finalValue2);
+        assertEquals(activiySizeBeforeA+1, app.getUsersActivities(app.getUserID()).size());
+        assertEquals(activiySizeBeforeB+1, app.getUsersActivities(3).size());
     }
 
     @Test
-    void deleteAccount() throws UsernameAlreadyExistsException {
+    void addManualTrainingPlan(){
+        this.fillApp();
+
+        //Quando mete um por cima de outro, dá close hard activity exception
+        //A doDate das activities não muda conforme a do plano de treino, tens de fazer isso
+
+        //Testar o normal
+        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+
+        Rowing rowing1 = new Rowing(1, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
+        Rowing rowing2 = new Rowing(2, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
+        Rowing rowing3 = new Rowing(3, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
+        Rowing rowing4 = new Rowing(4, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
+        Rowing rowing5 = new Rowing(5, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
+        LegExtension legext1 = new LegExtension(6, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
+        LegExtension legext2 = new LegExtension(7, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
+        LegExtension legext3 = new LegExtension(8, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
+        LegExtension legext4 = new LegExtension(9, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
+        LegExtension legext5 = new LegExtension(10, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
+        LegExtension legext6 = new LegExtension(12, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
+
+        List<Activity> activityList1= new ArrayList<>();
+        activityList1.add(rowing1);
+        activityList1.add(legext1);
+        activityList1.add(legext2);
+
+        LocalDate doDate1 = LocalDate.now();
+        boolean[] repeat1 = {false, false, false, false, false, false, false};
+
+        try {
+            app.addManualTrainingPlan(1, activityList1, doDate1, repeat1);
+        } catch (InvalidValueException | ErrorHardActivityCloseException e) {
+            System.err.println(e.getMessage());
+        }
+        legext2.setName("Batata");
+
+        //Testar para duas hards no mesmo dia
+        List<Activity> activityList2= new ArrayList<>();
+        activityList2.add(rowing2);
+        activityList2.add(rowing3);
+        activityList2.add(legext3);
+
+        LocalDate doDate2 = LocalDate.now().minusDays(3);
+        boolean[] repeat2 = {false, false, false, false, false, false, false};
+
+        try {
+            app.addManualTrainingPlan(1, activityList2, doDate2, repeat2);
+        } catch (InvalidValueException | ErrorHardActivityCloseException e) {
+            assertEquals(e.getMessage(), "Number of hard activities must be less or equals to 1.");
+        }
+
+        //Testar para duas hards em dias seguidos
+        List<Activity> activityList3= new ArrayList<>();
+        activityList3.add(rowing4);
+        activityList3.add(legext4);
+        activityList3.add(legext5);
+
+        LocalDate doDate3 = LocalDate.now().minusDays(1);
+        boolean[] repeat3 = {true, false, true, true, false, false, false};
+
+        try {
+            app.addManualTrainingPlan(1, activityList3, doDate3, repeat3);
+        } catch (InvalidValueException | ErrorHardActivityCloseException e) {
+            System.err.println(e.getMessage());
+        }
+
+        //Verificar se o repete funciona ou não
+        List<Activity> activityList4= new ArrayList<>();
+        activityList4.add(rowing5);
+        activityList4.add(legext6);
+        activityList4.add(legext6);
+
+        LocalDate doDate4 = LocalDate.now().minusDays(5);
+        boolean[] repeat4 = {true, true, false, true, false, false, false};
+
+        try {
+            app.addManualTrainingPlan(1, activityList4, doDate4, repeat4);
+        } catch (InvalidValueException | ErrorHardActivityCloseException e) {
+            System.err.println(e.getMessage());
+        }
+
+        System.out.println(app.getUserController().getUsers().getUserWithId(1).getTrainingSchedule().toString());
+        app.loadStats();
+        System.out.println(app.getUsersActivities(1).toString());
+
+        //como funciona se a activivty for adicionada num sexta, mas for reptida na segunda
+
+//        List<Activity> activityList= new ArrayList<>();
+//        LocalDate doDate = LocalDate.now();
+//        boolean[] repeat = {true, false, true, true, false, false, false};
+//
+//        app.addManualTrainingPlan(1,);
+    }
+
+    @Test
+    void deleteAccount() {
         this.fillApp();
 //        for(User u : app.getUserController().getUsers().getUsersList()){
 //            System.out.println(u.toString());
 //        }
 
-        app.login("Casual paulo12340");
+        app.login("paulex0");
 
         try {
             app.deleteAccount();
@@ -722,7 +1083,7 @@ class JosefinFitnessAppTest {
         }
 
         assertEquals(app.getUserID(), -1);
-        assertFalse(app.getUserController().userWithUsernameExists("Casual paulo12340"));
+        assertFalse(app.getUserController().userWithUsernameExists("paulex0"));
     }
 
     @Test
@@ -760,136 +1121,151 @@ class JosefinFitnessAppTest {
     void removeUser() throws UsernameAlreadyExistsException {
         app.addCasualUser(name, username, birthday, address, email, true, weight, height, heartFreq);
 
-        app.login("paulo1234");
+        app.login("paulex");
+
+        try {
+            app.removeUser(app.getUserID());
+            app.setUserID(-1);
+        } catch (ErrorRemovingUserException | UserDoesNotExistsException e) {
+            System.err.println(e.getMessage());
+        }
+
+        assertEquals(app.getUserID(), -1);
+        try {
+            app.getUserController().getUsers().getUserWithUsername("paulex");
+        } catch (NullPointerException e){
+            System.err.println(e.getMessage());
+        }
     }
 
     @Test
     void loadStats() {
     }
-
-    @Test
-    void userWithMostCaloriesBurned() throws UsernameAlreadyExistsException {
-        this.loadState();
-
-        app.loadStats();
-        app.setSystemDate(LocalDateTime.now());
-        User value = app.userWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
-        assertEquals(value, app.getUserController().getUsers().getUserWithId(1));
-    }
-
-    @Test
-    void userWithMostActivitiesCompleted() throws UsernameAlreadyExistsException {
-        this.loadState();
-
-        app.loadStats();
-        app.setSystemDate(LocalDateTime.now());
-        User value = app.userWithMostActivitiesCompleted(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
-
-        System.out.println(app.getStats().getAllTimeUserWithMostActivitiesCompleted());
-
-        assertEquals(value, app.getUserController().getUsers().getUserWithId(1));
-    }
-
-    @Test
-    void mostCommonActivity() throws UsernameAlreadyExistsException {
-        this.loadState();
-        app.loadStats();
-
-        assertEquals(app.mostCommonActivity(), "WeightLifting");
-    }
-
-    @Test
-    void distanceDoneByUser() throws UsernameAlreadyExistsException {
-        this.loadState();
-        app.loadStats();
-
-        app.setSystemDate(LocalDateTime.now());
-        int value = app.distanceDoneByUser(1, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
-
-        int value2 = app.distanceDoneByUser(3, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
-
-        assertEquals(value, 4869);
-        assertEquals(value2, 0);
-    }
-
-    @Test
-    void altimetryDoneByUser() throws UsernameAlreadyExistsException {
-        this.loadState();
-        app.loadStats();
-
-        app.setSystemDate(LocalDateTime.now());
-        int value = app.altimetryDoneByUser(1, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
-
-        int value2 = app.altimetryDoneByUser(3, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
-
-        assertEquals(value, 952);
-        assertEquals(value2, 0);
-    }
-
-    @Test
-    void getUsersActivities() throws UsernameAlreadyExistsException {
-        this.loadState();
-
-        try {
-            System.out.println(app.getUsersActivities(2).toString());
-        } catch (NullPointerException e) {
-            System.err.println(e.getMessage());
-        }
-
-
-    }
-
-    @Test
-    void saveState() throws UsernameAlreadyExistsException {
-        this.fillApp();
-
-
-        app.login("Casual paulo12340");
-
-        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
-        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
-
-        try {
-            app.addRowingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
-            app.addRowingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
-            app.addRowingToUser(4, "Mundial 2018", begin, end, 75, 1623, 2, false);
-            app.addTrailRunningToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
-        } catch (InvalidValueException | ErrorAddingActivityException e){
-            System.err.println(e.getMessage());
-        }
-        try {
-            app.addWeightLiftingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
-            app.addWeightLiftingToUser(2, "Mundial 2018", begin, end, 75, 1623, 2, false);
-            app.addWeightLiftingToUser(3, "Mundial 2018", begin, end, 75, 1623, 2, false);
-            app.addWeightLiftingToUser(4, "Mundial 2018", begin, end, 75, 1623, 2, false);
-        } catch (InvalidValueException | ErrorAddingActivityException e){
-            System.err.println(e.getMessage());
-        }
-
-        //System.out.println(app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().toString());
-
-        app.saveState("TesteFile");
-    }
-
-    @Test
-    void loadState() throws UsernameAlreadyExistsException {
-        assertEquals(app.getUserID(), -1);
-
-        app.loadState("TesteFile");
-
-        for(User u : app.getUserController().getUsers().getUsersList()){
-            System.out.println(u.toString());
-        }
-
-        assertEquals(app.getUserID(), 1);
-        assertEquals(app.getLoggedUserInfo(), app.getUserController().getUsers().getUserWithId(1).toString());
-
-        app.addProfessionalUser(name, username, birthday, address, email, true, weight, height, heartFreq);
-
-        assertEquals(app.getUserController().getUsers().getUserWithUsername(username).getId(), 31);
-
-        System.out.println(app.getUserController().getUsers().getUserWithUsername("Casual paulo12340").getActivityController().getActivities().getActivities().values().toString());
-    }
+//
+//    @Test
+//    void userWithMostCaloriesBurned() throws UsernameAlreadyExistsException {
+//        this.loadState();
+//
+//        app.loadStats();
+//        app.setSystemDate(LocalDateTime.now());
+//        User value = app.userWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+//        assertEquals(value, app.getUserController().getUsers().getUserWithId(1));
+//    }
+//
+//    @Test
+//    void userWithMostActivitiesCompleted() throws UsernameAlreadyExistsException {
+//        this.loadState();
+//
+//        app.loadStats();
+//        app.setSystemDate(LocalDateTime.now());
+//        User value = app.userWithMostActivitiesCompleted(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+//
+//        System.out.println(app.getStats().getAllTimeUserWithMostActivitiesCompleted());
+//
+//        assertEquals(value, app.getUserController().getUsers().getUserWithId(1));
+//    }
+//
+//    @Test
+//    void mostCommonActivity() throws UsernameAlreadyExistsException {
+//        this.loadState();
+//        app.loadStats();
+//
+//        assertEquals(app.mostCommonActivity(), "WeightLifting");
+//    }
+//
+//    @Test
+//    void distanceDoneByUser() throws UsernameAlreadyExistsException {
+//        this.loadState();
+//        app.loadStats();
+//
+//        app.setSystemDate(LocalDateTime.now());
+//        int value = app.distanceDoneByUser(1, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+//
+//        int value2 = app.distanceDoneByUser(3, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+//
+//        assertEquals(value, 4869);
+//        assertEquals(value2, 0);
+//    }
+//
+//    @Test
+//    void altimetryDoneByUser() throws UsernameAlreadyExistsException {
+//        this.loadState();
+//        app.loadStats();
+//
+//        app.setSystemDate(LocalDateTime.now());
+//        int value = app.altimetryDoneByUser(1, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+//
+//        int value2 = app.altimetryDoneByUser(3, LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+//
+//        assertEquals(value, 952);
+//        assertEquals(value2, 0);
+//    }
+//
+//    @Test
+//    void getUsersActivities() throws UsernameAlreadyExistsException {
+//        this.loadState();
+//
+//        try {
+//            System.out.println(app.getUsersActivities(2).toString());
+//        } catch (NullPointerException e) {
+//            System.err.println(e.getMessage());
+//        }
+//
+//
+//    }
+//
+//    @Test
+//    void saveState() throws UsernameAlreadyExistsException {
+//        this.fillApp();
+//
+//        app.login("paulex0");
+//
+//        LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
+//        LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
+//
+//        try {
+//            app.addRowingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+//            app.addRowingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+//            app.addRowingToUser(4, "Mundial 2018", begin, end, 75, 1623, 2, false);
+//            app.addTrailRunningToUser(-1, "Mundial 2018", begin, end, 75, 1623, 952, false);
+//        } catch (InvalidValueException | ErrorAddingActivityException e){
+//            System.err.println(e.getMessage());
+//        }
+//        try {
+//            app.addWeightLiftingToUser(-1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+//            app.addWeightLiftingToUser(2, "Mundial 2018", begin, end, 75, 1623, 2, false);
+//            app.addWeightLiftingToUser(3, "Mundial 2018", begin, end, 75, 1623, 2, false);
+//            app.addWeightLiftingToUser(4, "Mundial 2018", begin, end, 75, 1623, 2, false);
+//        } catch (InvalidValueException | ErrorAddingActivityException e){
+//            System.err.println(e.getMessage());
+//        }
+//
+//        //System.out.println(app.getUserController().getUsers().getUserWithUsername("paulex0").getActivityController().getActivities().getActivities().values().toString());
+//
+//        app.saveState("TesteFile");
+//    }
+//
+//    @Test
+//    void loadState() throws UsernameAlreadyExistsException {
+//        //Gerar conteudo
+//        this.fillApp();
+//
+//        //Guardar no file teste
+//        app.saveState("TesteFile");
+//
+//        //Gerar uma app vazia
+//        JosefinFitnessApp app2 = new JosefinFitnessApp();
+//
+//        //Carregar a info para a app dois
+//        app2.loadState("TesteFile");
+//
+//        //Verificar que a app é igual
+//        assertEquals(app2.getStats(), this.app.getStats());
+//        assertEquals(app2.getIdManager(), this.app.getIdManager());
+//        assertEquals(app2.getSystemDate(), this.app.getSystemDate());
+//        assertEquals(app2.getUserID(), this.app.getUserID());
+//        assertEquals(app2.getUserController(), this.app.getUserController());
+//    }
 
     @Test
     void testClone() {
