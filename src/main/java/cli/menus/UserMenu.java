@@ -27,7 +27,7 @@ public class UserMenu extends AbstractWindow implements MenuPage {
         Button updateInfoButton = (Button)new Button(
                 "Update Information",
                 () -> {
-
+                    new UserInfoUpdateMenu(textGUI, "", app).show();
                 }
         );
         contentPanel.addComponent(updateInfoButton);
@@ -55,6 +55,9 @@ public class UserMenu extends AbstractWindow implements MenuPage {
                         "Remove Account",
                         "Are you sure you want to delete your account?" +
                                 "\n This action cannot be undone!",
+                        new CustomMessageDialog.CustomMessageDialogButton("No", (cmd) -> {
+                            cmd.close();
+                        }, 1),
                         new CustomMessageDialog.CustomMessageDialogButton("Yes", (cmd) -> {
                             cmd.close();
                             try {
@@ -64,9 +67,6 @@ public class UserMenu extends AbstractWindow implements MenuPage {
                                 // We are guaranteed to have the user exist at this point. However, log it anyway.
                                 Logger.logger.severe(e.getMessage());
                             }
-                        }, 1),
-                        new CustomMessageDialog.CustomMessageDialogButton("No", (cmd) -> {
-                            cmd.close();
                         }, 2)
                 )
         ).setTheme(Constants.WARNING_TEXT);
