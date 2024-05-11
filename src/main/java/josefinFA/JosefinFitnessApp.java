@@ -1,6 +1,18 @@
 package josefinFA;
 
 import activities.Activity;
+import activities.distance.Rowing;
+import activities.distance.Skating;
+import activities.distance.TrackRunning;
+import activities.distanceAltimetry.MountainBiking;
+import activities.distanceAltimetry.RoadCycling;
+import activities.distanceAltimetry.RoadRunning;
+import activities.distanceAltimetry.TrailRunning;
+import activities.repetitions.AbdominalExercises;
+import activities.repetitions.PushUps;
+import activities.repetitions.Stretching;
+import activities.repetitionsWeight.LegExtension;
+import activities.repetitionsWeight.WeightLifting;
 import exceptions.*;
 import users.User;
 import users.UserController;
@@ -285,6 +297,27 @@ public class JosefinFitnessApp implements Serializable {
         this.userController.addRowing(activityID, name, begin, end, _id, 0, heartRate, distance, personsOnBoard, rowAgainstTide);
     }
 
+    public Rowing createRowing(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int distance,
+            int personsOnBoard,
+            boolean rowAgainstTide
+    ) throws InvalidValueException {
+        if(distance <= 0 || personsOnBoard <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new Rowing(activityID, name, begin, end, _id, 0, heartRate, distance, personsOnBoard, rowAgainstTide);
+    }
+
     public void addSkatingToUser(
             int id,
             String name,
@@ -306,6 +339,27 @@ public class JosefinFitnessApp implements Serializable {
         this.userController.addSkating(activityID, name, begin, end, _id, 0, heartRate, distance, skateWeight, freestyle);
     }
 
+    public Skating createSkating(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int distance,
+            double skateWeight,
+            boolean freestyle
+    ) throws InvalidValueException {
+        if(distance <= 0 || skateWeight <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new Skating(activityID, name, begin, end, _id, 0, heartRate, distance, skateWeight, freestyle);
+    }
+
     public void addTrackRunningToUser(
             int id,
             String name,
@@ -324,6 +378,26 @@ public class JosefinFitnessApp implements Serializable {
 
         int activityID = this.idManager.generateUniqueActivityID();
         this.userController.addTrackRunning(activityID, name, begin, end, _id, 0, heartRate, distance, hurdleJump);
+    }
+
+    public TrackRunning createTrackRunning(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int distance,
+            boolean hurdleJump
+    ) throws InvalidValueException {
+        if(distance <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new TrackRunning(activityID, name, begin, end, _id, 0, heartRate, distance, hurdleJump);
     }
 
     public void addMountainBikingToUser(
@@ -347,6 +421,27 @@ public class JosefinFitnessApp implements Serializable {
         this.userController.addMountainBiking(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, bigTires);
     }
 
+    public MountainBiking createMountainBiking(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean bigTires
+    ) throws InvalidValueException {
+        if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new MountainBiking(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, bigTires);
+    }
+
     public void addRoadCyclingToUser(
             int id,
             String name,
@@ -366,6 +461,27 @@ public class JosefinFitnessApp implements Serializable {
 
         int activityID = this.idManager.generateUniqueActivityID();
         this.userController.addRoadCycling(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, windAgainst);
+    }
+
+    public RoadCycling createRoadCycling(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean windAgainst
+    ) throws InvalidValueException {
+        if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new RoadCycling(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, windAgainst);
     }
 
     public void addRoadRunningToUser(
@@ -389,6 +505,27 @@ public class JosefinFitnessApp implements Serializable {
         this.userController.addRoadRunning(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, windAgainst);
     }
 
+    public RoadRunning createRoadRunning(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean windAgainst
+    ) throws InvalidValueException {
+        if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new RoadRunning(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, windAgainst);
+    }
+
     public void addTrailRunningToUser(
             int id,
             String name,
@@ -408,6 +545,27 @@ public class JosefinFitnessApp implements Serializable {
 
         int activityID = this.idManager.generateUniqueActivityID();
         this.userController.addTrailRunning(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, wetFloor);
+    }
+
+    public TrailRunning createTrailRunning(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int distance,
+            int altimetry,
+            boolean wetFloor
+    ) throws InvalidValueException {
+        if(distance <= 0 || altimetry <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new TrailRunning(activityID, name, begin, end, _id, 0, heartRate, distance, altimetry, wetFloor);
     }
 
     public void addAbdominalExercisesToUser(
@@ -430,6 +588,26 @@ public class JosefinFitnessApp implements Serializable {
         this.userController.addAbdominalExercises(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, helped);
     }
 
+    public AbdominalExercises createAbdominalExercises(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int nRepetitions,
+            boolean helped
+    ) throws InvalidValueException {
+        if(nRepetitions <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new AbdominalExercises(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, helped);
+    }
+
     public void addPushUpsToUser(
             int id,
             String name,
@@ -450,6 +628,26 @@ public class JosefinFitnessApp implements Serializable {
         this.userController.addPushUps(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, diamondIntercalated);
     }
 
+    public PushUps createPushUps(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int nRepetitions,
+            boolean diamondIntercalated
+    ) throws InvalidValueException {
+        if(nRepetitions <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new PushUps(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, diamondIntercalated);
+    }
+
     public void addStretchingToUser(
             int id,
             String name,
@@ -468,6 +666,26 @@ public class JosefinFitnessApp implements Serializable {
 
         int activityID = this.idManager.generateUniqueActivityID();
         this.userController.addStretching(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, helped);
+    }
+
+    public Stretching createStretching(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int nRepetitions,
+            boolean helped
+    ) throws InvalidValueException {
+        if(nRepetitions <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new Stretching(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, helped);
     }
 
     public void addLegExtensionToUser(
@@ -491,6 +709,27 @@ public class JosefinFitnessApp implements Serializable {
         this.userController.addLegExtension(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, weight, chairAngle);
     }
 
+    public LegExtension createLegExtension(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int nRepetitions,
+            int weight,
+            int chairAngle
+    ) throws InvalidValueException {
+        if(nRepetitions <= 0 || weight <= 0 || heartRate <= 0 || chairAngle <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new LegExtension(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, weight, chairAngle);
+    }
+
     public void addWeightLiftingToUser(
             int id,
             String name,
@@ -510,6 +749,27 @@ public class JosefinFitnessApp implements Serializable {
 
         int activityID = this.idManager.generateUniqueActivityID();
         this.userController.addWeightLifting(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, weight, helped);
+    }
+
+    public WeightLifting createWeightLifting(
+            int id,
+            String name,
+            LocalDateTime begin,
+            LocalDateTime end,
+            int heartRate,
+            int nRepetitions,
+            int weight,
+            boolean helped
+    ) throws InvalidValueException {
+        if(nRepetitions <= 0 || weight <= 0 || heartRate <= 0) {
+            throw new InvalidValueException("The system doesn't support non-positive values.");
+        }
+
+        // Admin verifier
+        int _id = (id == -1) ? this.userID : id;
+
+        int activityID = this.idManager.generateUniqueActivityID();
+        return new WeightLifting(activityID, name, begin, end, _id, 0, heartRate, nRepetitions, weight, helped);
     }
     //endregion
 
