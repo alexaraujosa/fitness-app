@@ -120,7 +120,8 @@ public class MainMenu extends AbstractWindow implements MenuPage {
 //                        // Who tf cares
 //                    }
 
-                    this.result = MenuId.USER_MENU;
+                    if (loginWrapper.username.isEmpty()) this.result = MenuId.MAIN_MENU;
+                    else this.result = MenuId.USER_MENU;
 
                     Logger.logger.info("RESULT: " + this.result);
                     this.close();

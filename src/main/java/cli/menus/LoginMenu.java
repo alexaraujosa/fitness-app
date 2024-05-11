@@ -31,8 +31,11 @@ public class LoginMenu extends AbstractWindow implements MenuPage {
 
         Panel contentPanel = new Panel();
         contentPanel.setLayoutManager((new GridLayout(2)).setLeftMarginSize(1).setRightMarginSize(1));
+//        contentPanel.setPreferredSize(new TerminalSize(50, 4));
 
-        usernameBox = new TextBox().setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER));
+        usernameBox = new TextBox()
+                .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER))
+                .setPreferredSize(new TerminalSize(20, 1));
         contentPanel.addComponent(new Label("Username:"));
         contentPanel.addComponent(usernameBox);
 
@@ -48,6 +51,7 @@ public class LoginMenu extends AbstractWindow implements MenuPage {
                         1
                 ))
                 .setForegroundColor(TextColor.ANSI.RED_BRIGHT);
+//                .setPreferredSize(new TerminalSize(20, 1));
         errorLabel.setVisible(false);
 
         contentPanel.addComponent(errorLabel);
@@ -64,7 +68,9 @@ public class LoginMenu extends AbstractWindow implements MenuPage {
 
     @Override
     public boolean handleInput(KeyStroke key) {
-        if (key.getKeyType() == KeyType.Enter) {
+        if (key.getKeyType() == KeyType.Escape) {
+            this.close();
+        } else if (key.getKeyType() == KeyType.Enter) {
             Logger.logger.info("BOX: " + usernameBox.getText());
 
             try {
