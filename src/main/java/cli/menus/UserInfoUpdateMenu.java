@@ -1,6 +1,7 @@
 package cli.menus;
 
 import cli.Constants;
+import cli.util.Transformer;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.input.KeyStroke;
@@ -104,16 +105,16 @@ public class UserInfoUpdateMenu extends AbstractWindow implements MenuPage {
                         weightBox.setTheme(Constants.ENABLED_THEME);
                         averageCardiacFrequencyBox.setTheme(Constants.ENABLED_THEME);
 
-                        tryUpdateFromTextBox(usernameBox, originalUsername, app::updateUserUsername, this::transformToString);
-                        tryUpdateFromTextBox(birthDateBox, originalBirthDate, app::updateUserBirthdate, this::transformToLocalDate);
-                        tryUpdateFromTextBox(emailBox, originalEmail, app::updateUserEmail, this::transformToString);
-                        tryUpdateFromTextBox(heightBox, originalHeight, app::updateUserHeight, this::transformToDouble);
-                        tryUpdateFromTextBox(weightBox, originalWeight, app::updateUserWeight, this::transformToDouble);
+                        tryUpdateFromTextBox(usernameBox, originalUsername, app::updateUserUsername, Transformer::transformToString);
+                        tryUpdateFromTextBox(birthDateBox, originalBirthDate, app::updateUserBirthdate, Transformer::transformToLocalDate);
+                        tryUpdateFromTextBox(emailBox, originalEmail, app::updateUserEmail, Transformer::transformToString);
+                        tryUpdateFromTextBox(heightBox, originalHeight, app::updateUserHeight, Transformer::transformToDouble);
+                        tryUpdateFromTextBox(weightBox, originalWeight, app::updateUserWeight, Transformer::transformToDouble);
                         tryUpdateFromTextBox(
                                 averageCardiacFrequencyBox,
                                 originalAverageCardiacFrequency,
                                 app::updateUserHearFreq,
-                                this::transformToInt
+                                Transformer::transformToInt
                         );
 
                         app.saveState(Constants.getSaveFilePath());
@@ -176,21 +177,21 @@ public class UserInfoUpdateMenu extends AbstractWindow implements MenuPage {
         return true;
     }
 
-    private String transformToString(String orig) {
-        return orig;
-    }
-
-    private Integer transformToInt(String orig) {
-        return Integer.parseInt(orig);
-    }
-
-    private Double transformToDouble(String orig) {
-        return Double.parseDouble(orig);
-    }
-
-    private LocalDate transformToLocalDate(String orig) {
-        return LocalDate.parse(orig, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-    }
+//    private String transformToString(String orig) {
+//        return orig;
+//    }
+//
+//    private Integer transformToInt(String orig) {
+//        return Integer.parseInt(orig);
+//    }
+//
+//    private Double transformToDouble(String orig) {
+//        return Double.parseDouble(orig);
+//    }
+//
+//    private LocalDate transformToLocalDate(String orig) {
+//        return LocalDate.parse(orig, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+//    }
 
     @Override
     public Object show() {
