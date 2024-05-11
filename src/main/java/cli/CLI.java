@@ -280,7 +280,10 @@ public class CLI {
             Logger.setup("out");
 
             JosefinFitnessApp app = new JosefinFitnessApp();
-            app.loadState("/home/rafaelsf/Desktop/Cadeiras/2ano/2sem/POO/Project/project/TesteFile");
+//            app.loadState("/home/rafaelsf/Desktop/Cadeiras/2ano/2sem/POO/Project/project/TesteFile");
+            Logger.logger.info("Attempting to load state from '" + Constants.getSaveFilePath() + "'");
+
+            app.loadState(Constants.getSaveFilePath());
             app.logout(); // The app might have a user loaded, for some fucking reason. Prevent UI lock.
 
             Logger.logger.info("User count: " + app.getUserController().getUsers().getUsersList().size());
