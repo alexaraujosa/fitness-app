@@ -1,31 +1,15 @@
 package cli;
 
 
-import cli.menus.MainMenu;
-import cli.menus.MenuPage;
-import cli.menus.UserMenu;
-import com.googlecode.lanterna.SGR;
-import com.googlecode.lanterna.TerminalPosition;
-import com.googlecode.lanterna.TerminalSize;
+import cli.menus.*;
 import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.graphics.TextGraphics;
 import com.googlecode.lanterna.gui2.*;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
-import com.googlecode.lanterna.input.KeyStroke;
-import com.googlecode.lanterna.input.KeyType;
 import com.googlecode.lanterna.screen.Screen;
-import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
-import com.googlecode.lanterna.terminal.Terminal;
 import josefinFA.JosefinFitnessApp;
-import users.User;
 import utils.Logger;
-import cli.menus.MenuId;
 
 import java.io.IOException;
-import java.util.*;
-import java.util.stream.Collectors;
 
 public class CLI {
 //    public static void main(String[] args) throws IOException {
@@ -332,6 +316,10 @@ public class CLI {
                         );
                         break;
                     }
+                    case MenuId.TRAINING_PLAN_MENU: {
+                        window = new TrainingPlanMainMenu(textGUI, "", app);
+                        break;
+                    }
                 }
 
                 if (window == null) break;
@@ -340,7 +328,7 @@ public class CLI {
                 Logger.logger.info("Return Menu: " + menu);
             }
 
-        } catch (IOException e) {
+        } catch (IOException | NoSuchMethodException e) {
             e.printStackTrace();
         } finally {
             if(screen != null) {
