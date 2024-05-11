@@ -9,6 +9,8 @@ import josefinFA.JosefinFitnessApp;
 import utils.Logger;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Pattern;
 
 public class AddActivityEntryMenu extends AbstractWindow implements MenuPage {
@@ -19,7 +21,7 @@ public class AddActivityEntryMenu extends AbstractWindow implements MenuPage {
     private Label errorLabel;
 
     private Component[] inputs;
-    private Object[] result; // Types depend on the caller.
+    private Map<String, Object> result; // Types depend on the caller.
 
     private static final String BOOLEAN_TRUE = "Yes";
     private static final String BOOLEAN_FALSE = "No";
@@ -41,7 +43,7 @@ public class AddActivityEntryMenu extends AbstractWindow implements MenuPage {
         for (int i = 0; i < args.length; i++) {
             Argument arg = args[i];
 
-            Logger.logger.info("" + arg.getType() + ": " + arg.getName());
+//            Logger.logger.info("" + arg.getType() + ": " + arg.getName());
 
             switch (arg.getType()) {
                 case ArgumentType.ARGUMENT_STRING: {
@@ -114,7 +116,7 @@ public class AddActivityEntryMenu extends AbstractWindow implements MenuPage {
                         input.setTheme(Constants.ENABLED_THEME);
                     }
 
-                    Object[] parsedArgs = new Object[inputs.length];
+                    Map<String, Object> parsedArgs = new HashMap<>();
 
                     boolean valid = true;
                     for (int i = 0; i < args.length; i++) {
@@ -127,7 +129,7 @@ public class AddActivityEntryMenu extends AbstractWindow implements MenuPage {
                                         throw new Exception();
                                     }
 
-                                    parsedArgs[i] = ((TextBox)inputs[i]).getText();
+                                    parsedArgs.put(args[i].getName(), ((TextBox)inputs[i]).getText());
                                     break;
                                 }
                                 case ArgumentType.ARGUMENT_DOUBLE: {
@@ -136,7 +138,7 @@ public class AddActivityEntryMenu extends AbstractWindow implements MenuPage {
                                         throw new Exception();
                                     }
 
-                                    parsedArgs[i] = Transformer.transformToDouble(((TextBox)inputs[i]).getText());
+                                    parsedArgs.put(args[i].getName(), Transformer.transformToDouble(((TextBox)inputs[i]).getText()));
                                     break;
                                 }
                                 case ArgumentType.ARGUMENT_INT: {
@@ -145,7 +147,7 @@ public class AddActivityEntryMenu extends AbstractWindow implements MenuPage {
                                         throw new Exception();
                                     }
 
-                                    parsedArgs[i] = Transformer.transformToInt(((TextBox)inputs[i]).getText());
+                                    parsedArgs.put(args[i].getName(), Transformer.transformToInt(((TextBox)inputs[i]).getText()));
                                     break;
                                 }
                                 case ArgumentType.ARGUMENT_LOCALDATE: {
@@ -155,7 +157,7 @@ public class AddActivityEntryMenu extends AbstractWindow implements MenuPage {
                                     }
 
                                     msgOverride = "Invalid date.";
-                                    parsedArgs[i] = Transformer.transformToLocalDate(((TextBox)inputs[i]).getText());
+                                    parsedArgs.put(args[i].getName(), Transformer.transformToLocalDate(((TextBox)inputs[i]).getText()));
                                     break;
                                 }
                                 case ArgumentType.ARGUMENT_LOCALDATETIME: {
@@ -165,11 +167,11 @@ public class AddActivityEntryMenu extends AbstractWindow implements MenuPage {
                                     }
 
                                     msgOverride = "Invalid date.";
-                                    parsedArgs[i] = Transformer.transformToLocalDateTime(((TextBox)inputs[i]).getText());
+                                    parsedArgs.put(args[i].getName(), Transformer.transformToLocalDateTime(((TextBox)inputs[i]).getText()));
                                     break;
                                 }
                                 case ArgumentType.ARGUMENT_BOOLEAN: {
-                                    parsedArgs[i] = ((ComboBox<String>)inputs[i]).getSelectedItem().equals(BOOLEAN_TRUE);
+                                    parsedArgs.put(args[i].getName(), ((ComboBox<String>)inputs[i]).getSelectedItem().equals(BOOLEAN_TRUE));
                                     break;
                                 }
                             }
@@ -219,7 +221,7 @@ public class AddActivityEntryMenu extends AbstractWindow implements MenuPage {
     }
 
     @Override
-    public Object show() {
+    public Map<String, Object> show() {
         this.textGUI.addWindow(this);
         this.waitUntilClosed();
         return this.result;

@@ -10,9 +10,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
@@ -45,7 +43,7 @@ public class AddActivityMenu extends AbstractWindow implements MenuPage {
                 app.getClass().getDeclaredMethod("addWeightLiftingToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, int.class, boolean.class)
         };
 
-        // Parameter names not kept without debug information, keep a local name registry.
+        // Parameter names are not kept without debug information, keep a local name registry.
         String[][] activityConstructorParameterNames = new String[][]{
             /* addAbdominalExercisesToUser */ new String[]{"id", "name", "begin", "end", "heartRate", "nRepetitions", "helped"},
             /* addLegExtensionToUser */       new String[]{"id", "name", "begin", "end", "heartRate", "nRepetitions", "weight", "chairAngle"},
@@ -69,7 +67,6 @@ public class AddActivityMenu extends AbstractWindow implements MenuPage {
         Panel contentPanel = new Panel();
         contentPanel.setLayoutManager((new GridLayout(1)).setLeftMarginSize(1).setRightMarginSize(1));
         contentPanel.setTheme(Constants.ENABLED_THEME);
-        Logger.logger.info("OLD ACTIVITIES: " + app.getUsersActivities(app.getUserID()).toString());
 
         for (int i = 0; i < activityConstructors.length; i++) {
             Method constructor = activityConstructors[i];
@@ -79,34 +76,50 @@ public class AddActivityMenu extends AbstractWindow implements MenuPage {
                     name,
                     () -> {
                         Parameter[] params = constructor.getParameters();
-                        Logger.logger.info("Method " + name + "=====");
+                        List<AddActivityEntryMenu.Argument> args = new ArrayList<>();
 
-                        AddActivityEntryMenu.Argument[] args = new AddActivityEntryMenu.Argument[params.length];
                         for (int j = 0; j < params.length; j++) {
                             Parameter param = params[j];
-                            Logger.logger.info("  - " + param.getType().getTypeName() + " " + activityConstructorParameterNames[finalI][j]);
-                            args[j] = new AddActivityEntryMenu.Argument(
-                                    activityConstructorParameterNames[finalI][j],
+                            String paramName = activityConstructorParameterNames[finalI][j];
+
+                            // Ignore reserved parameter names.
+                            if (Arrays.asList(reservedParameterNames).contains(paramName)) {
+                                continue;
+                            }
+
+                            args.add(new AddActivityEntryMenu.Argument(
+                                    paramName,
                                     AddActivityEntryMenu.getArgumentTypeFromClass(param.getType())
-                            );
+                            ));
                         }
 
-                        Object[] result = (Object[])new AddActivityEntryMenu(
+                        Map<String, Object> resultData = new AddActivityEntryMenu(
                                 textGUI,
                                 name,
                                 app,
-                                args
+                                args.toArray(new AddActivityEntryMenu.Argument[0])
                         ).show();
 
-                        Logger.logger.info("RESULT ARGS: " + Arrays.toString(result));
-                        Logger.logger.info("RESULT ARGST: " + String.join(", ", Arrays.stream(result).map(v -> v.getClass().getTypeName()).toList()));
+                        if (resultData == null) {
+                            return;
+                        }
 
-                        Logger.logger.info("METHOD: " + constructor);
+                        Object[] result = new Object[params.length];
+                        for (int j = 0; j < params.length; j++) {
+                            Parameter param = params[j];
+                            String paramName = activityConstructorParameterNames[finalI][j];
+                            if (Arrays.asList(reservedParameterNames).contains(paramName)) {
+                                if (paramName.equals("id")) {
+                                    result[j] = app.getUserID();
+                                }
+                            } else {
+                                result[j] = resultData.get(paramName);
+                            }
+                        }
 
                         try {
                             constructor.invoke(app, result);
 //                            app.saveState(Constants.getSaveFilePath());
-                            Logger.logger.info("NEW ACTIVITIES: " + app.getUsersActivities(app.getUserID()).toString());
                             this.close();
                         } catch (IllegalAccessException | InvocationTargetException e) {
                             Logger.logger.warning("Unable to add activity: " + e.getMessage());
@@ -120,6 +133,14 @@ public class AddActivityMenu extends AbstractWindow implements MenuPage {
             );
             contentPanel.addComponent(btn);
         }
+
+        contentPanel.addComponent(new EmptySpace());
+
+        Button backButton = new Button(
+                "Back",
+                this::close
+        );
+        contentPanel.addComponent(backButton);
 
         this.setComponent(contentPanel);
     }
