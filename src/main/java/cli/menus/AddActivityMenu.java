@@ -1,4 +1,149 @@
 package cli.menus;
 
-public class AddActivityMenu {
+import cli.Constants;
+import com.googlecode.lanterna.gui2.*;
+import josefinFA.JosefinFitnessApp;
+import utils.ExceptionBiConsumer;
+import utils.Logger;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+import java.util.stream.Collectors;
+
+public class AddActivityMenu extends AbstractWindow implements MenuPage {
+    private WindowBasedTextGUI textGUI;
+    private JosefinFitnessApp app;
+
+    private static final Pattern METHOD_NAME_PATTERN = Pattern.compile("add(.*?)ToUser");
+
+    public AddActivityMenu(WindowBasedTextGUI textGUI, String title, JosefinFitnessApp app) throws NoSuchMethodException {
+        super(!Objects.equals(title, "") ? title : "Add Activity");
+        this.setHints(java.util.Set.copyOf(Collections.singletonList(Hint.CENTERED)));
+
+        this.textGUI = textGUI;
+        this.app = app;
+
+        Method[] activityConstructors = new Method[]{
+                app.getClass().getDeclaredMethod("addAbdominalExercisesToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, boolean.class),
+                app.getClass().getDeclaredMethod("addLegExtensionToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, int.class, int.class),
+                app.getClass().getDeclaredMethod("addMountainBikingToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, int.class, boolean.class),
+                app.getClass().getDeclaredMethod("addPushUpsToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, boolean.class),
+                app.getClass().getDeclaredMethod("addRoadCyclingToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, int.class, boolean.class),
+                app.getClass().getDeclaredMethod("addRoadRunningToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, int.class, boolean.class),
+                app.getClass().getDeclaredMethod("addRowingToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, int.class, boolean.class),
+                app.getClass().getDeclaredMethod("addSkatingToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, double.class, boolean.class),
+                app.getClass().getDeclaredMethod("addStretchingToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, boolean.class),
+                app.getClass().getDeclaredMethod("addTrackRunningToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, boolean.class),
+                app.getClass().getDeclaredMethod("addTrailRunningToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, int.class, boolean.class),
+                app.getClass().getDeclaredMethod("addWeightLiftingToUser", int.class, String.class, LocalDateTime.class, LocalDateTime.class, int.class, int.class, int.class, boolean.class)
+        };
+
+        // Parameter names not kept without debug information, keep a local name registry.
+        String[][] activityConstructorParameterNames = new String[][]{
+            /* addAbdominalExercisesToUser */ new String[]{"id", "name", "begin", "end", "heartRate", "nRepetitions", "helped"},
+            /* addLegExtensionToUser */       new String[]{"id", "name", "begin", "end", "heartRate", "nRepetitions", "weight", "chairAngle"},
+            /* addMountainBikingToUser */     new String[]{"id", "name", "begin", "end", "heartRate", "distance", "altimetry", "bigTires"},
+            /* addPushUpsToUser */            new String[]{"id", "name", "begin", "end", "heartRate", "nRepetitions", "diamondIntercalated"},
+            /* addRoadCyclingToUser */        new String[]{"id", "name", "begin", "end", "heartRate", "distance", "altimetry", "windAgainst"},
+            /* addRoadRunningToUser */        new String[]{"id", "name", "begin", "end", "heartRate", "distance", "altimetry", "windAgainst"},
+            /* addRowingToUser */             new String[]{"id", "name", "begin", "end", "heartRate", "distance", "personsOnBoard", "rowAgainstTide"},
+            /* addSkatingToUser */            new String[]{"id", "name", "begin", "end", "heartRate", "distance", "skateWeight", "freestyle"},
+            /* addStretchingToUser */         new String[]{"id", "name", "begin", "end", "heartRate", "nRepetitions", "helped"},
+            /* addTrackRunningToUser */       new String[]{"id", "name", "begin", "end", "heartRate", "distance", "hurdleJump"},
+            /* addTrailRunningToUser */       new String[]{"id", "name", "begin", "end", "heartRate", "distance", "altimetry", "wetFloor"},
+            /* addWeightLiftingToUser */      new String[]{"id", "name", "begin", "end", "heartRate", "nRepetitions", "weight", "helped"},
+        };
+
+        /*
+         * Reserved parameter names that should not be displayed in the menu.
+         */
+        String[] reservedParameterNames = new String[]{"id"};
+
+        Panel contentPanel = new Panel();
+        contentPanel.setLayoutManager((new GridLayout(1)).setLeftMarginSize(1).setRightMarginSize(1));
+        contentPanel.setTheme(Constants.ENABLED_THEME);
+        Logger.logger.info("OLD ACTIVITIES: " + app.getUsersActivities(app.getUserID()).toString());
+
+        for (int i = 0; i < activityConstructors.length; i++) {
+            Method constructor = activityConstructors[i];
+            String name = convertCamelCaseToWords(Objects.requireNonNull(getMethodActivityName(constructor.getName())));
+            int finalI = i;
+            Button btn = new Button(
+                    name,
+                    () -> {
+                        Parameter[] params = constructor.getParameters();
+                        Logger.logger.info("Method " + name + "=====");
+
+                        AddActivityEntryMenu.Argument[] args = new AddActivityEntryMenu.Argument[params.length];
+                        for (int j = 0; j < params.length; j++) {
+                            Parameter param = params[j];
+                            Logger.logger.info("  - " + param.getType().getTypeName() + " " + activityConstructorParameterNames[finalI][j]);
+                            args[j] = new AddActivityEntryMenu.Argument(
+                                    activityConstructorParameterNames[finalI][j],
+                                    AddActivityEntryMenu.getArgumentTypeFromClass(param.getType())
+                            );
+                        }
+
+                        Object[] result = (Object[])new AddActivityEntryMenu(
+                                textGUI,
+                                name,
+                                app,
+                                args
+                        ).show();
+
+                        Logger.logger.info("RESULT ARGS: " + Arrays.toString(result));
+                        Logger.logger.info("RESULT ARGST: " + String.join(", ", Arrays.stream(result).map(v -> v.getClass().getTypeName()).toList()));
+
+                        Logger.logger.info("METHOD: " + constructor);
+
+                        try {
+                            constructor.invoke(app, result);
+//                            app.saveState(Constants.getSaveFilePath());
+                            Logger.logger.info("NEW ACTIVITIES: " + app.getUsersActivities(app.getUserID()).toString());
+                            this.close();
+                        } catch (IllegalAccessException | InvocationTargetException e) {
+                            Logger.logger.warning("Unable to add activity: " + e.getMessage());
+                            Logger.logger.warning(
+                                    Arrays.stream(e.getStackTrace())
+                                            .map(StackTraceElement::toString)
+                                            .collect(Collectors.joining("\n"))
+                            );
+                        }
+                    }
+            );
+            contentPanel.addComponent(btn);
+        }
+
+        this.setComponent(contentPanel);
+    }
+
+    private static String getMethodActivityName(String orig) {
+        Matcher matcher = METHOD_NAME_PATTERN.matcher(orig);
+
+        if (matcher.find()) {
+            return matcher.group(1);
+        } else {
+            return null;
+        }
+    }
+
+    public static String convertCamelCaseToWords(String input) {
+        String result = input.replaceAll("(\\p{Lower})(\\p{Upper})", "$1 $2");
+        result = result.substring(0, 1).toUpperCase() + result.substring(1);
+        return result;
+    }
+
+    @Override
+    public Object show() {
+        this.textGUI.addWindow(this);
+        this.waitUntilClosed();
+        return MenuId.USER_MENU;
+    }
 }

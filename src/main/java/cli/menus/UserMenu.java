@@ -32,6 +32,14 @@ public class UserMenu extends AbstractWindow implements MenuPage {
         );
         contentPanel.addComponent(updateInfoButton);
 
+        Button listRecords = (Button)new Button(
+                "List Records",
+                () -> {
+
+                }
+        );
+        contentPanel.addComponent(listRecords);
+
         Button addTrainingPlanButton = (Button)new Button(
                 "Add Training Plan",
                 () -> {
@@ -43,7 +51,11 @@ public class UserMenu extends AbstractWindow implements MenuPage {
         Button addActivityButton = (Button)new Button(
                 "Add Activity",
                 () -> {
-
+                    try {
+                        new AddActivityMenu(textGUI,"", app).show();
+                    } catch (NoSuchMethodException e) {
+                        Logger.logger.warning("Unable to open AddActivityMenu: " + e.getMessage() + "\n" + e.getStackTrace());
+                    }
                 }
         );
         contentPanel.addComponent(addActivityButton);
@@ -65,7 +77,7 @@ public class UserMenu extends AbstractWindow implements MenuPage {
                                 this.close();
                             } catch (ErrorRemovingUserException e) {
                                 // We are guaranteed to have the user exist at this point. However, log it anyway.
-                                Logger.logger.severe(e.getMessage());
+                                Logger.logger.warning(e.getMessage());
                             }
                         }, 2)
                 )
