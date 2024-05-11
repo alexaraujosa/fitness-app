@@ -378,10 +378,10 @@ public abstract class User implements Serializable {
                 " | ADDRESS: " + this.address +
                 " | EMAIL: " + this.email +
                 " | SEX: " + (this.sex ? "Male" : "Female") +
-                " | HEIGHT: " + this.height +
-                " | WEIGHT: " + this.weight +
+                " | HEIGHT: " + String.format("%.2f", this.height) +
+                " | WEIGHT: " + String.format("%.2f", this.weight) +
                 " | HEART FREQ: " + this.heartFreq +
-                "}";
+                "}\n";
     }
 
     @Override

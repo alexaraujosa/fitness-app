@@ -39,4 +39,23 @@ public class TrainingPlan implements Serializable {
     }
     //endregion
 
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("{TRAINING PLAN}--{");
+        sb.append(" | ID: ");
+        sb.append(id);
+        sb.append(" | DO DATE: ");
+        sb.append(doDate);
+        sb.append(" | REPEAT: ");
+        sb.append(Arrays.toString(repeat));
+        sb.append(" | CALORIES: ");
+        sb.append(calories);
+        sb.append(" | ACTIVITIES: \n");
+        this.activities.forEach(act -> sb.append("\t").append(act.toString()));
+        sb.append("}\n");
+
+        return sb.toString();
+    }
 }

@@ -188,6 +188,15 @@ public class Users implements Serializable {
         return usersByUsername;
     }
 
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("--{ USERS LIST }--\n");
+        this.usersList.forEach(user -> sb.append(user.toString()));
+        sb.append("--{ END USER LIST }--\n");
+        return sb.toString();
+    }
+
     /**
      * Overrides the equals method to compare Users objects for equality.
      * @param o Object to compare

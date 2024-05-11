@@ -61,10 +61,10 @@ public class CasualUser extends User implements Serializable {
                 " | ADDRESS: " + super.getAddress() +
                 " | EMAIL: " + super.getEmail() +
                 " | SEX: " + (super.getSex() ? "Male" : "Female") +
-                " | HEIGHT: " + super.getHeight() +
-                " | WEIGHT: " + super.getWeight() +
+                " | HEIGHT: " + String.format("%.2f", super.getHeight()) +
+                " | WEIGHT: " + String.format("%.2f", super.getWeight()) +
                 " | HEART FREQ: " + super.getHeartFreq() +
-                "}";
+                "}\n";
     }
 
     public CasualUser clone() {
