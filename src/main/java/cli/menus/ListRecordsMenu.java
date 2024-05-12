@@ -65,6 +65,7 @@ public class ListRecordsMenu extends AbstractWindow implements MenuPage {
             try {
                 LocalDateTime date = Transformer.transformToLocalDateTime(text);
                 app.setSystemDate(date);
+                app.loadStats();
             } catch (Exception e) {
                 // Do fuck all
             }
