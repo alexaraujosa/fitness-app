@@ -125,7 +125,7 @@ public class SignupMenu extends AbstractWindow implements MenuPage  {
 //        contentPanel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
 
         Button signupButton = (Button)new Button(
-                "Sign Up",
+                AdminMenu.isAdminMode() ? "Create User" : "Signup",
                 () -> {
                     try {
                         String name = "";

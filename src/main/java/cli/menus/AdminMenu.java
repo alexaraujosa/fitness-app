@@ -1,11 +1,15 @@
 package cli.menus;
 
 import cli.Constants;
+import cli.components.CustomMessageDialog;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.input.KeyStroke;
+import exceptions.ErrorRemovingUserException;
+import exceptions.UserDoesNotExistsException;
 import josefinFA.JosefinFitnessApp;
+import utils.Logger;
 
 import java.util.Collections;
 import java.util.regex.Pattern;
@@ -45,8 +49,9 @@ public class AdminMenu extends AbstractWindow implements MenuPage {
         contentPanel.setTheme(Constants.ENABLED_THEME);
 
         // Add reference here to enable reactivity
-        var usernameBoxRef = new Object() {
+        var lambdaReferences = new Object() {
             TextBox usernameBox = null;
+            Button deleteButton = null;
         };
         TextBox userIdBox = new TextBox()
                 .setPreferredSize(boxSize)
@@ -61,11 +66,17 @@ public class AdminMenu extends AbstractWindow implements MenuPage {
 
             try {
                 int id = Integer.parseInt(text);
-                if (app.getUserController().userWithIdExits(id))
-                    usernameBoxRef.usernameBox.setText(app.getUserController().getUsers().getUserWithId(id).getUsername());
-                else usernameBoxRef.usernameBox.setText("");
+                if (app.getUserController().userWithIdExits(id)) {
+                    lambdaReferences.usernameBox.setText(app.getUserController().getUsers().getUserWithId(id).getUsername());
+                    lambdaReferences.deleteButton.setEnabled(true);
+                    lambdaReferences.deleteButton.setTheme(Constants.WARNING_TEXT);
+                } else {
+                    lambdaReferences.usernameBox.setText("");
+                    lambdaReferences.deleteButton.setEnabled(false);
+                    lambdaReferences.deleteButton.setTheme(Constants.DISABLED_THEME);
+                }
             } catch (NumberFormatException e) {
-                usernameBoxRef.usernameBox.setText("");
+                lambdaReferences.usernameBox.setText("");
             }
         });
 
@@ -79,21 +90,19 @@ public class AdminMenu extends AbstractWindow implements MenuPage {
             if (!userKeyStroke) return;
             userKeyStroke = false;
 
-            if (app.getUserController().userWithUsernameExists(text))
+            if (app.getUserController().userWithUsernameExists(text)) {
                 userIdBox.setText("" + app.getUserController().getUsers().getUserWithUsername(text).getId());
-            else userIdBox.setText("");
+                lambdaReferences.deleteButton.setEnabled(true);
+                lambdaReferences.deleteButton.setTheme(Constants.WARNING_TEXT);
+            } else {
+                userIdBox.setText("");
+                lambdaReferences.deleteButton.setEnabled(false);
+                lambdaReferences.deleteButton.setTheme(Constants.DISABLED_THEME);
+            }
         });
-        usernameBoxRef.usernameBox = usernameBox;
+        lambdaReferences.usernameBox = usernameBox;
 
-        Button backButton = new Button(
-                "Exit",
-                () -> {
-                    adminMode = false;
-                    this.close();
-                }
-        ).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.END, GridLayout.Alignment.CENTER));
-        contentPanel.addComponent(backButton);
-
+        contentPanel.addComponent(new EmptySpace());
         Button enterButton = new Button(
                 "Enter as User",
                 () -> {
@@ -120,6 +129,82 @@ public class AdminMenu extends AbstractWindow implements MenuPage {
                 }
         ).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.END, GridLayout.Alignment.CENTER));
         contentPanel.addComponent(enterButton);
+
+        contentPanel.addComponent(new EmptySpace());
+        Button createNewButton = new Button(
+                "Create new User",
+                () -> {
+                    adminMode = true;
+                    String username = new SignupMenu(this.textGUI, "[" + ADMIN_MARK + "] Add User", app).show();
+                    adminMode = false;
+
+                    if (app.getUserController().userWithUsernameExists(username)) {
+                        userKeyStroke = true;
+                        usernameBox.setText(username);
+                        userKeyStroke = false;
+                    }
+                }
+        ).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.END, GridLayout.Alignment.CENTER));
+        contentPanel.addComponent(createNewButton);
+
+        contentPanel.addComponent(new EmptySpace());
+        Button deleteButton = (Button)new Button(
+                "Remove User",
+                () -> {
+                    int id = -1;
+                    try {
+                        if (userIdBox.getText().isEmpty()) {
+                            throw new Exception("User ID cannot be empty");
+                        }
+
+                        id = Integer.parseInt(userIdBox.getText());
+                    } catch (Exception e) {
+                        errorLabel.setText(e.getMessage());
+                        errorLabel.setVisible(true);
+                        contentPanel.addComponent(errorLabel);
+                    }
+
+                    // Why tf is this needed?
+                    int finalId = id;
+                    Logger.logger.info("Attempting to remove user with ID: " + finalId);
+
+                    CustomMessageDialog.showMessageDialog(
+                            this.textGUI,
+                            "Remove Account",
+                            "Are you sure you want to delete this account?" +
+                                    "\n This action cannot be undone!",
+                            new CustomMessageDialog.CustomMessageDialogButton("No", (cmd) -> cmd.close(), 1),
+                            new CustomMessageDialog.CustomMessageDialogButton("Yes", (cmd) -> {
+                                cmd.close();
+                                try {
+                                    userIdBox.setText("");
+                                    usernameBox.setText("");
+
+                                    app.removeUser(finalId);
+                                    app.saveState(Constants.getSaveFilePath());
+                                    cmd.close();
+                                } catch (ErrorRemovingUserException | UserDoesNotExistsException e) {
+                                    // We are guaranteed to have the user exist at this point. However, log it anyway.
+                                    Logger.logger.warning(e.getMessage());
+                                }
+                            }, 2)
+                    );
+                }
+        ).setTheme(Constants.DISABLED_THEME)
+                .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.END, GridLayout.Alignment.CENTER));
+        deleteButton.setEnabled(false);
+        contentPanel.addComponent(deleteButton);
+        lambdaReferences.deleteButton = deleteButton;
+
+        contentPanel.addComponent(new EmptySpace());
+        Button backButton = new Button(
+                "Exit",
+                () -> {
+                    adminMode = false;
+                    this.close();
+                }
+        ).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.END, GridLayout.Alignment.CENTER));
+        contentPanel.addComponent(backButton);
 
         errorLabel = new Label("" )
                 .setLayoutData(GridLayout.createLayoutData(

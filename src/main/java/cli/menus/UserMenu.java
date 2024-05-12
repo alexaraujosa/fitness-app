@@ -83,6 +83,7 @@ public class UserMenu extends AbstractWindow implements MenuPage {
                             cmd.close();
                             try {
                                 app.deleteAccount();
+                                app.saveState(Constants.getSaveFilePath());
                                 this.close();
                             } catch (ErrorRemovingUserException e) {
                                 // We are guaranteed to have the user exist at this point. However, log it anyway.
