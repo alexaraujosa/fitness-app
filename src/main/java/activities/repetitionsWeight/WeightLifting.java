@@ -6,6 +6,7 @@ import activities.RepetitionWithWeightsAct;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class WeightLifting extends RepetitionWithWeightsAct implements Hard, Serializable {
     private boolean helped;
@@ -76,4 +77,17 @@ public class WeightLifting extends RepetitionWithWeightsAct implements Hard, Ser
 
     public WeightLifting clone() { return new WeightLifting(this); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        WeightLifting that = (WeightLifting) o;
+        return getHelped() == that.getHelped();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getHelped());
+    }
 }

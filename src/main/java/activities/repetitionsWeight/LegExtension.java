@@ -5,6 +5,7 @@ import activities.RepetitionWithWeightsAct;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class LegExtension extends RepetitionWithWeightsAct implements Serializable {
     private int chairAngle;
@@ -75,4 +76,17 @@ public class LegExtension extends RepetitionWithWeightsAct implements Serializab
 
     public LegExtension clone() { return new LegExtension(this); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        LegExtension that = (LegExtension) o;
+        return getChairAngle() == that.getChairAngle();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getChairAngle());
+    }
 }

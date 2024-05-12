@@ -3,6 +3,7 @@ package activities;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class Activities implements Serializable {
     private Map<Integer,Activity> activities;
@@ -72,11 +73,16 @@ public class Activities implements Serializable {
 
     public Activities clone() { return new Activities(this); }
 
+    @Override
     public boolean equals(Object o) {
-        if(o == this) return true;
-        if(!(o instanceof Activities)) return false;
-        Activities activities = (Activities)o;
-        return this.activities.equals(activities.activities);
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activities that = (Activities) o;
+        return this.activities.equals(that.activities);
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(getActivities());
+    }
 }

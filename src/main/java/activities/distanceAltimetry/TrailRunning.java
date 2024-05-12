@@ -6,6 +6,7 @@ import activities.Hard;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class TrailRunning extends DistanceAndAltimetryAct implements Hard, Serializable {
     private boolean wetFloor;
@@ -77,4 +78,17 @@ public class TrailRunning extends DistanceAndAltimetryAct implements Hard, Seria
 
     public TrailRunning clone() { return new TrailRunning(this); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        TrailRunning that = (TrailRunning) o;
+        return getWetFloor() == that.getWetFloor();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getWetFloor());
+    }
 }

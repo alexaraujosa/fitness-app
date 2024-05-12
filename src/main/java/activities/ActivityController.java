@@ -62,6 +62,6 @@ public class ActivityController implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ActivityController that = (ActivityController) o;
-        return Objects.equals(getActivities(), that.getActivities());
+        return this.activities.equals(that.activities);
     }
 }

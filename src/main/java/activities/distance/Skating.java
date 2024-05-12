@@ -5,6 +5,7 @@ import activities.DistanceAct;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Skating extends DistanceAct implements Serializable {
     private double skateWeight;
@@ -82,4 +83,18 @@ public class Skating extends DistanceAct implements Serializable {
 
     public Skating clone() { return new Skating(this); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Skating skating = (Skating) o;
+        return Double.compare(getSkateWeight(), skating.getSkateWeight()) == 0 &&
+                getFreestyle() == skating.getFreestyle();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getSkateWeight(), getFreestyle());
+    }
 }

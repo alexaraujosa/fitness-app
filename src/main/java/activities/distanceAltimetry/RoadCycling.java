@@ -5,6 +5,7 @@ import activities.DistanceAndAltimetryAct;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class RoadCycling extends DistanceAndAltimetryAct implements Serializable {
     private boolean windAgainst;
@@ -76,4 +77,17 @@ public class RoadCycling extends DistanceAndAltimetryAct implements Serializable
 
     public RoadCycling clone() { return new RoadCycling(this); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RoadCycling that = (RoadCycling) o;
+        return getWindAgainst() == that.getWindAgainst();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getWindAgainst());
+    }
 }

@@ -3,6 +3,7 @@ package activities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public abstract class RepetitionAct extends Activity implements Serializable {
     private int nRepetitions;
@@ -47,4 +48,17 @@ public abstract class RepetitionAct extends Activity implements Serializable {
 
     public abstract void calculateCalories();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        RepetitionAct that = (RepetitionAct) o;
+        return getNRepetitions() == that.getNRepetitions();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), nRepetitions);
+    }
 }

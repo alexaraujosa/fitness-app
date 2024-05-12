@@ -5,6 +5,7 @@ import activities.DistanceAct;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class TrackRunning extends DistanceAct implements Serializable {
     private boolean hurdleJump;
@@ -73,4 +74,17 @@ public class TrackRunning extends DistanceAct implements Serializable {
 
     public TrackRunning clone() { return new TrackRunning(this); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        TrackRunning that = (TrackRunning) o;
+        return getHurdleJump() == that.getHurdleJump();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getHurdleJump());
+    }
 }

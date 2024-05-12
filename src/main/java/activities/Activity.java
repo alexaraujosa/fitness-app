@@ -3,6 +3,7 @@ package activities;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public abstract class Activity implements Serializable {
     private final int id;
@@ -92,16 +93,20 @@ public abstract class Activity implements Serializable {
 
     @Override
     public boolean equals(Object o) {
-        if(o == this) return true;
-        if(!(o instanceof Activity)) return false;
-        Activity activity = (Activity)o;
-        return  this.id == activity.id &&
-                this.name.equals(activity.name) &&
-                this.begin == activity.begin &&
-                this.end == activity.end &&
-                this.idUser == activity.idUser &&
-                this.burnedCalories == activity.burnedCalories &&
-                this.heartRate == activity.heartRate;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Activity activity = (Activity) o;
+        return getId() == activity.getId() &&
+                getIdUser() == activity.getIdUser() &&
+                getBurnedCalories() == activity.getBurnedCalories() &&
+                getHeartRate() == activity.getHeartRate() &&
+                getName().equals(activity.getName()) &&
+                getBegin().isEqual(activity.getBegin()) &&
+                getEnd().isEqual(activity.getEnd());
     }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(getId(), getName(), getBegin(), getEnd(), getIdUser(), getBurnedCalories(), getHeartRate());
+    }
 }
