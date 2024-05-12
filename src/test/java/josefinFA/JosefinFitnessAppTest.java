@@ -973,7 +973,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addManualTrainingPlan() throws UsernameAlreadyExistsException {
+    void addManualTrainingPlan() throws InvalidValueException {
         this.fillApp();
 
         //Quando mete um por cima de outro, dá close hard activity exception
@@ -983,17 +983,17 @@ class JosefinFitnessAppTest {
         LocalDateTime begin = LocalDateTime.of(2018,Month.MAY,1,18,12,0);
         LocalDateTime end = LocalDateTime.of(2018,Month.MAY,1,20,0,0);
 
-        Rowing rowing1 = new Rowing(1, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
-        Rowing rowing2 = new Rowing(2, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
-        Rowing rowing3 = new Rowing(3, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
-        Rowing rowing4 = new Rowing(4, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
-        Rowing rowing5 = new Rowing(5, "Mundial 2018", begin, end, 1, 97, 75, 1623, 2, false);
-        LegExtension legext1 = new LegExtension(6, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
-        LegExtension legext2 = new LegExtension(7, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
-        LegExtension legext3 = new LegExtension(8, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
-        LegExtension legext4 = new LegExtension(9, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
-        LegExtension legext5 = new LegExtension(10, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
-        LegExtension legext6 = new LegExtension(12, "Mundial 2018", begin, end, 1, 519, 75, 1623, 12, 40);
+        Rowing rowing1 = app.createRowing(1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+        Rowing rowing2 = app.createRowing(1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+        Rowing rowing3 = app.createRowing(1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+        Rowing rowing4 = app.createRowing(1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+        Rowing rowing5 = app.createRowing(1, "Mundial 2018", begin, end, 75, 1623, 2, false);
+        LegExtension legext1 = app.createLegExtension(1, "Mundial 2018", begin, end, 75, 1623, 12, 40);
+        LegExtension legext2 = app.createLegExtension(1, "Mundial 2018", begin, end, 75, 1623, 12, 40);
+        LegExtension legext3 = app.createLegExtension(1, "Mundial 2018", begin, end, 75, 1623, 12, 40);
+        LegExtension legext4 = app.createLegExtension(1, "Mundial 2018", begin, end, 75, 1623, 12, 40);
+        LegExtension legext5 = app.createLegExtension(1, "Mundial 2018", begin, end, 75, 1623, 12, 40);
+        LegExtension legext6 = app.createLegExtension(1, "Mundial 2018", begin, end, 75, 1623, 12, 40);
 
         List<Activity> activityList1= new ArrayList<>();
         activityList1.add(rowing1);
@@ -1008,6 +1008,7 @@ class JosefinFitnessAppTest {
         } catch (InvalidValueException | ErrorHardActivityCloseException | ErrorSameDayTrainingPlanException e) {
             System.err.println(e.getMessage());
         }
+        //WARN: CLONAR ATIVIDADE
         legext2.setName("Batata");
 
         //Testar para duas hards no mesmo dia
@@ -1037,7 +1038,7 @@ class JosefinFitnessAppTest {
         try {
             app.addManualTrainingPlan(1, activityList3, doDate3, repeat3);
         } catch (InvalidValueException | ErrorHardActivityCloseException | ErrorSameDayTrainingPlanException e) {
-            System.err.println(e.getMessage());
+            assertEquals(e.getMessage(), "A close training plan already has an hard activity.");
         }
 
         //Testar adicionar plano de treino com repeticao em dias consecutivos, tendo este atividades hard
@@ -1052,10 +1053,12 @@ class JosefinFitnessAppTest {
         try {
             app.addManualTrainingPlan(1, activityList4, doDate4, repeat4);
         } catch (InvalidValueException | ErrorHardActivityCloseException | ErrorSameDayTrainingPlanException e) {
-            System.err.println(e.getMessage());
+            assertEquals(e.getMessage(), "You can't repeat the same training plan with hard activities on consecutive days.");
         }
 
         System.out.println(app.getUserController().getUsers().getUserWithId(1).getTrainingSchedule().toString());
+        assertEquals(app.getUserController().getUsers().getUserWithId(1).getTrainingSchedule().size(),1);
+
         app.loadStats();
         System.out.println(app.getUsersActivities(1).toString());
 
