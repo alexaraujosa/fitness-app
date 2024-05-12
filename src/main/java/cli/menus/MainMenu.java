@@ -120,7 +120,15 @@ public class MainMenu extends AbstractWindow implements MenuPage {
 //                        // Who tf cares
 //                    }
 
-                    if (loginWrapper.username.isEmpty()) this.result = MenuId.MAIN_MENU;
+                    Logger.logger.info("LOGIN: " + app.getUserController().isUsernameAvailable(loginWrapper.username));
+                    Logger.logger.info("LOGIN: "
+                            + (loginWrapper.username.isEmpty() || app.getUserController().isUsernameAvailable(loginWrapper.username))
+                    );
+
+                    if (
+                            loginWrapper.username.isEmpty()
+                                || app.getUserController().isUsernameAvailable(loginWrapper.username)
+                    ) this.result = MenuId.MAIN_MENU;
                     else this.result = MenuId.USER_MENU;
 
                     Logger.logger.info("RESULT: " + this.result);
