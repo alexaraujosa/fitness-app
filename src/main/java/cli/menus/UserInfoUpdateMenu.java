@@ -2,6 +2,7 @@ package cli.menus;
 
 import cli.Constants;
 import cli.util.Transformer;
+import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.*;
 import com.googlecode.lanterna.input.KeyStroke;
@@ -24,8 +25,10 @@ public class UserInfoUpdateMenu extends AbstractWindow implements MenuPage {
     private JosefinFitnessApp app;
 
     private Panel contentPanel;
+    private TextBox nameBox;
     private TextBox usernameBox;
     private TextBox birthDateBox;
+    private TextBox addressBox;
     private TextBox emailBox;
     private TextBox heightBox;
     private TextBox weightBox;
@@ -54,41 +57,63 @@ public class UserInfoUpdateMenu extends AbstractWindow implements MenuPage {
         // Weight
         // HeartFreq
 
+        TerminalSize boxSize = new TerminalSize(30, 1);
+
         User userData = app.getUserController().getUsers().getUserWithId(app.getUserID());
 
+        String originalName                    = userData.getName();
         String originalUsername                = userData.getUsername();
         String originalBirthDate               = userData.getBirthdate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        String originalAddress                 = userData.getAddress();
         String originalEmail                   = userData.getEmail();
         String originalHeight                  = String.valueOf(userData.getHeight());
         String originalWeight                  = String.valueOf(userData.getWeight());
-        String originalAverageCardiacFrequency = String.valueOf(userData.getWeight());
+        String originalAverageCardiacFrequency = String.valueOf(userData.getHeartFreq());
+
+        nameBox = new TextBox(originalName)
+                .setPreferredSize(boxSize)
+                .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER));
+        contentPanel.addComponent(new Label("Name:"));
+        contentPanel.addComponent(nameBox);
 
         usernameBox = new TextBox(originalUsername)
+                .setPreferredSize(boxSize)
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER));
         contentPanel.addComponent(new Label("Username:"));
         contentPanel.addComponent(usernameBox);
 
         birthDateBox = new TextBox(originalBirthDate)
+                .setPreferredSize(boxSize)
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER));
         contentPanel.addComponent(new Label("Birth date:"));
         contentPanel.addComponent(birthDateBox);
 
-        emailBox = new TextBox(originalEmail).
-                setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER));
+        addressBox = new TextBox(originalAddress)
+                .setPreferredSize(boxSize)
+                .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER));
+        contentPanel.addComponent(new Label("Address:"));
+        contentPanel.addComponent(addressBox);
+
+        emailBox = new TextBox(originalEmail)
+                .setPreferredSize(boxSize)
+                .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER));
         contentPanel.addComponent(new Label("Email:"));
         contentPanel.addComponent(emailBox);
 
         heightBox = new TextBox(originalHeight)
+                .setPreferredSize(boxSize)
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER));
         contentPanel.addComponent(new Label("Height:"));
         contentPanel.addComponent(heightBox);
 
         weightBox = new TextBox(originalWeight)
+                .setPreferredSize(boxSize)
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER));
         contentPanel.addComponent(new Label("Weight:"));
         contentPanel.addComponent(weightBox);
 
         averageCardiacFrequencyBox = new TextBox(originalAverageCardiacFrequency)
+                .setPreferredSize(boxSize)
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.BEGINNING, GridLayout.Alignment.CENTER));
         contentPanel.addComponent(new Label("Average Cardiac Frequency:"));
         contentPanel.addComponent(averageCardiacFrequencyBox);
