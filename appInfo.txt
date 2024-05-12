@@ -1,23 +1,23 @@
 --{ POPULATE APP }--
-Added Users: 156
-Number of Casuals: 56
-Number of Amateurs: 53
-Number of Professionals: 47
+Added Users: 148
+Number of Casuals: 55
+Number of Amateurs: 36
+Number of Professionals: 57
 --{ ENDING }--
 
 --{ CREATE ACTIVITIES }--
-Added Activities: 2225
-Added Rowing: 206
-Added Skating: 180
-Added TrackRunning: 169
-Added MountainBiking: 193
-Added RoadCycling: 174
-Added RoadRunning: 188
-Added TrailRunning: 192
-Added AbdominalExercises: 208
-Added PushUps: 187
-Added Stretching: 174
-Added LegExtension: 186
-Added WeightLifting: 168
+Added Activities: 2168
+Added Rowing: 188
+Added Skating: 176
+Added TrackRunning: 171
+Added MountainBiking: 173
+Added RoadCycling: 173
+Added RoadRunning: 182
+Added TrailRunning: 191
+Added AbdominalExercises: 167
+Added PushUps: 183
+Added Stretching: 197
+Added LegExtension: 182
+Added WeightLifting: 185
 --{ END }--
 
