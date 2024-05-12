@@ -1075,7 +1075,7 @@ class JosefinFitnessAppTest {
 
         LocalDate begin = LocalDate.of(2018,Month.MAY,1);
         boolean[] repeat = {true, false, false, false, false, false, false};
-        app.addAutomaticTrainingPlan(1, true, 2, begin, repeat, 500, 1);
+        app.addAutomaticTrainingPlan(1, true, 1, begin, repeat, 400, 1);
         System.out.println(app.getUserController().getUsers().getUserWithId(1).getTrainingSchedule().toString());
 
         app.loadStats();
