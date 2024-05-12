@@ -39,6 +39,8 @@ public class ListRecordsMenu extends AbstractWindow implements MenuPage {
 
         this.result = MenuId.MAIN_MENU;
 
+        app.loadStats();
+
         TerminalSize boxSize = new TerminalSize(20, 1);
 
         var lambdaReferences = new Object() {
