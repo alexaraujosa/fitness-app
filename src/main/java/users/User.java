@@ -365,6 +365,7 @@ public abstract class User implements Serializable {
     }
 
     public abstract int calculateBurnedCalories(int activityId);
+    public abstract int speculateBurnedCalories(Activity activity);
 
     public abstract User clone();
 

@@ -779,7 +779,7 @@ public class JosefinFitnessApp implements Serializable {
             List<Activity> activities,
             LocalDate doDate,
             boolean[] repeat
-    ) throws InvalidValueException, ErrorHardActivityCloseException {
+    ) throws InvalidValueException, ErrorHardActivityCloseException, ErrorSameDayTrainingPlanException {
         // Admin verifier
         int _id = (id == -1) ? this.userID : id;
 

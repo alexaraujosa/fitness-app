@@ -972,7 +972,7 @@ class JosefinFitnessAppTest {
     }
 
     @Test
-    void addManualTrainingPlan(){
+    void addManualTrainingPlan() throws UsernameAlreadyExistsException {
         this.fillApp();
 
         //Quando mete um por cima de outro, dá close hard activity exception
@@ -1004,7 +1004,7 @@ class JosefinFitnessAppTest {
 
         try {
             app.addManualTrainingPlan(1, activityList1, doDate1, repeat1);
-        } catch (InvalidValueException | ErrorHardActivityCloseException e) {
+        } catch (InvalidValueException | ErrorHardActivityCloseException | ErrorSameDayTrainingPlanException e) {
             System.err.println(e.getMessage());
         }
         legext2.setName("Batata");
@@ -1020,26 +1020,26 @@ class JosefinFitnessAppTest {
 
         try {
             app.addManualTrainingPlan(1, activityList2, doDate2, repeat2);
-        } catch (InvalidValueException | ErrorHardActivityCloseException e) {
+        } catch (InvalidValueException | ErrorHardActivityCloseException | ErrorSameDayTrainingPlanException e) {
             assertEquals(e.getMessage(), "Number of hard activities must be less or equals to 1.");
         }
 
-        //Testar para duas hards em dias seguidos
+        //Testar adicionar plano de treino com atividade hard no dia anterior/seguinte a ter feito um plano de treino hard
         List<Activity> activityList3= new ArrayList<>();
         activityList3.add(rowing4);
         activityList3.add(legext4);
         activityList3.add(legext5);
 
         LocalDate doDate3 = LocalDate.now().minusDays(1);
-        boolean[] repeat3 = {true, false, true, true, false, false, false};
+        boolean[] repeat3 = {true, false, true, false, false, false, false};
 
         try {
             app.addManualTrainingPlan(1, activityList3, doDate3, repeat3);
-        } catch (InvalidValueException | ErrorHardActivityCloseException e) {
+        } catch (InvalidValueException | ErrorHardActivityCloseException | ErrorSameDayTrainingPlanException e) {
             System.err.println(e.getMessage());
         }
 
-        //Verificar se o repete funciona ou não
+        //Testar adicionar plano de treino com repeticao em dias consecutivos, tendo este atividades hard
         List<Activity> activityList4= new ArrayList<>();
         activityList4.add(rowing5);
         activityList4.add(legext6);
@@ -1050,7 +1050,7 @@ class JosefinFitnessAppTest {
 
         try {
             app.addManualTrainingPlan(1, activityList4, doDate4, repeat4);
-        } catch (InvalidValueException | ErrorHardActivityCloseException e) {
+        } catch (InvalidValueException | ErrorHardActivityCloseException | ErrorSameDayTrainingPlanException e) {
             System.err.println(e.getMessage());
         }
 
@@ -1058,13 +1058,24 @@ class JosefinFitnessAppTest {
         app.loadStats();
         System.out.println(app.getUsersActivities(1).toString());
 
-        //como funciona se a activivty for adicionada num sexta, mas for reptida na segunda
+        //Testar adicionar plano de treino com repeticao em dias consecutivos, nao tendo este atividades hard
+        //TODO
 
-//        List<Activity> activityList= new ArrayList<>();
-//        LocalDate doDate = LocalDate.now();
-//        boolean[] repeat = {true, false, true, true, false, false, false};
-//
-//        app.addManualTrainingPlan(1,);
+        //Testar adicionar plano de treino com repeticao num dia que ja repete um plano de treino
+        //TODO
+    }
+
+    @Test
+    void addAutomaticTrainingPlan() throws UsernameAlreadyExistsException, InvalidValueException, ErrorHardActivityCloseException {
+        this.fillApp();
+
+        LocalDate begin = LocalDate.of(2018,Month.MAY,1);
+        boolean[] repeat = {true, false, false, false, false, false, false};
+        app.addAutomaticTrainingPlan(1, true, 2, begin, repeat, 500, 1);
+        System.out.println(app.getUserController().getUsers().getUserWithId(1).getTrainingSchedule().toString());
+
+        app.loadStats();
+        System.out.println(app.getUsersActivities(1).toString());
     }
 
     @Test
