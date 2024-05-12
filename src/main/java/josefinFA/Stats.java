@@ -6,6 +6,7 @@ import activities.DistanceAndAltimetryAct;
 import users.CasualUser;
 import users.User;
 import users.UserController;
+import utils.Logger;
 import utils.Tuple;
 
 import java.io.Serializable;
@@ -97,11 +98,12 @@ public class Stats implements Serializable {
                     newBurnedCalories += user.calculateBurnedCalories(act.getId());
                 }
             }
-            if(newBurnedCalories > burnedCalories){
+            if(newBurnedCalories >= burnedCalories){
                 burnedCalories = newBurnedCalories;
                 finalUserID = user.getId();
             }
         }
+
         return new Tuple<User, Integer>(this.userController.getUsers().getUserWithId(finalUserID), burnedCalories);
     }
 

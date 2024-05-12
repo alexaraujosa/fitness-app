@@ -5,6 +5,7 @@ import activities.Activity;
 import cli.Constants;
 import com.googlecode.lanterna.gui2.*;
 import exceptions.ErrorHardActivityCloseException;
+import exceptions.ErrorSameDayTrainingPlanException;
 import exceptions.InvalidValueException;
 import josefinFA.JosefinFitnessApp;
 import utils.Logger;
@@ -56,7 +57,7 @@ public class TrainingPlanMainMenu extends AbstractWindow implements MenuPage {
                         }
 
                         Logger.logger.info("Training Plans: " + trainingPlans.size());
-                    } catch (NoSuchMethodException | InvalidValueException | ErrorHardActivityCloseException e) {
+                    } catch (Exception e) {
                         Logger.logger.warning("Unable to create or update Training Plan:" + e.getMessage());
                     }
                 }

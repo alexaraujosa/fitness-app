@@ -43,7 +43,11 @@ public class UserMenu extends AbstractWindow implements MenuPage {
         Button listRecords = (Button)new Button(
                 "List Records",
                 () -> {
-
+                    try {
+                        new ListRecordsMenu(textGUI, "", app).show();
+                    } catch (NoSuchMethodException e) {
+                        // idgaf
+                    }
                 }
         );
         contentPanel.addComponent(listRecords);
