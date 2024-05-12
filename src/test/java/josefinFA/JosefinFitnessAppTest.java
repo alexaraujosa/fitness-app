@@ -275,21 +275,21 @@ class JosefinFitnessAppTest {
 
     private void fillApp() {
         //Stores original STDOUT
-//        PrintStream originalOut = System.out;
-//
-//        try {
-//            // Redirect standard output to appInfo file, truncating if it already exists
-//            PrintStream fileOut = new PrintStream(new File("appInfo.txt"));
-//            System.setOut(fileOut);
-//
-//            // Call methods to populate app with users and activities
-//            this.populateAppWithUsers();
-//            this.populateAppWithActivities();
-//        } catch (FileNotFoundException e) {
-//            System.err.println(e.getMessage());
-//        } finally {
-//            System.setOut(originalOut);
-//        }
+        PrintStream originalOut = System.out;
+
+        try {
+            // Redirect standard output to appInfo file, truncating if it already exists
+            PrintStream fileOut = new PrintStream(new File("appInfo.txt"));
+            System.setOut(fileOut);
+
+            // Call methods to populate app with users and activities
+            this.populateAppWithUsers();
+            this.populateAppWithActivities();
+        } catch (FileNotFoundException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            System.setOut(originalOut);
+        }
     }
 
     @Test
