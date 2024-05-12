@@ -17,6 +17,7 @@ import exceptions.*;
 import users.User;
 import users.UserController;
 import utils.IDManager;
+import utils.Tuple;
 
 import java.io.*;
 import java.time.LocalDate;
@@ -884,11 +885,11 @@ public class JosefinFitnessApp implements Serializable {
         this.stats.updateAllTimeValues();
     }
 
-    public User userWithMostCaloriesBurned(LocalDateTime from){
+    public Tuple<User, Integer> userWithMostCaloriesBurned(LocalDateTime from){
         return this.stats.userWithMostCaloriesBurned(from);
     }
 
-    public User userWithMostActivitiesCompleted(LocalDateTime from){
+    public Tuple<User, Integer> userWithMostActivitiesCompleted(LocalDateTime from){
         return this.stats.userWithMostActivitiesCompleted(from);
     }
 

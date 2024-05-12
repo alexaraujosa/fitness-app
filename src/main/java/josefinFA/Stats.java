@@ -6,6 +6,7 @@ import activities.DistanceAndAltimetryAct;
 import users.CasualUser;
 import users.User;
 import users.UserController;
+import utils.Tuple;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
@@ -17,19 +18,19 @@ import java.util.Objects;
 public class Stats implements Serializable {
     private UserController userController;
     private LocalDateTime systemDate;
-    private User allTimeUserWithMostCaloriesBurned;
-    private User allTimeUserWithMostActivitiesCompleted;
+    private Tuple<User, Integer> allTimeUserWithMostCaloriesBurned;
+    private Tuple<User, Integer> allTimeUserWithMostActivitiesCompleted;
 
 
     //region Constructors
     public Stats(){
         this.userController = new UserController();
         this.systemDate = LocalDateTime.now();
-        this.allTimeUserWithMostActivitiesCompleted = new CasualUser(1);
-        this.allTimeUserWithMostCaloriesBurned = new CasualUser(1);
+        this.allTimeUserWithMostActivitiesCompleted = new Tuple<>(null, 0);
+        this.allTimeUserWithMostCaloriesBurned = new Tuple<>(null, 0);
     }
 
-    public Stats(UserController userController, LocalDateTime systemDate, User allTimeUserWithMostActivitiesCompleted, User allTimeUserWithMostCaloriesBurned){
+    public Stats(UserController userController, LocalDateTime systemDate, Tuple<User, Integer> allTimeUserWithMostActivitiesCompleted, Tuple<User, Integer> allTimeUserWithMostCaloriesBurned){
         this.userController = userController.clone();
         this.systemDate = systemDate;
         this.allTimeUserWithMostCaloriesBurned = allTimeUserWithMostCaloriesBurned.clone();
@@ -61,19 +62,19 @@ public class Stats implements Serializable {
         this.systemDate = systemDate;
     }
 
-    public User getAllTimeUserWithMostCaloriesBurned() {
+    public Tuple<User, Integer> getAllTimeUserWithMostCaloriesBurned() {
         return this.allTimeUserWithMostCaloriesBurned.clone();
     }
 
-    public void setAllTimeUserWithMostCaloriesBurned(User user) {
+    public void setAllTimeUserWithMostCaloriesBurned(Tuple<User, Integer> user) {
         this.allTimeUserWithMostCaloriesBurned = user;
     }
 
-    public User getAllTimeUserWithMostActivitiesCompleted() {
+    public Tuple<User, Integer> getAllTimeUserWithMostActivitiesCompleted() {
         return this.allTimeUserWithMostActivitiesCompleted.clone();
     }
 
-    public void setAllTimeUserWithMostActivitiesCompleted(User user) {
+    public void setAllTimeUserWithMostActivitiesCompleted(Tuple<User, Integer> user) {
         this.allTimeUserWithMostActivitiesCompleted = user;
     }
     //endregion
@@ -84,7 +85,7 @@ public class Stats implements Serializable {
         this.userWithMostActivitiesCompleted();
     }
 
-    public User userWithMostCaloriesBurned(LocalDateTime from){
+    public Tuple<User, Integer> userWithMostCaloriesBurned(LocalDateTime from){
         int burnedCalories = -1;
         int finalUserID = -1;
 
@@ -101,10 +102,10 @@ public class Stats implements Serializable {
                 finalUserID = user.getId();
             }
         }
-        return this.userController.getUsers().getUserWithId(finalUserID);
+        return new Tuple<User, Integer>(this.userController.getUsers().getUserWithId(finalUserID), burnedCalories);
     }
 
-    public void userWithMostCaloriesBurned(){
+    private void userWithMostCaloriesBurned(){
         int burnedCalories = -1;
         int finalUserID = -1;
 
@@ -121,10 +122,10 @@ public class Stats implements Serializable {
                 finalUserID = user.getId();
             }
         }
-        this.allTimeUserWithMostCaloriesBurned = this.userController.getUsers().getUserWithId(finalUserID);
+        this.allTimeUserWithMostCaloriesBurned = new Tuple<>(this.userController.getUsers().getUserWithId(finalUserID), burnedCalories);
     }
 
-    public User userWithMostActivitiesCompleted(LocalDateTime from){
+    public Tuple<User, Integer> userWithMostActivitiesCompleted(LocalDateTime from){
         int nActivities = -1;
         int finalUserID = -1;
         List<User> users = this.userController.getUsers().getUsersList();
@@ -140,7 +141,7 @@ public class Stats implements Serializable {
                 finalUserID = user.getId();
             }
         }
-        return this.userController.getUsers().getUserWithId(finalUserID);
+        return new Tuple<>(this.userController.getUsers().getUserWithId(finalUserID), nActivities);
     }
 
     public void userWithMostActivitiesCompleted(){
@@ -159,7 +160,7 @@ public class Stats implements Serializable {
                 finalUserID = user.getId();
             }
         }
-        this.allTimeUserWithMostActivitiesCompleted = this.userController.getUsers().getUserWithId(finalUserID);
+        this.allTimeUserWithMostActivitiesCompleted = new Tuple<User, Integer>(this.userController.getUsers().getUserWithId(finalUserID), nActivities);
     }
 
 
