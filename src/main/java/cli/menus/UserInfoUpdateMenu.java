@@ -41,6 +41,9 @@ public class UserInfoUpdateMenu extends AbstractWindow implements MenuPage {
         super(!Objects.equals(title, "") ? title : "User Information Update");
         this.setHints(java.util.Set.copyOf(Collections.singletonList(Hint.CENTERED)));
 
+        String trueTitle = AdminMenu.isAdminMode() ? "[" + AdminMenu.ADMIN_MARK + "] " + this.getTitle() : this.getTitle();
+        this.setTitle(trueTitle);
+
         this.textGUI = textGUI;
         this.app = app;
 
@@ -59,7 +62,7 @@ public class UserInfoUpdateMenu extends AbstractWindow implements MenuPage {
 
         TerminalSize boxSize = new TerminalSize(30, 1);
 
-        User userData = app.getUserController().getUsers().getUserWithId(app.getUserID());
+        User userData = app.getUserController().getUsers().getUserWithId(AdminMenu.getExplicitLoadedUserId(app));
 
         String originalName                    = userData.getName();
         String originalUsername                = userData.getUsername();
@@ -130,8 +133,12 @@ public class UserInfoUpdateMenu extends AbstractWindow implements MenuPage {
                         weightBox.setTheme(Constants.ENABLED_THEME);
                         averageCardiacFrequencyBox.setTheme(Constants.ENABLED_THEME);
 
+                        Logger.logger.info("Attempting to update user information.");
+
+                        tryUpdateFromTextBox(nameBox, originalName, app::updateUserName, Transformer::transformToString);
                         tryUpdateFromTextBox(usernameBox, originalUsername, app::updateUserUsername, Transformer::transformToString);
                         tryUpdateFromTextBox(birthDateBox, originalBirthDate, app::updateUserBirthdate, Transformer::transformToLocalDate);
+                        tryUpdateFromTextBox(addressBox, originalAddress, app::updateUserAddress, Transformer::transformToString);
                         tryUpdateFromTextBox(emailBox, originalEmail, app::updateUserEmail, Transformer::transformToString);
                         tryUpdateFromTextBox(heightBox, originalHeight, app::updateUserHeight, Transformer::transformToDouble);
                         tryUpdateFromTextBox(weightBox, originalWeight, app::updateUserWeight, Transformer::transformToDouble);
@@ -181,10 +188,14 @@ public class UserInfoUpdateMenu extends AbstractWindow implements MenuPage {
             ExceptionBiConsumer<Integer, T, Exception> updater,
             Function<String, T> transformer
     ) throws Exception {
+        Logger.logger.info("Original: " + box.getText() + " | Control: " + control);
         if (!box.getText().equals(control)) {
             try {
                 T trueValue = transformer.apply(box.getText());
-                updater.accept(app.getUserID(), trueValue);
+
+                Logger.logger.info("Transformed: " + trueValue + " | Control: " + control);
+
+                updater.accept(AdminMenu.getLoadedUserId(app), trueValue);
             } catch (Exception e) {
                 Logger.logger.warning("Unable to update property: " + e.getMessage() + "\n" + Arrays.toString(e.getStackTrace()));
 

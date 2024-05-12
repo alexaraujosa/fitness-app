@@ -124,12 +124,6 @@ public class SignupMenu extends AbstractWindow implements MenuPage  {
         contentPanel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
 //        contentPanel.addComponent(new EmptySpace(new TerminalSize(1, 1)));
 
-        Button backButton = new Button(
-                "Back",
-                this::close
-        ).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.END, GridLayout.Alignment.CENTER));
-        contentPanel.addComponent(backButton);
-
         Button signupButton = (Button)new Button(
                 "Sign Up",
                 () -> {
@@ -246,6 +240,12 @@ public class SignupMenu extends AbstractWindow implements MenuPage  {
         ).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.END, GridLayout.Alignment.CENTER));
         contentPanel.addComponent(signupButton);
 
+        Button backButton = new Button(
+                "Back",
+                this::close
+        ).setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.END, GridLayout.Alignment.CENTER));
+        contentPanel.addComponent(backButton);
+
         errorLabel = new Label("" )
                 .setLayoutData(GridLayout.createLayoutData(
                         GridLayout.Alignment.BEGINNING,
@@ -255,7 +255,7 @@ public class SignupMenu extends AbstractWindow implements MenuPage  {
                         5,
                         1
                 ))
-                .setForegroundColor(TextColor.ANSI.RED_BRIGHT);
+                .setForegroundColor(TextColor.ANSI.RED);
         errorLabel.setVisible(false);
 
         this.setComponent(contentPanel);

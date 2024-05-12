@@ -64,10 +64,10 @@ public class MainMenu extends AbstractWindow implements MenuPage {
 //        );
 
         var loginWrapper = new Object(){
-            String username = (app.getUserID() != -1)
-                    ? app.getUserController().getUsers().getUserWithId(app.getUserID()).getUsername()
+            String username = (AdminMenu.getExplicitLoadedUserId(app) != -1)
+                    ? app.getUserController().getUsers().getUserWithId(AdminMenu.getExplicitLoadedUserId(app)).getUsername()
                     : "";
-            boolean loggedIn = app.getUserID() != -1;
+            boolean loggedIn = AdminMenu.getExplicitLoadedUserId(app) != -1;
             Button loginButton;
             Button signupButton;
 
@@ -86,7 +86,7 @@ public class MainMenu extends AbstractWindow implements MenuPage {
             }
         };
 
-        Logger.logger.info("Logged in: " + loginWrapper.loggedIn + " | Username: '" + loginWrapper.username + "'" + " | ID: " + app.getUserID());
+        Logger.logger.info("Logged in: " + loginWrapper.loggedIn + " | Username: '" + loginWrapper.username + "'" + " | ID: " + AdminMenu.getExplicitLoadedUserId(app));
 
         Label sizeLabel = new Label("Size: {" + size.getColumns() + "x" + size.getRows() + "}" + "\nUsername: <None>\nUser Id: <None>");
         sizeLabel.setTheme(Constants.ENABLED_THEME);
@@ -143,10 +143,6 @@ public class MainMenu extends AbstractWindow implements MenuPage {
 
         Button signupButton = (Button)new Button(
                 "Sign Up",
-//                () -> MessageDialog.showMessageDialog(
-//                        this.textGUI,
-//                        "Sign Up Menu", "This would take us to the signup menu.", MessageDialogButton.OK
-//                )
                 () -> {
                     new SignupMenu(this.textGUI, "Signup", app).show();
                 }
@@ -160,10 +156,10 @@ public class MainMenu extends AbstractWindow implements MenuPage {
         contentPanel.addComponent(
                 new Button(
                         "Admin",
-                        () -> MessageDialog.showMessageDialog(
-                                this.textGUI,
-                                "Admin Menu", "This would take us to the admin menu.", MessageDialogButton.OK
-                        )
+                        () -> {
+                            this.result = MenuId.ADMIN_MENU;
+                            this.close();
+                        }
                 )
                 .setTheme(Constants.ENABLED_THEME)
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER))

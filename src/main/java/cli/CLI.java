@@ -308,7 +308,7 @@ public class CLI {
                         break;
                     }
                     case MenuId.USER_MENU: {
-                        String username = app.getUserController().getUsers().getUserWithId(app.getUserID()).getUsername();
+                        String username = app.getUserController().getUsers().getUserWithId(AdminMenu.getExplicitLoadedUserId(app)).getUsername();
                         window = new UserMenu(
                                 textGUI,
                                 username + "'s Panel",
@@ -318,6 +318,10 @@ public class CLI {
                     }
                     case MenuId.TRAINING_PLAN_MENU: {
                         window = new TrainingPlanMainMenu(textGUI, "", app);
+                        break;
+                    }
+                    case MenuId.ADMIN_MENU: {
+                        window = new AdminMenu(textGUI, "", app);
                         break;
                     }
                 }

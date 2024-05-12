@@ -19,10 +19,14 @@ public class UserMenu extends AbstractWindow implements MenuPage {
         super(title);
         this.setHints(java.util.Set.copyOf(Collections.singletonList(Hint.CENTERED)));
 
+        String trueTitle = AdminMenu.isAdminMode() ? "[" + AdminMenu.ADMIN_MARK + "] " + this.getTitle() : this.getTitle();
+        this.setTitle(trueTitle);
+
         this.textGUI = textGUI;
         this.app = app;
 
-        this.result = MenuId.MAIN_MENU;
+//        this.result = MenuId.MAIN_MENU;
+        this.result = AdminMenu.getBaseMenuId();
 
         Panel contentPanel = new Panel();
         contentPanel.setLayoutManager((new GridLayout(1)).setLeftMarginSize(1).setRightMarginSize(1));

@@ -52,6 +52,9 @@ public class AddActivityMenu extends AbstractWindow implements MenuPage {
         super(!Objects.equals(title, "") ? title : "Add Activity");
         this.setHints(java.util.Set.copyOf(Collections.singletonList(Hint.CENTERED)));
 
+        String trueTitle = AdminMenu.isAdminMode() ? "[" + AdminMenu.ADMIN_MARK + "] " + this.getTitle() : this.getTitle();
+        this.setTitle(trueTitle);
+
         this.textGUI = textGUI;
         this.app = app;
         this.result = null;
@@ -139,7 +142,7 @@ public class AddActivityMenu extends AbstractWindow implements MenuPage {
                             String paramName = ACTIVITY_CONSTRUCTOR_PARAMETER_NAMES[finalI][j];
                             if (Arrays.asList(RESERVED_PARAMETER_NAMES).contains(paramName)) {
                                 if (paramName.equals("id")) {
-                                    result[j] = app.getUserID();
+                                    result[j] = AdminMenu.getExplicitLoadedUserId(app);
                                 }
                             } else {
                                 result[j] = resultData.get(paramName);

@@ -30,6 +30,9 @@ public class TrainingPlanDataMenu extends AbstractWindow implements MenuPage {
         super(title.isEmpty() ? "New Training Plan" : title);
         this.setHints(java.util.Set.copyOf(Collections.singletonList(Hint.CENTERED)));
 
+        String trueTitle = AdminMenu.isAdminMode() ? "[" + AdminMenu.ADMIN_MARK + "] " + this.getTitle() : this.getTitle();
+        this.setTitle(trueTitle);
+
         this.textGUI = textGUI;
         this.app = app;
 
@@ -185,7 +188,7 @@ public class TrainingPlanDataMenu extends AbstractWindow implements MenuPage {
                     if (activityStore.act3 != null) activities.add(activityStore.act3);
 
                     this.result = new TrainingPlan(
-                            app.getUserID(),
+                            AdminMenu.getExplicitLoadedUserId(app),
                             activities,
                             LocalDate.now(),
                             new boolean[]{

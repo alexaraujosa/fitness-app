@@ -4,5 +4,6 @@ public enum MenuId {
     NONE,
     MAIN_MENU,
     USER_MENU,
-    TRAINING_PLAN_MENU
+    TRAINING_PLAN_MENU,
+    ADMIN_MENU
 }

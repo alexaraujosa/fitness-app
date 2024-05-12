@@ -18,8 +18,11 @@ public class TrainingPlanAutomaticMenu extends AbstractWindow implements MenuPag
     private Object result;
 
     public TrainingPlanAutomaticMenu(WindowBasedTextGUI textGUI, String title, JosefinFitnessApp app) throws NoSuchMethodException {
-        super(title.isEmpty() ? "New Training Plan" : title);
+        super(title.isEmpty() ? "Generate Training Plan" : title);
         this.setHints(java.util.Set.copyOf(Collections.singletonList(Hint.CENTERED)));
+
+        String trueTitle = AdminMenu.isAdminMode() ? "[" + AdminMenu.ADMIN_MARK + "] " + this.getTitle() : this.getTitle();
+        this.setTitle(trueTitle);
 
         this.textGUI = textGUI;
         this.app = app;
@@ -55,7 +58,7 @@ public class TrainingPlanAutomaticMenu extends AbstractWindow implements MenuPag
                 () -> {
                     try {
                         app.addAutomaticTrainingPlan(
-                                -1,
+                                AdminMenu.getLoadedUserId(app),
                                 false,
                                 1,
                                 LocalDate.now(),

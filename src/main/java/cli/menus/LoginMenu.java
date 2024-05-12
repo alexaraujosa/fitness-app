@@ -50,7 +50,7 @@ public class LoginMenu extends AbstractWindow implements MenuPage {
                         5,
                         1
                 ))
-                .setForegroundColor(TextColor.ANSI.RED_BRIGHT);
+                .setForegroundColor(TextColor.ANSI.RED);
 //                .setPreferredSize(new TerminalSize(20, 1));
         errorLabel.setVisible(false);
 

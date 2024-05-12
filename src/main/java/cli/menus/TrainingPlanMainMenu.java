@@ -27,12 +27,15 @@ public class TrainingPlanMainMenu extends AbstractWindow implements MenuPage {
         super(title.isEmpty() ? "Training Plan List" : title);
         this.setHints(java.util.Set.copyOf(Collections.singletonList(Hint.CENTERED)));
 
+        String trueTitle = AdminMenu.isAdminMode() ? "[" + AdminMenu.ADMIN_MARK + "] " + this.getTitle() : this.getTitle();
+        this.setTitle(trueTitle);
+
         this.textGUI = textGUI;
         this.app = app;
 
         this.result = MenuId.USER_MENU;
 
-        List<TrainingPlan> trainingPlans = app.getUserController().getUsers().getUserWithId(app.getUserID()).getTrainingSchedule();
+        List<TrainingPlan> trainingPlans = app.getUserController().getUsers().getUserWithId(AdminMenu.getExplicitLoadedUserId(app)).getTrainingSchedule();
 
         Panel contentPanel = new Panel();
         contentPanel.setLayoutManager((new GridLayout(2)).setLeftMarginSize(1).setRightMarginSize(1));
@@ -48,7 +51,7 @@ public class TrainingPlanMainMenu extends AbstractWindow implements MenuPage {
 
                         Logger.logger.info("Training Plan: " + plan);
                         if (plan != null) {
-                            app.addManualTrainingPlan(-1, plan.getActivities(), plan.getDoDate(), plan.getRepeat());
+                            app.addManualTrainingPlan(AdminMenu.getLoadedUserId(app), plan.getActivities(), plan.getDoDate(), plan.getRepeat());
                             app.saveState(Constants.getSaveFilePath());
                         }
 
