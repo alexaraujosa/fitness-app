@@ -1,5 +1,7 @@
 package users;
 
+import activities.Activity;
+
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Period;
@@ -47,6 +49,21 @@ public class AmateurUser extends User implements Serializable {
         double percentage = 1 - (1 * typeBasedBmr) / bmr;
 
         userValue = (double) (this.getActivityController().get(activityID).getBurnedCalories() * this.getActivityController().get(activityID).getHeartRate()) /65;
+
+        return (int) (userValue + userValue * (percentage));
+    }
+
+    @Override
+    public int speculateBurnedCalories(Activity a) {
+        double userValue = 0;
+        double bmr = this.calculateBMR();
+        a.calculateCalories();
+
+        double typeBasedBmr = ((bmr * this.getHeartFreq())/65);
+
+        double percentage = 1 - (1 * typeBasedBmr) / bmr;
+
+        userValue = (double) (a.getBurnedCalories() * a.getHeartRate()) /65;
 
         return (int) (userValue + userValue * (percentage));
     }

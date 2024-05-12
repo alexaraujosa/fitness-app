@@ -6,6 +6,7 @@ import activities.RepetitionAct;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class PushUps extends RepetitionAct implements Hard, Serializable {
     public boolean diamondIntercalated;
@@ -74,4 +75,17 @@ public class PushUps extends RepetitionAct implements Hard, Serializable {
 
     public PushUps clone() { return new PushUps(this); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        PushUps pushUps = (PushUps) o;
+        return getDiamondIntercalated() == pushUps.getDiamondIntercalated();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getDiamondIntercalated());
+    }
 }

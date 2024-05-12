@@ -5,6 +5,7 @@ import activities.RepetitionAct;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class AbdominalExercises extends RepetitionAct implements Serializable {
     private boolean helped;
@@ -73,4 +74,17 @@ public class AbdominalExercises extends RepetitionAct implements Serializable {
 
     public AbdominalExercises clone() { return new AbdominalExercises(this); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        AbdominalExercises that = (AbdominalExercises) o;
+        return getHelped() == that.getHelped();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getHelped());
+    }
 }

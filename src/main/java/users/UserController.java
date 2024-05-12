@@ -453,11 +453,34 @@ public class UserController implements Serializable {
     //region Training Plan Methods
     private void verifyCloseHardActivity(User u, LocalDate doDate) throws ErrorHardActivityCloseException {
         List<TrainingPlan> userTps = u.getTrainingSchedule().stream()
-                .filter(tp -> (tp.getDoDate().isAfter(doDate.minusDays(1)) && tp.getDoDate().isBefore(doDate.plusDays(1))))
+                .filter(tp -> (tp.getDoDate().isAfter(doDate.minusDays(2)) && tp.getDoDate().isBefore(doDate.plusDays(2))))
                 .toList();
         for(TrainingPlan tp : userTps) {
             if(tp.containsHardActivity())
                 throw new ErrorHardActivityCloseException("A close training plan already has an hard activity.");
+        }
+    }
+
+    private void verifyCloseHardRepeatActivity(boolean[] repeat) throws ErrorHardActivityCloseException {
+        for(int i = 0 ; i < repeat.length - 1 ; i++) {
+            if(repeat[i] && repeat[i + 1])
+                throw new ErrorHardActivityCloseException("You can't repeat the same training plan with hard activities on consecutive days.");
+        }
+    }
+
+    private void verifySameDayTrainingPlan(User u, LocalDate doDate) throws ErrorSameDayTrainingPlanException {
+        if(u.getTrainingSchedule().stream().anyMatch(tp -> tp.getDoDate().equals(doDate)))
+            throw new ErrorSameDayTrainingPlanException("It already exists a training plan on the same day.");
+    }
+
+    private void verifyRepeatTrainingPlan(User u, boolean[] repeat) throws ErrorSameDayTrainingPlanException {
+        for(TrainingPlan tp : u.getTrainingSchedule()) {
+            boolean[] tpRepeat = tp.getRepeat();
+            for(int i = 0 ; i < repeat.length ; i++) {
+                if(repeat[i] && tpRepeat[i]) {
+                    throw new ErrorSameDayTrainingPlanException("You can't repeat the training plan due to a training plan being repeated already on the same day.");
+                }
+            }
         }
     }
 
@@ -467,12 +490,16 @@ public class UserController implements Serializable {
             List<Activity> activities,
             LocalDate doDate,
             boolean[] repeat
-    ) throws InvalidValueException, ErrorHardActivityCloseException {
+    ) throws InvalidValueException, ErrorHardActivityCloseException, ErrorSameDayTrainingPlanException {
         if(activities.size() > 3) throw new InvalidValueException("Number of activities must be less or equals to 3.");
-        if(activities.stream().filter(a -> a instanceof Hard).count() > 1) throw new InvalidValueException("Number of hard activities must be less or equals to 1.");
+        int hardActivities = (int) activities.stream().filter(a -> a instanceof Hard).count();
+        if(hardActivities > 1) throw new InvalidValueException("Number of hard activities must be less or equals to 1.");
 
         User u = this.users.getUserWithId(idUser);
+        if(hardActivities != 0) verifyCloseHardRepeatActivity(repeat);
+        verifySameDayTrainingPlan(u, doDate);
         verifyCloseHardActivity(u, doDate);
+        verifyRepeatTrainingPlan(u, repeat);
 
         TrainingPlan tp = new TrainingPlan(id, activities, doDate, repeat);
         u.addTrainingPlan(tp);
@@ -530,14 +557,17 @@ public class UserController implements Serializable {
     private Set<Integer> randomCategorySelector(int maximumActivitiesPerDay, int numCategories) {
         Set<Integer> categories = new HashSet<>();
         Random random = new Random();
+        int category = random.nextInt(2) + 1;
+        categories.add(category);
         while(categories.size() < maximumActivitiesPerDay) {
-            categories.add(random.nextInt(numCategories) + 1);
+            category = random.nextInt(numCategories) + 1;
+            categories.add(category);
         }
 
         return categories;
     }
 
-    private Activity generateDistanceActivity(int id, int idUser, int minimumCaloriesConsumption, int maximumActivitiesPerDay, LocalDate doDate, boolean hasHard) {
+    private Activity generateDistanceActivity(int id, int idUser, List<Activity> activities, int minimumCaloriesConsumption, int maximumActivitiesPerDay, LocalDate doDate, boolean hasHard, boolean wantsHard) {
         Random random = new Random();
         int type = random.nextInt(3) + 1; // Quantidade de Atividades
 
@@ -548,15 +578,19 @@ public class UserController implements Serializable {
             }
         }
 
+        if(!hasHard && wantsHard) {
+            type = 1;
+        }
+
         DistanceAct activity;
         int startDistance = 500;
         switch(type) {
             case 1 : {
-                    activity = new Rowing(id, idUser, random.nextInt(startDistance), random.nextInt(6), random.nextBoolean());
-                    break;  // TODO: Colocar a data de inicio e de fim como deve de ser
+                    activity = new Rowing(id, idUser, random.nextInt(startDistance), random.nextInt(6) + 1, random.nextBoolean());
+                    break;
             }
             case 2: {
-                    activity = new Skating(id, idUser, random.nextInt(startDistance), random.nextDouble(13), random.nextBoolean());
+                    activity = new Skating(id, idUser, random.nextInt(startDistance), random.nextDouble(13) + 3, random.nextBoolean());
                     break;
             }
             case 3: {
@@ -564,22 +598,44 @@ public class UserController implements Serializable {
                     break;
             }
             default : {
-                    activity = new Rowing(id, idUser, random.nextInt(startDistance), random.nextInt(6), random.nextBoolean());
+                    activity = new Rowing(id, idUser, random.nextInt(startDistance), random.nextInt(6) + 1, random.nextBoolean());
             }
         }
+        activity.setBegin(doDate.atTime(random.nextInt(24), random.nextInt(60)));
+        activity.setEnd(activity.getBegin().plusMinutes(30));
+        if(activities.size() > 0) {
+            Activity a = activities.getLast();
+            while (!(activity.getBegin().isAfter(a.getEnd()) || activity.getEnd().isBefore(a.getBegin()))) {
+                activity.setBegin(doDate.atTime(random.nextInt(24), random.nextInt(60)));
+            }
+            activity.setEnd(activity.getBegin().plusMinutes(30));
+        }
+
         User u = this.users.getUserWithId(idUser);
-        int burnedCalories = u.calculateBurnedCalories(id);
-        while(burnedCalories < minimumCaloriesConsumption/maximumActivitiesPerDay) {
-            startDistance += 250;
-            activity.setDistance(random.nextInt(startDistance));
+        activity.setHeartRate((int) (u.getHeartFreq()*1.2));
+        int burnedCalories = u.speculateBurnedCalories(activity);
+
+        while(burnedCalories < minimumCaloriesConsumption) {
+            int select = random.nextInt(2) + 1;
+            switch(select) {
+                case 1 : {
+                    startDistance += random.nextInt(200);
+                    activity.setDistance(startDistance);
+                    break;
+                }
+                case 2 : {
+                    activity.setEnd(activity.getEnd().plusMinutes(random.nextInt(5)));
+                    break;
+                }
+            }
             activity.calculateCalories();
-            burnedCalories = u.calculateBurnedCalories(id);
+            burnedCalories = u.speculateBurnedCalories(activity);
         }
 
         return activity;
     }
 
-    private Activity generateDistanceAndAltimetryActivity(int id, int idUser, int minimumCaloriesConsumption, int maximumActivitiesPerDay, LocalDate doDate, boolean hasHard) {
+    private Activity generateDistanceAndAltimetryActivity(int id, int idUser, List<Activity> activities, int minimumCaloriesConsumption, int maximumActivitiesPerDay, LocalDate doDate, boolean hasHard, boolean wantsHard) {
         Random random = new Random();
         int type = random.nextInt(4) + 1;
 
@@ -590,13 +646,26 @@ public class UserController implements Serializable {
             }
         }
 
+        if(!hasHard && wantsHard) {
+            switch(random.nextInt(2)) {
+                case 0 : {
+                    type = 1;
+                    break;
+                }
+                case 1 : {
+                    type = 4;
+                    break;
+                }
+            }
+        }
+
         DistanceAndAltimetryAct activity;
         int startDistance = 400;
         int startAltimetry = 150;
         switch(type) {
             case 1 : {
                 activity = new MountainBiking(id, idUser, random.nextInt(startDistance), random.nextInt(startAltimetry), random.nextBoolean());
-                break;  // TODO: Colocar a data de inicio e de fim como deve de ser
+                break;
             }
             case 2: {
                 activity = new RoadCycling(id, idUser, random.nextInt(startDistance), random.nextInt(startAltimetry), random.nextBoolean());
@@ -610,20 +679,45 @@ public class UserController implements Serializable {
                 activity = new TrailRunning(id, idUser, random.nextInt(startDistance), random.nextInt(startAltimetry), random.nextBoolean());
             }
         }
+        activity.setBegin(doDate.atTime(random.nextInt(24), random.nextInt(60)));
+        activity.setEnd(activity.getBegin().plusMinutes(30));
+        if(activities.size() > 0) {
+            Activity a = activities.getLast();
+            while (!(activity.getBegin().isAfter(a.getEnd()) || activity.getEnd().isBefore(a.getBegin()))) {
+                activity.setBegin(doDate.atTime(random.nextInt(24), random.nextInt(60)));
+            }
+            activity.setEnd(activity.getBegin().plusMinutes(30));
+        }
+
         User u = this.users.getUserWithId(idUser);
-        int burnedCalories = u.calculateBurnedCalories(id);
-        while(burnedCalories < minimumCaloriesConsumption/maximumActivitiesPerDay) {
-            startDistance += 50;
-            startAltimetry += 20;
-            activity.setDistance(random.nextInt(startDistance));
+        activity.setHeartRate((int) (u.getHeartFreq()*1.2));
+        int burnedCalories = u.speculateBurnedCalories(activity);
+        while(burnedCalories < minimumCaloriesConsumption) {
+            int select = random.nextInt(3) + 1;
+            switch(select) {
+                case 1 : {
+                    startDistance += random.nextInt(200);
+                    activity.setDistance(startDistance);
+                    break;
+                }
+                case 2 : {
+                    startAltimetry += random.nextInt(65);
+                    activity.setAltimetry(startAltimetry);
+                    break;
+                }
+                case 3 : {
+                    activity.setEnd(activity.getEnd().plusMinutes(random.nextInt(5)));
+                    break;
+                }
+            }
             activity.calculateCalories();
-            burnedCalories = u.calculateBurnedCalories(id);
+            burnedCalories = u.speculateBurnedCalories(activity);
         }
 
         return activity;
     }
 
-    private Activity generateRepetitionsActivity(int id, int idUser, int minimumCaloriesConsumption, int maximumActivitiesPerDay, LocalDate doDate, boolean hasHard) {
+    private Activity generateRepetitionsActivity(int id, int idUser, List<Activity> activities, int minimumCaloriesConsumption, int maximumActivitiesPerDay, LocalDate doDate, boolean hasHard, boolean wantsHard) {
         Random random = new Random();
         int type = random.nextInt(3) + 1; // Quantidade de Atividades
 
@@ -634,38 +728,54 @@ public class UserController implements Serializable {
             }
         }
 
+        if(!hasHard && wantsHard) {
+            type = 2;
+        }
+
         RepetitionAct activity;
-        int startRepetitions = 4;
+        int startRepetitions = 10;
         switch(type) {
             case 1 : {
-                activity = new AbdominalExercises(id, idUser, random.nextInt(startRepetitions), random.nextBoolean());
-                break;  // TODO: Colocar a data de inicio e de fim como deve de ser
+                activity = new AbdominalExercises(id, idUser, random.nextInt(startRepetitions) + 1, random.nextBoolean());
+                break;
             }
             case 2: {
-                activity = new PushUps(id, idUser, random.nextInt(startRepetitions), random.nextBoolean());
+                activity = new PushUps(id, idUser, random.nextInt(startRepetitions) + 1, random.nextBoolean());
                 break;
             }
             case 3: {
-                activity = new Stretching(id, idUser, random.nextInt(startRepetitions), random.nextBoolean());
+                activity = new Stretching(id, idUser, random.nextInt(startRepetitions) + 1, random.nextBoolean());
                 break;
             }
             default : {
-                activity = new AbdominalExercises(id, idUser, random.nextInt(startRepetitions), random.nextBoolean());
+                activity = new AbdominalExercises(id, idUser, random.nextInt(startRepetitions) + 1, random.nextBoolean());
             }
         }
+        activity.setBegin(doDate.atTime(random.nextInt(24), random.nextInt(60)));
+        activity.setEnd(activity.getBegin().plusMinutes(30));
+        if(activities.size() > 0) {
+            Activity a = activities.getLast();
+            while (!(activity.getBegin().isAfter(a.getEnd()) || activity.getEnd().isBefore(a.getBegin()))) {
+                activity.setBegin(doDate.atTime(random.nextInt(24), random.nextInt(60)));
+            }
+            activity.setEnd(activity.getBegin().plusMinutes(4));
+        }
+
         User u = this.users.getUserWithId(idUser);
-        int burnedCalories = u.calculateBurnedCalories(id);
-        while(burnedCalories < minimumCaloriesConsumption/maximumActivitiesPerDay) {
-            startRepetitions += 2;
-            activity.setNRepetitions(random.nextInt(startRepetitions));
+        activity.setHeartRate((int) (u.getHeartFreq()*1.2));
+        int burnedCalories = u.speculateBurnedCalories(activity);
+        while(burnedCalories < minimumCaloriesConsumption/100) {
+            startRepetitions += random.nextInt(5);
+            activity.setNRepetitions(startRepetitions);
+            activity.setEnd(activity.getBegin().plusMinutes((long) (startRepetitions*0.2)));
             activity.calculateCalories();
-            burnedCalories = u.calculateBurnedCalories(id);
+            burnedCalories = u.speculateBurnedCalories(activity);
         }
 
         return activity;
     }
 
-    private Activity generateRepetitionsWeightActivity(int id, int idUser, int minimumCaloriesConsumption, int maximumActivitiesPerDay, LocalDate doDate, boolean hasHard) {
+    private Activity generateRepetitionsWeightActivity(int id, int idUser, List<Activity> activities, int minimumCaloriesConsumption, int maximumActivitiesPerDay, LocalDate doDate, boolean hasHard, boolean wantsHard) {
         Random random = new Random();
         int type = random.nextInt(2) + 1;
 
@@ -676,31 +786,58 @@ public class UserController implements Serializable {
             }
         }
 
+        if(!hasHard && wantsHard) {
+            type = 2;
+        }
+
         RepetitionWithWeightsAct activity;
         int startRepetitions = 4;
         int startWeight = 50;
         switch(type) {
             case 1 : {
-                activity = new LegExtension(id, idUser, random.nextInt(startRepetitions), random.nextInt(startWeight), random.nextInt(80));
-                break;  // TODO: Colocar a data de inicio e de fim como deve de ser
+                activity = new LegExtension(id, idUser, random.nextInt(startRepetitions) + 1, random.nextInt(startWeight) + 1, random.nextInt(50) + 30);
+                break;
             }
             case 2: {
-                activity = new WeightLifting(id, idUser, random.nextInt(startRepetitions), random.nextInt(startWeight), random.nextBoolean());
+                activity = new WeightLifting(id, idUser, random.nextInt(startRepetitions) + 1, random.nextInt(startWeight) + 1, random.nextBoolean());
                 break;
             }
             default : {
-                activity = new LegExtension(id, idUser, random.nextInt(startRepetitions), random.nextInt(startWeight), random.nextInt(80));
+                activity = new LegExtension(id, idUser, random.nextInt(startRepetitions) + 1, random.nextInt(startWeight) + 1, random.nextInt(50) + 30);
             }
         }
+        activity.setBegin(doDate.atTime(random.nextInt(24), random.nextInt(60)));
+        activity.setEnd(activity.getBegin().plusMinutes(30));
+        if(activities.size() > 0) {
+            Activity a = activities.getLast();
+            while (!(activity.getBegin().isAfter(a.getEnd()) || activity.getEnd().isBefore(a.getBegin()))) {
+                activity.setBegin(doDate.atTime(random.nextInt(24), random.nextInt(60)));
+            }
+            activity.setEnd(activity.getBegin().plusMinutes(30));
+        }
+
+
         User u = this.users.getUserWithId(idUser);
-        int burnedCalories = u.calculateBurnedCalories(id);
-        while(burnedCalories < minimumCaloriesConsumption/maximumActivitiesPerDay) {
-            startRepetitions += 1;
-            startWeight += 5;
-            activity.setNRepetitions(random.nextInt(startRepetitions));
-            activity.setWeight(random.nextInt(startWeight));
+        activity.setHeartRate((int) (u.getHeartFreq()*1.2));
+        int burnedCalories = u.speculateBurnedCalories(activity);
+
+        while(burnedCalories < minimumCaloriesConsumption/100) {
+            int select = random.nextInt(2) + 1;
+            switch(select) {
+                case 1 : {
+                    startRepetitions += random.nextInt(5);
+                    activity.setNRepetitions(startRepetitions);
+                    break;
+                }
+                case 2 : {
+                    startWeight += random.nextInt(3);
+                    activity.setWeight(startWeight);
+                    break;
+                }
+            }
+            activity.setEnd(activity.getBegin().plusMinutes((long) (startRepetitions*0.2)));
             activity.calculateCalories();
-            burnedCalories = u.calculateBurnedCalories(id);
+            burnedCalories = u.speculateBurnedCalories(activity);
         }
 
         return activity;
@@ -712,7 +849,7 @@ public class UserController implements Serializable {
             int idUser,
             int minimumCaloriesConsumption,
             int maximumActivitiesPerDay,
-            boolean wantsHard,  // TODO: Check to use
+            boolean wantsHard,
             LocalDate doDate
     ) {
         Set<Integer> categories = randomCategorySelector(maximumActivitiesPerDay, 4);
@@ -723,27 +860,28 @@ public class UserController implements Serializable {
             if(idIndex < idsActivity.length) idIndex++;
             switch(category) {
                 case 1 : {
-                    activity = generateDistanceActivity(idsActivity[idIndex], idUser, minimumCaloriesConsumption, maximumActivitiesPerDay, doDate, hasHard);
+                    activity = generateDistanceActivity(idsActivity[idIndex], idUser, activities, minimumCaloriesConsumption, maximumActivitiesPerDay, doDate, hasHard, wantsHard);
                     break;
                 }
                 case 2 : {
-                    activity = generateDistanceAndAltimetryActivity(idsActivity[idIndex], idUser, minimumCaloriesConsumption, maximumActivitiesPerDay, doDate, hasHard);
+                    activity = generateDistanceAndAltimetryActivity(idsActivity[idIndex], idUser, activities, minimumCaloriesConsumption, maximumActivitiesPerDay, doDate, hasHard, wantsHard);
                     break;
                 }
                 case 3 : {
-                    activity = generateRepetitionsActivity(idsActivity[idIndex], idUser, minimumCaloriesConsumption, maximumActivitiesPerDay, doDate, hasHard);
+                    activity = generateRepetitionsActivity(idsActivity[idIndex], idUser, activities, minimumCaloriesConsumption, maximumActivitiesPerDay, doDate, hasHard, wantsHard);
                     break;
                 }
                 case 4 : {
-                    activity = generateRepetitionsWeightActivity(idsActivity[idIndex], idUser, minimumCaloriesConsumption, maximumActivitiesPerDay, doDate, hasHard);
+                    activity = generateRepetitionsWeightActivity(idsActivity[idIndex], idUser, activities, minimumCaloriesConsumption, maximumActivitiesPerDay, doDate, hasHard, wantsHard);
                     break;
                 }
                 default: {
-                    activity = generateDistanceActivity(idsActivity[idIndex], idUser, minimumCaloriesConsumption, maximumActivitiesPerDay, doDate, hasHard);
+                    activity = generateDistanceActivity(idsActivity[idIndex], idUser, activities, minimumCaloriesConsumption, maximumActivitiesPerDay, doDate, hasHard, wantsHard);
                     break;
                 }
             }
             activities.add(activity);
+            hasHard = activities.stream().anyMatch(a -> a instanceof Hard);
         }
     }
     //endregion

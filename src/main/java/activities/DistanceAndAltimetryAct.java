@@ -3,6 +3,7 @@ package activities;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public abstract class DistanceAndAltimetryAct extends Activity implements Serializable {
     private int distance;
@@ -55,4 +56,18 @@ public abstract class DistanceAndAltimetryAct extends Activity implements Serial
 
     public abstract void calculateCalories();
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        DistanceAndAltimetryAct that = (DistanceAndAltimetryAct) o;
+        return getDistance() == that.getDistance() &&
+                getAltimetry() == that.getAltimetry();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getDistance(), getAltimetry());
+    }
 }

@@ -6,6 +6,7 @@ import activities.Hard;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class MountainBiking extends DistanceAndAltimetryAct implements Hard, Serializable {
     private boolean bigTires;
@@ -77,4 +78,17 @@ public class MountainBiking extends DistanceAndAltimetryAct implements Hard, Ser
 
     public MountainBiking clone() { return new MountainBiking(this); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        MountainBiking that = (MountainBiking) o;
+        return getBigTires() == that.getBigTires();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getBigTires());
+    }
 }

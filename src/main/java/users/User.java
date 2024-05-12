@@ -365,6 +365,7 @@ public abstract class User implements Serializable {
     }
 
     public abstract int calculateBurnedCalories(int activityId);
+    public abstract int speculateBurnedCalories(Activity activity);
 
     public abstract User clone();
 
@@ -399,8 +400,8 @@ public abstract class User implements Serializable {
                 Double.compare(height, user.height) == 0 &&
                 Double.compare(weight, user.weight) == 0 &&
                 heartFreq == user.heartFreq &&
-                activityController.equals(user.activityController);
-                //trainingSchedule.equals(user.trainingSchedule);
+                activityController.equals(user.activityController) &&
+                trainingSchedule.equals(user.trainingSchedule);
     }
 
     @Override

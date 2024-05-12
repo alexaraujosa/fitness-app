@@ -6,6 +6,7 @@ import activities.Hard;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class Rowing extends DistanceAct implements Hard, Serializable {
     private int personsOnBoard;
@@ -83,4 +84,18 @@ public class Rowing extends DistanceAct implements Hard, Serializable {
 
     public Rowing clone() { return new Rowing(this); }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        Rowing rowing = (Rowing) o;
+        return getPersonsOnBoard() == rowing.getPersonsOnBoard() &&
+                getRowAgainstTide() == rowing.getRowAgainstTide();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), getPersonsOnBoard(), getRowAgainstTide());
+    }
 }
