@@ -2,19 +2,8 @@ package josefinFA;
 
 import activities.Activity;
 import activities.distance.Rowing;
-import activities.distance.Skating;
-import activities.distance.TrackRunning;
-import activities.distanceAltimetry.MountainBiking;
-import activities.distanceAltimetry.RoadCycling;
-import activities.distanceAltimetry.RoadRunning;
-import activities.distanceAltimetry.TrailRunning;
-import activities.repetitions.AbdominalExercises;
-import activities.repetitions.PushUps;
-import activities.repetitions.Stretching;
 import activities.repetitionsWeight.LegExtension;
-import activities.repetitionsWeight.WeightLifting;
 import exceptions.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import users.*;
 import utils.IDManager;
@@ -1183,13 +1172,16 @@ class JosefinFitnessAppTest {
 
     @Test
     void userWithMostCaloriesBurned() throws UsernameAlreadyExistsException {
-        this.fillApp();
+        //this.fillApp();
+        app.loadState("JosefinFitnessApp_State");
 
         app.loadStats();
         app.setSystemDate(LocalDateTime.now());
 
-        //User value = app.userWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
-        //assertNotNull(value);
+        Tuple<User, Integer> mytup = app.userWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+        assertNotNull(mytup);
+        assertEquals(mytup.getLeft().getId(), 10);
+        assertEquals(mytup.getRight(), 2742);
     }
 
     @Test
@@ -1198,19 +1190,18 @@ class JosefinFitnessAppTest {
 
         app.loadStats();
         app.setSystemDate(LocalDateTime.now());
-        //User value = app.userWithMostActivitiesCompleted(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+
+        Tuple<User, Integer> value = app.userWithMostActivitiesCompleted(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
 
         System.out.println(app.getStats().getAllTimeUserWithMostActivitiesCompleted());
-
-        //assertNotNull(value);
     }
 
     @Test
     void mostCommonActivity() throws UsernameAlreadyExistsException {
-        this.fillApp();
+        app.loadState("JosefinFitnessApp_State");
         app.loadStats();
 
-        System.out.println(app.mostCommonActivity());
+        assertEquals(app.mostCommonActivity(),"WeightLifting");
     }
 
     @Test
