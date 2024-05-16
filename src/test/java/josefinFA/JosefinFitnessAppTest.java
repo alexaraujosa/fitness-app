@@ -18,6 +18,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import users.*;
 import utils.IDManager;
+import utils.Tuple;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -274,18 +275,41 @@ class JosefinFitnessAppTest {
         }
     }
 
+    private void usersCaloriesList(){
+        System.out.println("--{ USERS WITH CALORIES BURNED }--");
+        List<User> users = app.getUserController().getUsers().getUsersList();
+        List<Tuple<User,Integer>> calories = new ArrayList<>();
+        for(User user : users){
+            int newBurnedCalories = 0;
+            for(Activity act : user.getActivityController().getActivities().getActivities().values()){
+                //Adicionar (act.getBegin().isAfter(from)) em caso de necessidade;
+                if(act.getEnd().isBefore(app.getSystemDate())){
+                    newBurnedCalories += user.calculateBurnedCalories(act.getId());
+                }
+            }
+            Tuple<User, Integer> tuple = new Tuple<>(user, newBurnedCalories);
+            calories.add(tuple);
+        }
+        calories.sort((t1, t2) -> Integer.compare(t2.getRight(), t1.getRight()));
+        for(Tuple<User, Integer> tuple : calories){
+            System.out.println(tuple.getLeft().getName() + ": " + tuple.getRight());
+        }
+        System.out.println("--{ END }--\n");
+    }
+
     private void fillApp() {
         //Stores original STDOUT
         PrintStream originalOut = System.out;
 
         try {
             // Redirect standard output to appInfo file, truncating if it already exists
-            PrintStream fileOut = new PrintStream(new File("appInfo.txt"));
+            PrintStream fileOut = new PrintStream(new File("TesteFileAppInfo.txt"));
             System.setOut(fileOut);
 
             // Call methods to populate app with users and activities
             this.populateAppWithUsers();
             this.populateAppWithActivities();
+            this.usersCaloriesList();
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         } finally {
