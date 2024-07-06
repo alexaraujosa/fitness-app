@@ -1,23 +1,137 @@
 --{ POPULATE APP }--
-Added Users: 130
-Number of Casuals: 42
-Number of Amateurs: 45
-Number of Professionals: 43
+Added Users: 111
+Number of Casuals: 39
+Number of Amateurs: 28
+Number of Professionals: 44
 --{ ENDING }--
 
 --{ CREATE ACTIVITIES }--
-Added Activities: 1863
-Added Rowing: 164
-Added Skating: 157
-Added TrackRunning: 146
-Added MountainBiking: 156
-Added RoadCycling: 159
-Added RoadRunning: 151
-Added TrailRunning: 162
-Added AbdominalExercises: 133
-Added PushUps: 151
-Added Stretching: 170
-Added LegExtension: 147
-Added WeightLifting: 167
+Added Activities: 1610
+Added Rowing: 136
+Added Skating: 134
+Added TrackRunning: 127
+Added MountainBiking: 154
+Added RoadCycling: 153
+Added RoadRunning: 106
+Added TrailRunning: 141
+Added AbdominalExercises: 130
+Added PushUps: 127
+Added Stretching: 135
+Added LegExtension: 129
+Added WeightLifting: 138
+--{ END }--
+
+--{ USERS WITH CALORIES BURNED }--
+Paulo39: 3383
+Paulo11: 2708
+Paulo81: 2610
+Paulo41: 2429
+Paulo31: 2154
+Paulo76: 2118
+Paulo108: 2014
+Paulo21: 1958
+Paulo94: 1916
+Paulo54: 1853
+Paulo84: 1803
+Paulo74: 1774
+Paulo93: 1744
+Paulo69: 1697
+Paulo89: 1610
+Paulo27: 1579
+Paulo79: 1519
+Paulo2: 1504
+Paulo80: 1440
+Paulo22: 1439
+Paulo49: 1438
+Paulo24: 1408
+Paulo17: 1401
+Paulo25: 1383
+Paulo73: 1381
+Paulo105: 1372
+Paulo109: 1338
+Paulo110: 1336
+Paulo28: 1334
+Paulo32: 1304
+Paulo95: 1284
+Paulo88: 1247
+Paulo19: 1231
+Paulo48: 1229
+Paulo85: 1213
+Paulo56: 1208
+Paulo7: 1194
+Paulo59: 1118
+Paulo53: 1115
+Paulo33: 1109
+Paulo58: 1086
+Paulo57: 1068
+Paulo62: 1046
+Paulo46: 1033
+Paulo3: 1013
+Paulo87: 998
+Paulo8: 978
+Paulo90: 968
+Paulo104: 968
+Paulo61: 907
+Paulo26: 883
+Paulo97: 847
+Paulo6: 832
+Paulo45: 827
+Paulo5: 818
+Paulo82: 769
+Paulo35: 766
+Paulo29: 763
+Paulo9: 736
+Paulo15: 714
+Paulo64: 711
+Paulo98: 702
+Paulo36: 690
+Paulo13: 678
+Paulo102: 659
+Paulo101: 658
+Paulo37: 652
+Paulo103: 641
+Paulo107: 600
+Paulo18: 595
+Paulo44: 586
+Paulo52: 581
+Paulo23: 568
+Paulo106: 553
+Paulo99: 552
+Paulo96: 550
+Paulo86: 543
+Paulo75: 537
+Paulo12: 527
+Paulo72: 514
+Paulo38: 501
+Paulo43: 500
+Paulo20: 499
+Paulo68: 495
+Paulo63: 446
+Paulo16: 430
+Paulo50: 422
+Paulo47: 416
+Paulo60: 397
+Paulo66: 396
+Paulo67: 383
+Paulo78: 374
+Paulo0: 372
+Paulo34: 371
+Paulo55: 366
+Paulo40: 346
+Paulo1: 339
+Paulo100: 339
+Paulo71: 318
+Paulo92: 259
+Paulo42: 250
+Paulo51: 233
+Paulo30: 205
+Paulo4: 200
+Paulo77: 192
+Paulo65: 186
+Paulo83: 179
+Paulo91: 112
+Paulo70: 108
+Paulo10: 103
+Paulo14: 65
 --{ END }--
 

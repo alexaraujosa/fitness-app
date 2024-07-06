@@ -13,9 +13,9 @@ import java.time.ZoneId;
 import java.util.*;
 
 /**
- * The User class represents a User, containing information as it's name, username, birthdate
- * address, email and more. This class implements methods to set and get this values as well
- * as methods to calculate calorie expenditure and to add activities and trainingPlans.
+ * The User class represents a User, containing information such as name, username, birthdate,
+ * address, email, and more. This class implements methods to set and get these values as well
+ * as methods to calculate calorie expenditure and to add activities and training plans.
  */
 public abstract class User implements Serializable {
     private final int id;
@@ -34,9 +34,8 @@ public abstract class User implements Serializable {
     //region constructors
     /**
      * Constructs an empty user with the specified ID.
-     * Note: The caller is responsible for ensuring the uniqueness of the ID.
      *
-     * @param id Unique number used to identify the User
+     * @param id Unique number used to identify the User.
      */
     public User(int id){
         this.id = id;
@@ -306,25 +305,43 @@ public abstract class User implements Serializable {
     //endregion
 
     //region Activity Methods
+    /**
+     * Adds an activity to the user's activity list.
+     * This method calculates the calories burned by the activity and adds it to the activity controller.
+     *
+     * @param act The activity to add.
+     */
     public void addActivity(Activity act){
-        //NOTE: Verificar se a atividade sobrepõe outra atividade?
         act.calculateCalories();
         this.activityController.add(act);
     }
 
+    /**
+     * Updates an existing activity with new information.
+     *
+     * @param activity The updated activity.
+     */
     public void updateActivity(Activity activity){
-        //TODO: substitui a antiga ativade com a nova
         this.activityController.update(activity);
-        //Ativadades completas não fazem sentido ser atualizadas
-        //Se for uma atividade de um plano de treino ou não se deixa atualizar aqui ou fazer as verificações necessarias
     }
 
+    /**
+     * Removes an activity from the user's activity list.
+     *
+     * @param id The ID of the activity to remove.
+     */
     public void removeActivity(int id){
         this.activityController.remove(id);
     }
     //endregion
 
     //region Training Plan Methods
+    /**
+     * Adds a training plan to the user's schedule.
+     * This method also adds all activities from the training plan to the user's activity list.
+     *
+     * @param tp The training plan to add.
+     */
     public void addTrainingPlan(TrainingPlan tp) {
         this.trainingSchedule.add(tp);
         for(Activity a : tp.getActivities()) {
@@ -332,12 +349,26 @@ public abstract class User implements Serializable {
         }
     }
 
+    /**
+     * (NOT IMPLEMENTED)
+     * Updates an existing training plan with new information.
+     * Determines if the new training plan can fit into the existing schedule.
+     * The new plan can only be added in the present or future.
+     * If a training plan repeats every Friday, for example, only Fridays from now on should be altered, not previous ones.
+     *
+     * @param oldTp The old training plan.
+     * @param newTp The new training plan.
+     */
     public void updateTrainingPlan(TrainingPlan oldTp, TrainingPlan newTp){
-        //ver se o novo plano de treino pode encaixar onde é suposto
-        //só pode ser encaixado no presente ou futuro
-        //se tivermos um plano de treino que se repita todas as sextas, temos de alterar as sextas daqui para a frente, não as anteriores
+        //TODO: NOT IMPLEMENTED
     }
 
+    /**
+     * Removes a training plan from the user's schedule.
+     * Also removes all activities associated with the training plan from the user's activity list.
+     *
+     * @param tp The training plan to remove.
+     */
     public void removeTrainingPlan(TrainingPlan tp){
         int index = this.trainingSchedule.indexOf(tp);
         TrainingPlan plan = this.trainingSchedule.get(index);
@@ -347,13 +378,16 @@ public abstract class User implements Serializable {
         this.trainingSchedule.remove(tp);
     }
     //endregion
-
+    /**
+     * Calculates the Basal Metabolic Rate (BMR) using the Mifflin-St.Jeor Equation.
+     * BMR represents the number of calories the body needs to maintain basic physiological functions at rest.
+     *
+     * @return The calculated Basal Metabolic Rate.
+     */
     protected double calculateBMR(){
         LocalDate today = LocalDate.now();
         int age = Period.between(this.getBirthdate(), today).getYears();
 
-        //NOTES: USING Mifflin-St.Jeor Equation
-        //basal metabolic rate;
         double bmr = 0;
 
         if (this.getSex()) { // Assuming true for male, false for female
@@ -364,11 +398,35 @@ public abstract class User implements Serializable {
         return bmr;
     }
 
+    /**
+     * Abstract method to calculate burned calories for a specific activity.
+     *
+     * @param activityId The ID of the activity for which to calculate burned calories.
+     * @return The calculated burned calories.
+     */
     public abstract int calculateBurnedCalories(int activityId);
+
+    /**
+     * Abstract method to speculate the burned calories for an activity.
+     *
+     * @param activity The activity for which to speculate the burned calories.
+     * @return The speculated burned calories.
+     */
     public abstract int speculateBurnedCalories(Activity activity);
 
+    /**
+     * Abstract method to create a clone of the user.
+     *
+     * @return A clone of the user.
+     */
     public abstract User clone();
 
+    /**
+     * Returns a string representation of the user object.
+     * The string contains the user's ID, name, username, birthdate, address, email, sex, height, weight, and heart frequency.
+     *
+     * @return A string representation of the user object.
+     */
     @Override
     public String toString() {
         return "{User}--{" +
@@ -385,6 +443,13 @@ public abstract class User implements Serializable {
                 "}\n";
     }
 
+    /**
+     * Indicates whether some other object is "equal to" this one.
+     * Equality is determined based on the user's ID, name, username, birthdate, address, email, sex, height, weight, and heart frequency.
+     *
+     * @param o The reference object with which to compare.
+     * @return true if this object is the same as the obj argument; false otherwise.
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -402,10 +467,5 @@ public abstract class User implements Serializable {
                 heartFreq == user.heartFreq &&
                 activityController.equals(user.activityController) &&
                 trainingSchedule.equals(user.trainingSchedule);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(name, username, birthdate, address, email, sex, height, weight, heartFreq, activityController, trainingSchedule);
     }
 }

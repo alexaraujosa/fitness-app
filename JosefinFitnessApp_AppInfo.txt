@@ -1,0 +1,129 @@
+--{ POPULATE APP }--
+Added Users: 103
+Number of Casuals: 36
+Number of Amateurs: 40
+Number of Professionals: 27
+--{ ENDING }--
+
+--{ CREATE ACTIVITIES }--
+Added Activities: 1465
+Added Rowing: 122
+Added Skating: 136
+Added TrackRunning: 105
+Added MountainBiking: 134
+Added RoadCycling: 127
+Added RoadRunning: 121
+Added TrailRunning: 108
+Added AbdominalExercises: 123
+Added PushUps: 118
+Added Stretching: 126
+Added LegExtension: 103
+Added WeightLifting: 142
+--{ END }--
+
+--{ USERS WITH CALORIES BURNED }--
+Paulo9: 2742
+Paulo41: 2483
+Paulo20: 2333
+Paulo25: 2290
+Paulo15: 2076
+Paulo10: 2054
+Paulo68: 2005
+Paulo27: 1996
+Paulo74: 1991
+Paulo60: 1913
+Paulo73: 1884
+Paulo48: 1772
+Paulo14: 1644
+Paulo46: 1585
+Paulo47: 1523
+Paulo50: 1406
+Paulo5: 1398
+Paulo23: 1377
+Paulo59: 1375
+Paulo53: 1369
+Paulo56: 1347
+Paulo33: 1344
+Paulo78: 1335
+Paulo93: 1290
+Paulo34: 1263
+Paulo42: 1234
+Paulo90: 1231
+Paulo49: 1212
+Paulo44: 1208
+Paulo16: 1181
+Paulo69: 1150
+Paulo91: 1149
+Paulo18: 1116
+Paulo82: 1075
+Paulo8: 1058
+Paulo85: 1053
+Paulo4: 1036
+Paulo79: 1022
+Paulo61: 1021
+Paulo99: 1021
+Paulo24: 960
+Paulo38: 954
+Paulo37: 950
+Paulo26: 937
+Paulo1: 933
+Paulo52: 897
+Paulo71: 889
+Paulo36: 812
+Paulo19: 794
+Paulo3: 791
+Paulo45: 788
+Paulo0: 752
+Paulo84: 752
+Paulo11: 743
+Paulo80: 716
+Paulo89: 712
+Paulo66: 707
+Paulo67: 703
+Paulo100: 702
+Paulo51: 675
+Paulo65: 653
+Paulo72: 638
+Paulo81: 620
+Paulo63: 608
+Paulo95: 599
+Paulo64: 532
+Paulo54: 508
+Paulo6: 492
+Paulo94: 489
+Paulo62: 475
+Paulo40: 472
+Paulo102: 464
+Paulo83: 454
+Paulo76: 428
+Paulo86: 381
+Paulo7: 380
+Paulo2: 367
+Paulo21: 366
+Paulo96: 356
+Paulo55: 340
+Paulo22: 329
+Paulo88: 321
+Paulo75: 320
+Paulo98: 312
+Paulo87: 310
+Paulo13: 309
+Paulo92: 292
+Paulo30: 287
+Paulo58: 258
+Paulo77: 256
+Paulo97: 248
+Paulo57: 241
+Paulo39: 234
+Paulo35: 228
+Paulo31: 185
+Paulo12: 133
+Paulo28: 125
+Paulo29: 113
+Paulo43: 111
+Paulo101: 109
+Paulo17: 106
+Paulo70: 61
+Paulo32: 33
+--{ END }--
+

@@ -1,0 +1,150 @@
+--{ POPULATE APP }--
+Added Users: 124
+Number of Casuals: 40
+Number of Amateurs: 38
+Number of Professionals: 46
+--{ ENDING }--
+
+--{ CREATE ACTIVITIES }--
+Added Activities: 1863
+Added Rowing: 150
+Added Skating: 140
+Added TrackRunning: 140
+Added MountainBiking: 149
+Added RoadCycling: 167
+Added RoadRunning: 155
+Added TrailRunning: 143
+Added AbdominalExercises: 162
+Added PushUps: 161
+Added Stretching: 163
+Added LegExtension: 164
+Added WeightLifting: 169
+--{ END }--
+
+--{ USERS WITH CALORIES BURNED }--
+Paulo22: 2597
+Paulo82: 2488
+Paulo96: 2436
+Paulo24: 2252
+Paulo25: 2165
+Paulo68: 2079
+Paulo0: 2072
+Paulo83: 2011
+Paulo87: 1901
+Paulo50: 1893
+Paulo29: 1851
+Paulo33: 1787
+Paulo109: 1776
+Paulo20: 1741
+Paulo18: 1685
+Paulo111: 1662
+Paulo102: 1637
+Paulo116: 1637
+Paulo53: 1562
+Paulo30: 1557
+Paulo61: 1547
+Paulo35: 1513
+Paulo64: 1473
+Paulo3: 1458
+Paulo99: 1446
+Paulo9: 1432
+Paulo2: 1390
+Paulo31: 1385
+Paulo66: 1325
+Paulo95: 1272
+Paulo16: 1198
+Paulo6: 1190
+Paulo94: 1182
+Paulo49: 1161
+Paulo123: 1154
+Paulo65: 1151
+Paulo105: 1151
+Paulo79: 1145
+Paulo92: 1142
+Paulo85: 1119
+Paulo81: 1114
+Paulo120: 1111
+Paulo5: 1102
+Paulo32: 1085
+Paulo39: 1085
+Paulo93: 1084
+Paulo77: 1081
+Paulo71: 1076
+Paulo86: 1060
+Paulo117: 1042
+Paulo114: 1010
+Paulo43: 1009
+Paulo58: 1008
+Paulo34: 1000
+Paulo88: 979
+Paulo46: 966
+Paulo26: 955
+Paulo78: 947
+Paulo51: 936
+Paulo73: 929
+Paulo90: 922
+Paulo106: 916
+Paulo52: 900
+Paulo115: 890
+Paulo118: 871
+Paulo107: 870
+Paulo56: 856
+Paulo8: 830
+Paulo122: 829
+Paulo89: 828
+Paulo72: 820
+Paulo97: 812
+Paulo57: 717
+Paulo54: 700
+Paulo84: 698
+Paulo119: 689
+Paulo60: 679
+Paulo55: 674
+Paulo19: 668
+Paulo80: 660
+Paulo59: 650
+Paulo104: 637
+Paulo45: 628
+Paulo75: 590
+Paulo1: 589
+Paulo63: 528
+Paulo11: 519
+Paulo110: 508
+Paulo100: 499
+Paulo98: 495
+Paulo44: 472
+Paulo12: 463
+Paulo17: 446
+Paulo28: 443
+Paulo15: 411
+Paulo103: 408
+Paulo113: 354
+Paulo69: 349
+Paulo47: 344
+Paulo67: 312
+Paulo41: 299
+Paulo36: 294
+Paulo4: 259
+Paulo121: 255
+Paulo13: 233
+Paulo62: 217
+Paulo70: 209
+Paulo14: 206
+Paulo42: 201
+Paulo101: 187
+Paulo76: 185
+Paulo10: 150
+Paulo27: 136
+Paulo37: 129
+Paulo74: 123
+Paulo108: 116
+Paulo40: 104
+Paulo38: 93
+Paulo23: 77
+Paulo91: 77
+Paulo48: 48
+Paulo7: 34
+Paulo21: 21
+Paulo112: 0
+--{ END }--
+

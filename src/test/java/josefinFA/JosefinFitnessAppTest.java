@@ -2,22 +2,12 @@ package josefinFA;
 
 import activities.Activity;
 import activities.distance.Rowing;
-import activities.distance.Skating;
-import activities.distance.TrackRunning;
-import activities.distanceAltimetry.MountainBiking;
-import activities.distanceAltimetry.RoadCycling;
-import activities.distanceAltimetry.RoadRunning;
-import activities.distanceAltimetry.TrailRunning;
-import activities.repetitions.AbdominalExercises;
-import activities.repetitions.PushUps;
-import activities.repetitions.Stretching;
 import activities.repetitionsWeight.LegExtension;
-import activities.repetitionsWeight.WeightLifting;
 import exceptions.*;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import users.*;
 import utils.IDManager;
+import utils.Tuple;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -274,18 +264,41 @@ class JosefinFitnessAppTest {
         }
     }
 
+    private void usersCaloriesList(){
+        System.out.println("--{ USERS WITH CALORIES BURNED }--");
+        List<User> users = app.getUserController().getUsers().getUsersList();
+        List<Tuple<User,Integer>> calories = new ArrayList<>();
+        for(User user : users){
+            int newBurnedCalories = 0;
+            for(Activity act : user.getActivityController().getActivities().getActivities().values()){
+                //Adicionar (act.getBegin().isAfter(from)) em caso de necessidade;
+                if(act.getEnd().isBefore(app.getSystemDate())){
+                    newBurnedCalories += user.calculateBurnedCalories(act.getId());
+                }
+            }
+            Tuple<User, Integer> tuple = new Tuple<>(user, newBurnedCalories);
+            calories.add(tuple);
+        }
+        calories.sort((t1, t2) -> Integer.compare(t2.getRight(), t1.getRight()));
+        for(Tuple<User, Integer> tuple : calories){
+            System.out.println(tuple.getLeft().getName() + ": " + tuple.getRight());
+        }
+        System.out.println("--{ END }--\n");
+    }
+
     private void fillApp() {
         //Stores original STDOUT
         PrintStream originalOut = System.out;
 
         try {
             // Redirect standard output to appInfo file, truncating if it already exists
-            PrintStream fileOut = new PrintStream(new File("appInfo.txt"));
+            PrintStream fileOut = new PrintStream(new File("TesteFileAppInfo.txt"));
             System.setOut(fileOut);
 
             // Call methods to populate app with users and activities
             this.populateAppWithUsers();
             this.populateAppWithActivities();
+            this.usersCaloriesList();
         } catch (FileNotFoundException e) {
             System.err.println(e.getMessage());
         } finally {
@@ -1159,13 +1172,16 @@ class JosefinFitnessAppTest {
 
     @Test
     void userWithMostCaloriesBurned() throws UsernameAlreadyExistsException {
-        this.fillApp();
+        //this.fillApp();
+        app.loadState("JosefinFitnessApp_State");
 
         app.loadStats();
         app.setSystemDate(LocalDateTime.now());
 
-        //User value = app.userWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
-        //assertNotNull(value);
+        Tuple<User, Integer> mytup = app.userWithMostCaloriesBurned(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+        assertNotNull(mytup);
+        assertEquals(mytup.getLeft().getId(), 10);
+        assertEquals(mytup.getRight(), 2742);
     }
 
     @Test
@@ -1174,19 +1190,18 @@ class JosefinFitnessAppTest {
 
         app.loadStats();
         app.setSystemDate(LocalDateTime.now());
-        //User value = app.userWithMostActivitiesCompleted(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
+
+        Tuple<User, Integer> value = app.userWithMostActivitiesCompleted(LocalDateTime.of(2000,Month.MAY,1,18,12,0));
 
         System.out.println(app.getStats().getAllTimeUserWithMostActivitiesCompleted());
-
-        //assertNotNull(value);
     }
 
     @Test
     void mostCommonActivity() throws UsernameAlreadyExistsException {
-        this.fillApp();
+        app.loadState("JosefinFitnessApp_State");
         app.loadStats();
 
-        System.out.println(app.mostCommonActivity());
+        assertEquals(app.mostCommonActivity(),"WeightLifting");
     }
 
     @Test
